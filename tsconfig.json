@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "ES2020",
+    "target": "ES2017",
+    "moduleResolution": "node",
+    "lib": ["ESNext", "DOM"],
+    "esModuleInterop": true,
+    "declaration": true,
+    // Do not change or the linking script will stop working
+    "outDir": "./dist",
+    "sourceMap": true,
+    "newLine": "LF",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "incremental": true,
+    "strict": true,
+    "downlevelIteration": true,
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@keycloakify/keycloak-account-ui/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}
