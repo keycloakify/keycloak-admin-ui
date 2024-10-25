@@ -237,7 +237,7 @@ import * as child_process from "child_process";
       fs.mkdirSync(publicDirPath);
     }
 
-    (["logo.svg", "content.json"] as const).map(async (fileBasename) => {
+    (["logo.svg"] as const).map(async (fileBasename) => {
       const response = await fetch(
         `https://raw.githubusercontent.com/keycloak/keycloak/${keycloakVersion}/js/apps/admin-ui/public/${fileBasename}`,
         fetchOptions,
@@ -251,14 +251,6 @@ import * as child_process from "child_process";
             return {
               targetFileBasename: "logo.svg",
               targetContent: content,
-            };
-          case "content.json":
-            return {
-              targetFileBasename: "content.ts",
-              targetContent: [
-                `const content = ${JSON.stringify(JSON.parse(content), null, 2)} as const;`,
-                "export default content;",
-              ].join("\n"),
             };
         }
         assert<Equals<typeof fileBasename, never>>(false);
