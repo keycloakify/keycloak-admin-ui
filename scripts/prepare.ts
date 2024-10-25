@@ -140,6 +140,43 @@ import * as child_process from "child_process";
               ].join("\n"),
             );
             assert(modifiedSourceCode !== modifiedSourceCode_before);
+          } else {
+            const search = `from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
+
+            if (modifiedSourceCode.includes(search)) {
+              modifiedSourceCode = modifiedSourceCode
+                .split("\n")
+                .map((line) => {
+                  if (!line.includes(search)) {
+                    return line;
+                  }
+
+                  const tokens = line
+                    .split("{")[1]
+                    .split("}")[0]
+                    .split(",")
+                    .map((token) => token.trim())
+                    .filter((t) => t !== "i18n");
+
+                  if (tokens.length === 0) {
+                    return undefined;
+                  }
+
+                  return `import { ${tokens.join(", ")} } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
+                })
+                .filter((line) => line !== undefined)
+                .join("\n");
+
+              modifiedSourceCode = modifiedSourceCode.replaceAll(
+                "i18n.",
+                "getI18n().",
+              );
+
+              modifiedSourceCode = [
+                `import { getI18n } from "react-i18next";`,
+                modifiedSourceCode,
+              ].join("\n");
+            }
           }
         }
 

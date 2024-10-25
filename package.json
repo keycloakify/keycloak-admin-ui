@@ -83,6 +83,8 @@
     "copyfiles": "^2.4.1",
     "@types/lodash-es": "^4.17.12",
     "zod": "^3.23.8",
+    "@types/dagre": "^0.7.52",
+    "@types/file-saver": "^2.0.7",
     "@patternfly/patternfly": "^5.4.0",
     "@patternfly/react-code-editor": "^5.4.3",
     "@patternfly/react-core": "^5.4.1",
@@ -106,9 +108,7 @@
     "reactflow": "^11.11.4",
     "use-react-router-breadcrumbs": "^4.0.1",
     "@keycloak/keycloak-admin-client": "26.0.2",
-    "keycloak-js": "26.0.2",
-    "@types/dagre": "^0.7.52",
-    "@types/file-saver": "^2.0.7"
+    "keycloak-js": "26.0.2"
   },
   "dependencies": {
     "tsafe": "^1.7.2"

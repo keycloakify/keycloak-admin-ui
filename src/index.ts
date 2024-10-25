@@ -1,1 +1,1 @@
-export * from "./KcAccountUiLoader";
+export * from "./KcAdminUiLoader";
