@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://github.com/user-attachments/assets/e31c4910-7205-441c-9a35-e134b806b3a8">  
+    <img src="https://github.com/user-attachments/assets/a6aaebbd-8f59-474d-9827-c282f4527aca">  
 </p>
 <p align="center">
     <i>Repackaged Keycloak Admin UI</i>
