@@ -2,7 +2,7 @@ name: ci
 on:
   push:
     branches:
-      - v25
+      - main
   pull_request:
     branches:
       - main
@@ -70,7 +70,6 @@ jobs:
         generate_release_notes: true
         draft: false
         prerelease: false
-        make_latest: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
 
@@ -104,7 +103,7 @@ jobs:
           echo "Can't publish on NPM, You must first create a secret called NPM_TOKEN that contains your NPM auth token. https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets"
           false
         fi
-        npm publish --tag retro_v25
+        npm publish
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
         VERSION: ${{ needs.check_if_version_upgraded.outputs.to_version }}
