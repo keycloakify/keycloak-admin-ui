@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "paths": {
-      "@keycloakify/keycloak-account-ui/*": ["./src/*"]
+      "@keycloakify/keycloak-admin-ui/*": ["./src/*"]
     }
   },
   "include": ["src"]
