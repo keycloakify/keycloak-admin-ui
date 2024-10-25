@@ -315,7 +315,7 @@ import * as child_process from "child_process";
       onArchiveFile: async ({ fileRelativePath, writeFile }) => {
         if (
           !fileRelativePath.startsWith(
-            pathJoin("theme", "keycloak.v3", "admin", "messages"),
+            pathJoin("theme", "keycloak.v2", "admin", "messages"),
           )
         ) {
           return;
