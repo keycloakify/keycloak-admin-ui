@@ -46,7 +46,7 @@ import * as child_process from "child_process";
     url: `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
     cacheDirPath,
     fetchOptions,
-    uniqueIdOfOnArchiveFile: "download_keycloak-account-ui-sources",
+    uniqueIdOfOnArchiveFile: "download_keycloak-admin-ui-sources",
     onArchiveFile: async ({ fileRelativePath, readFile, writeFile }) => {
       fileRelativePath = fileRelativePath.split(pathSep).slice(1).join(pathSep);
 
@@ -56,7 +56,7 @@ import * as child_process from "child_process";
 
       account_ui: {
         {
-          const dirPath = pathJoin("js", "apps", "account-ui");
+          const dirPath = pathJoin("js", "apps", "admin-ui");
 
           if (
             !isInside({
@@ -72,7 +72,7 @@ import * as child_process from "child_process";
 
         if (fileRelativePath === "package.json") {
           await writeFile({
-            fileRelativePath: pathJoin("account-ui", "package.json"),
+            fileRelativePath: pathJoin("admin-ui", "package.json"),
           });
 
           return;
@@ -117,7 +117,7 @@ import * as child_process from "child_process";
             .replaceAll(
               /((?:from )|(?:import\())"(\.[./]*\/)/g,
               (_, p1, p2) =>
-                `${p1}"@keycloakify/keycloak-account-ui/${pathJoin(
+                `${p1}"@keycloakify/keycloak-admin-ui/${pathJoin(
                   pathDirname(fileRelativePath),
                   p2.replace("/", pathSep),
                 )
@@ -126,7 +126,7 @@ import * as child_process from "child_process";
             )
             .replaceAll(
               `"@keycloak/keycloak-ui-shared"`,
-              `"@keycloakify/keycloak-account-ui/ui-shared"`,
+              `"@keycloakify/keycloak-admin-ui/ui-shared"`,
             );
 
           if (fileRelativePath === "i18n.ts") {
@@ -156,7 +156,7 @@ import * as child_process from "child_process";
                 .map((line) => {
                   if (
                     !line.includes(
-                      `from "@keycloakify/keycloak-account-ui/i18n";`,
+                      `from "@keycloakify/keycloak-admin-ui/i18n";`,
                     )
                   ) {
                     return line;
@@ -168,7 +168,7 @@ import * as child_process from "child_process";
                     .split(",")
                     .map((token) => token.trim());
 
-                  return `import { ${tokens.filter((t) => t !== "i18n")} } from "@keycloakify/keycloak-account-ui/i18n";`;
+                  return `import { ${tokens.filter((t) => t !== "i18n")} } from "@keycloakify/keycloak-admin-ui/i18n";`;
                 })
                 .join("\n");
 
@@ -183,7 +183,7 @@ import * as child_process from "child_process";
         }
 
         await writeFile({
-          fileRelativePath: pathJoin("account-ui", fileRelativePath),
+          fileRelativePath: pathJoin("admin-ui", fileRelativePath),
           modifiedData:
             modifiedSourceCode === undefined
               ? undefined
@@ -239,7 +239,7 @@ import * as child_process from "child_process";
         const modifiedSourceCode = sourceCode.replaceAll(
           /((?:from )|(?:import\())"(\.[./]*\/)/g,
           (_, p1, p2) =>
-            `${p1}"@keycloakify/keycloak-account-ui/ui-shared/${pathJoin(
+            `${p1}"@keycloakify/keycloak-admin-ui/ui-shared/${pathJoin(
               pathDirname(fileRelativePath),
               p2.replace("/", pathSep),
             )
@@ -278,7 +278,7 @@ import * as child_process from "child_process";
 
     (["logo.svg", "content.json"] as const).map(async (fileBasename) => {
       const response = await fetch(
-        `https://raw.githubusercontent.com/keycloak/keycloak/${keycloakVersion}/js/apps/account-ui/public/${fileBasename}`,
+        `https://raw.githubusercontent.com/keycloak/keycloak/${keycloakVersion}/js/apps/admin-ui/public/${fileBasename}`,
         fetchOptions,
       );
 
@@ -313,7 +313,7 @@ import * as child_process from "child_process";
   let keycloakAccountUiVersion: string | undefined;
 
   transformCodebase({
-    srcDirPath: pathJoin(extractedDirPath, "account-ui"),
+    srcDirPath: pathJoin(extractedDirPath, "admin-ui"),
     destDirPath: pathJoin(getThisCodebaseRootDirPath(), "src"),
     transformSourceCode: ({ fileRelativePath, sourceCode }) => {
       if (fileRelativePath === "package.json") {
@@ -349,20 +349,20 @@ import * as child_process from "child_process";
   assert(typeof keycloakAccountUiVersion === "string");
 
   const parsedAccountUiPackageJson = await fetch(
-    `https://unpkg.com/@keycloak/keycloak-account-ui@${keycloakAccountUiVersion}/package.json`,
+    `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAccountUiVersion}/package.json`,
     fetchOptions,
   ).then((response) => response.json());
 
   {
     const { extractedDirPath } = await downloadAndExtractArchive({
-      url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-account-ui/${keycloakVersion}/keycloak-account-ui-${keycloakUiSharedVersion}.jar`,
+      url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakUiSharedVersion}.jar`,
       cacheDirPath,
       fetchOptions,
       uniqueIdOfOnArchiveFile: "bring_in_account_v3_i18n_messages",
       onArchiveFile: async ({ fileRelativePath, writeFile }) => {
         if (
           !fileRelativePath.startsWith(
-            pathJoin("theme", "keycloak.v3", "account", "messages"),
+            pathJoin("theme", "keycloak.v3", "admin", "messages"),
           )
         ) {
           return;
@@ -488,7 +488,7 @@ import * as child_process from "child_process";
 
   console.log(
     chalk.green(
-      `\n\nPulled @keycloak/keycloak-account-ui@${keycloakAccountUiVersion} from keycloak version ${keycloakVersion}`,
+      `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAccountUiVersion} from keycloak version ${keycloakVersion}`,
     ),
   );
 })();

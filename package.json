@@ -1,10 +1,10 @@
 {
-  "name": "@keycloakify/keycloak-account-ui",
-  "version": "25.0.4-rc.9",
-  "description": "Repackaged Keycloak Account UI",
+  "name": "@keycloakify/keycloak-admin-ui",
+  "version": "26.0.2-rc.0",
+  "description": "Repackaged Keycloak Admin UI",
   "repository": {
     "type": "git",
-    "url": "git://github.com/keycloakify/keycloak-account-ui.git"
+    "url": "git://github.com/keycloakify/keycloak-admin-ui.git"
   },
   "scripts": {
     "prepare": "tsx scripts/prepare.ts",
@@ -35,7 +35,7 @@
     "messages/"
   ],
   "keywords": [],
-  "homepage": "https://github.com/keycloakify/keycloak-account-ui",
+  "homepage": "https://github.com/keycloakify/keycloak-admin-ui",
   "peerDependencies": {
     "@patternfly/patternfly": "^5.3.1",
     "@patternfly/react-core": "^5.3.3",
