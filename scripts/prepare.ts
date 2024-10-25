@@ -54,7 +54,7 @@ import * as child_process from "child_process";
         return;
       }
 
-      account_ui: {
+      admin_ui: {
         {
           const dirPath = pathJoin("js", "apps", "admin-ui");
 
@@ -64,7 +64,7 @@ import * as child_process from "child_process";
               dirPath,
             })
           ) {
-            break account_ui;
+            break admin_ui;
           }
 
           fileRelativePath = pathRelative(dirPath, fileRelativePath);
@@ -271,14 +271,14 @@ import * as child_process from "child_process";
     });
   }
 
-  let keycloakAccountUiVersion: string | undefined;
+  let keycloakAdminUiVersion: string | undefined;
 
   transformCodebase({
     srcDirPath: pathJoin(extractedDirPath, "admin-ui"),
     destDirPath: pathJoin(getThisCodebaseRootDirPath(), "src"),
     transformSourceCode: ({ fileRelativePath, sourceCode }) => {
       if (fileRelativePath === "package.json") {
-        keycloakAccountUiVersion = JSON.parse(sourceCode.toString("utf8"))[
+        keycloakAdminUiVersion = JSON.parse(sourceCode.toString("utf8"))[
           "version"
         ];
 
@@ -307,10 +307,10 @@ import * as child_process from "child_process";
     },
   });
 
-  assert(typeof keycloakAccountUiVersion === "string");
+  assert(typeof keycloakAdminUiVersion === "string");
 
-  const parsedAccountUiPackageJson = await fetch(
-    `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAccountUiVersion}/package.json`,
+  const parsedAdminUiPackageJson = await fetch(
+    `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,
     fetchOptions,
   ).then((response) => response.json());
 
@@ -319,7 +319,7 @@ import * as child_process from "child_process";
       url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakUiSharedVersion}.jar`,
       cacheDirPath,
       fetchOptions,
-      uniqueIdOfOnArchiveFile: "bring_in_account_v3_i18n_messages",
+      uniqueIdOfOnArchiveFile: "bring_in_admin_i18n_messages",
       onArchiveFile: async ({ fileRelativePath, writeFile }) => {
         if (
           !fileRelativePath.startsWith(
@@ -354,7 +354,7 @@ import * as child_process from "child_process";
 
     thisParsedPackageJson["peerDependencies"] = Object.fromEntries(
       Object.entries({
-        ...parsedAccountUiPackageJson["dependencies"],
+        ...parsedAdminUiPackageJson["dependencies"],
         ...parsedSharedUiPackageJson["dependencies"],
       }).filter(
         ([name]) =>
@@ -372,7 +372,7 @@ import * as child_process from "child_process";
         : `@types/${name}`;
 
       const versionRange = {
-        ...parsedAccountUiPackageJson["devDependencies"],
+        ...parsedAdminUiPackageJson["devDependencies"],
         ...parsedSharedUiPackageJson["devDependencies"],
       }[typeName];
 
@@ -422,7 +422,7 @@ import * as child_process from "child_process";
   const readme = fs
     .readFileSync(pathJoin(__dirname, "README-template.md"))
     .toString("utf8")
-    .replaceAll("{{ACCOUNT_UI_VERSION}}", keycloakAccountUiVersion)
+    .replaceAll("{{ACCOUNT_UI_VERSION}}", keycloakAdminUiVersion)
     .replaceAll("{{KEYCLOAK_VERSION}}", keycloakVersion)
     .replaceAll("{{THIS_VERSION}}", thisVersion)
     .replaceAll(
@@ -449,7 +449,7 @@ import * as child_process from "child_process";
 
   console.log(
     chalk.green(
-      `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAccountUiVersion} from keycloak version ${keycloakVersion}`,
+      `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAdminUiVersion} from keycloak version ${keycloakVersion}`,
     ),
   );
 })();
