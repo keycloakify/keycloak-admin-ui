@@ -40,14 +40,4 @@ jspm_packages
 
 .DS_Store
 
-/.yarn_home
 /dist
-
-/messages
-
-/src/*
-!/src/index.ts
-!/src/global.d.ts
-!/src/KcAdminUi.tsx
-!/src/KcAdminUiLoader.tsx
-!/src/zKcContextLike.ts

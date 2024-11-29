@@ -3,49 +3,66 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    dirname as pathDirname,
     basename as pathBasename
 } from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
 import { transformCodebase } from "./tools/transformCodebase";
 import { isInside } from "./tools/isInside";
-import { assert, type Equals } from "tsafe/assert";
+import { assert, is, type Equals } from "tsafe/assert";
 import fetch from "make-fetch-happen";
 import * as fs from "fs";
-import chalk from "chalk";
-import * as child_process from "child_process";
+//import chalk from "chalk";
+//import * as child_process from "child_process";
 import { id } from "tsafe/id";
+import { z } from "zod";
 
 (async () => {
-    child_process.execSync("git clean -Xfd .", {
-        cwd: pathJoin(getThisCodebaseRootDirPath(), "src")
-    });
+    const { parsedPackageJson } = (() => {
+        type ParsedPackageJson = {
+            name: string;
+            version: string;
+            repository: string;
+            license: string;
+            author: string;
+            homepage: string;
+            dependencies?: Record<string, string>;
+        };
 
-    const { keycloakVersion, distPackageJson } = (() => {
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
+
+            const zTargetType = z.object({
+                name: z.string(),
+                version: z.string(),
+                repository: z.string(),
+                license: z.string(),
+                author: z.string(),
+                homepage: z.string(),
+                dependencies: z.record(z.string()).optional()
+            });
+
+            type InferredType = z.infer<typeof zTargetType>;
+
+            assert<Equals<ParsedPackageJson, InferredType>>;
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        assert<Equals<z.TypeOf<typeof zParsedPackageJson>, ParsedPackageJson>>;
+
         const parsedPackageJson = JSON.parse(
             fs.readFileSync(pathJoin(getThisCodebaseRootDirPath(), "package.json")).toString("utf8")
         );
 
-        const { name, repository, author, license, homepage, version } = parsedPackageJson;
-        const keycloakVersion: string = version.slice(0, -3);
+        zParsedPackageJson.parse(parsedPackageJson);
 
-        return {
-            keycloakVersion,
-            distPackageJson: {
-                name,
-                version,
-                repository,
-                license,
-                author,
-                homepage,
-                peerDependencies: id<Record<string, string>>({}),
-                publishConfig: {
-                    access: "public"
-                }
-            }
-        };
+        assert(is<ParsedPackageJson>(parsedPackageJson));
+
+        return { parsedPackageJson };
     })();
+
+    const keycloakVersion = parsedPackageJson.version.slice(0, -3);
 
     const fetchOptions = getProxyFetchOptions({
         npmConfigGetCwd: getThisCodebaseRootDirPath()
@@ -53,7 +70,7 @@ import { id } from "tsafe/id";
 
     const cacheDirPath = pathJoin(getThisCodebaseRootDirPath(), "node_modules", ".cache", "scripts");
 
-    let keycloakUiSharedVersion: string | undefined;
+    let keycloakAdminUiVersion: string | undefined = undefined;
 
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
@@ -84,6 +101,8 @@ import { id } from "tsafe/id";
 
             if (fileRelativePath === "package.json") {
                 keycloakAdminUiVersion = JSON.parse((await readFile()).toString("utf8"))["version"];
+
+                assert(typeof keycloakAdminUiVersion === "string");
 
                 return;
             }
@@ -182,13 +201,16 @@ import { id } from "tsafe/id";
         }
     });
 
+    assert(typeof keycloakAdminUiVersion === "string");
+
+    const distDirPath = pathJoin(getThisCodebaseRootDirPath(), "dist");
+
+    const keycloakThemeDirPath = pathJoin(distDirPath, "keycloak-theme");
+
+    const adminDirPath = pathJoin(keycloakThemeDirPath, "admin");
+
     {
-        const publicDirPath = pathJoin(
-            getThisCodebaseRootDirPath(),
-            "keycloak-theme",
-            "admin",
-            "public"
-        );
+        const publicDirPath = pathJoin(adminDirPath, "public");
 
         if (!fs.existsSync(publicDirPath)) {
             fs.mkdirSync(publicDirPath);
@@ -220,23 +242,21 @@ import { id } from "tsafe/id";
         });
     }
 
-    let keycloakAdminUiVersion: string | undefined;
-
     transformCodebase({
         srcDirPath: extractedDirPath,
-        destDirPath: pathJoin(getThisCodebaseRootDirPath(), "keycloak-theme", "admin")
+        destDirPath: adminDirPath
     });
 
-    assert(typeof keycloakAdminUiVersion === "string");
-
+    /*
     const parsedAdminUiPackageJson = await fetch(
         `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,
         fetchOptions
     ).then(response => response.json());
+    */
 
     {
         const { extractedDirPath } = await downloadAndExtractArchive({
-            url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakUiSharedVersion}.jar`,
+            url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakAdminUiVersion}.jar`,
             cacheDirPath,
             fetchOptions,
             uniqueIdOfOnArchiveFile: "bring_in_admin_i18n_messages",
@@ -254,10 +274,11 @@ import { id } from "tsafe/id";
 
         transformCodebase({
             srcDirPath: extractedDirPath,
-            destDirPath: pathJoin(getThisCodebaseRootDirPath(), "keycloak-theme", "admin", "messages")
+            destDirPath: pathJoin(adminDirPath, "messages")
         });
     }
 
+    /*
     let devDependenciesToInstall: Record<string, string> | undefined = undefined;
 
     {
@@ -367,4 +388,5 @@ import { id } from "tsafe/id";
             `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAdminUiVersion} from keycloak version ${keycloakVersion}`
         )
     );
+    */
 })();
