@@ -22,7 +22,10 @@ import { z } from "zod";
         type ParsedPackageJson = {
             name: string;
             version: string;
-            repository: string;
+            repository: {
+                type: string;
+                url: string;
+            };
             license: string;
             author: string;
             homepage: string;
@@ -35,7 +38,10 @@ import { z } from "zod";
             const zTargetType = z.object({
                 name: z.string(),
                 version: z.string(),
-                repository: z.string(),
+                repository: z.object({
+                    type: z.string(),
+                    url: z.string()
+                }),
                 license: z.string(),
                 author: z.string(),
                 homepage: z.string(),
@@ -142,7 +148,7 @@ import { z } from "zod";
                 modifiedSourceCode = sourceCode.replaceAll(
                     `"@keycloak/keycloak-ui-shared"`,
                     //`"@keycloakify/keycloak-admin-ui/ui-shared"`
-                    `${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/")}/shared/keycloak-ui-shared`
+                    `"${new Array(fileRelativePath.split(pathSep).length + 1).fill("..").join("/")}/shared/keycloak-ui-shared"`
                 );
 
                 if (fileRelativePath === `i18n${pathSep}i18n.ts`) {
@@ -213,7 +219,7 @@ import { z } from "zod";
         const publicDirPath = pathJoin(adminDirPath, "public");
 
         if (!fs.existsSync(publicDirPath)) {
-            fs.mkdirSync(publicDirPath);
+            fs.mkdirSync(publicDirPath, { recursive: true });
         }
 
         (["logo.svg"] as const).map(async fileBasename => {

@@ -44,7 +44,9 @@
         "prettier": "^3.3.2",
         "tsx": "^4.15.5",
         "typescript": "^5.4.5",
-        "zod": "^3.23.8"
+        "zod": "^3.23.8",
+        "yauzl": "^3.2.0",
+        "evt": "^2.5.8"
     },
     "dependencies": {
         "tsafe": "^1.8.5"
