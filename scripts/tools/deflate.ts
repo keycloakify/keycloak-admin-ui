@@ -13,15 +13,11 @@ const deflateRaw = promisify(deflateRawCb);
  * passed in its `size` property.
  */
 class ByteCounter extends PassThrough {
-  size: number = 0;
-  _transform(
-    chunk: any,
-    encoding: BufferEncoding,
-    callback: TransformCallback,
-  ) {
-    if ("length" in chunk) this.size += chunk.length;
-    super._transform(chunk, encoding, callback);
-  }
+    size: number = 0;
+    _transform(chunk: any, encoding: BufferEncoding, callback: TransformCallback) {
+        if ("length" in chunk) this.size += chunk.length;
+        super._transform(chunk, encoding, callback);
+    }
 }
 
 /**
@@ -30,11 +26,8 @@ class ByteCounter extends PassThrough {
  *  of the source data
  */
 export async function deflateBuffer(data: Buffer) {
-  const [deflated, checksum] = await Promise.all([
-    deflateRaw(data),
-    crc32(data),
-  ]);
-  return { deflated, crc32: checksum };
+    const [deflated, checksum] = await Promise.all([deflateRaw(data), crc32(data)]);
+    return { deflated, crc32: checksum };
 }
 
 /**
@@ -45,27 +38,24 @@ export async function deflateBuffer(data: Buffer) {
  * @returns a promise, which will resolve with the crc32 checksum and the
  * compressed size
  */
-export async function deflateStream(
-  input: Readable,
-  sink: (chunk: Buffer) => void,
-) {
-  const deflateWriter = new Writable({
-    write(chunk, _, callback) {
-      sink(chunk);
-      callback();
-    },
-  });
+export async function deflateStream(input: Readable, sink: (chunk: Buffer) => void) {
+    const deflateWriter = new Writable({
+        write(chunk, _, callback) {
+            sink(chunk);
+            callback();
+        }
+    });
 
-  // tee the input stream, so we can compress and calc crc32 in parallel
-  const [rs1, rs2] = tee(input);
-  const byteCounter = new ByteCounter();
-  const [_, crc] = await Promise.all([
-    // pipe input into zip compressor, count the bytes
-    // returned and pass compressed data to the sink
-    pipeline(rs1, createDeflateRaw(), byteCounter, deflateWriter),
-    // calc checksum
-    crc32(rs2),
-  ]);
+    // tee the input stream, so we can compress and calc crc32 in parallel
+    const [rs1, rs2] = tee(input);
+    const byteCounter = new ByteCounter();
+    const [_, crc] = await Promise.all([
+        // pipe input into zip compressor, count the bytes
+        // returned and pass compressed data to the sink
+        pipeline(rs1, createDeflateRaw(), byteCounter, deflateWriter),
+        // calc checksum
+        crc32(rs2)
+    ]);
 
-  return { crc32: crc, compressedSize: byteCounter.size };
+    return { crc32: crc, compressedSize: byteCounter.size };
 }

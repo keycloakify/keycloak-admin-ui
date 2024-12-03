@@ -1,17 +1,17 @@
 {
-  "compilerOptions": {
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "lib": ["ESNext"],
-    "esModuleInterop": true,
-    "newLine": "LF",
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "incremental": true,
-    "strict": true,
-    "downlevelIteration": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true
-  },
-  "include": ["*"]
+    "compilerOptions": {
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "lib": ["ESNext"],
+        "esModuleInterop": true,
+        "newLine": "LF",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "incremental": true,
+        "strict": true,
+        "downlevelIteration": true,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true
+    },
+    "include": ["*"]
 }

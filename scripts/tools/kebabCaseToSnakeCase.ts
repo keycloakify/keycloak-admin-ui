@@ -1,7 +1,7 @@
 import { capitalize } from "tsafe/capitalize";
 
 export function kebabCaseToCamelCase(kebabCaseString: string): string {
-  const [first, ...rest] = kebabCaseString.split("-");
+    const [first, ...rest] = kebabCaseString.split("-");
 
-  return [first, ...rest.map(capitalize)].join("");
+    return [first, ...rest.map(capitalize)].join("");
 }
