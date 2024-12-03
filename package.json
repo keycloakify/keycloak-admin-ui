@@ -1,6 +1,6 @@
 {
     "name": "@keycloakify/keycloak-admin-ui",
-    "version": "26.0.6003",
+    "version": "26.0.6004",
     "description": "Repackaged Keycloak Admin UI",
     "repository": {
         "type": "git",
