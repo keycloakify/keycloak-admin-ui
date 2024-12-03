@@ -8,7 +8,7 @@
     <a href="https://github.com/keycloakify/keycloak-admin-ui/actions">
       <img src="https://github.com/keycloakify/keycloak-admin-ui/actions/workflows/ci.yaml/badge.svg?branch=main">
     </a>
-    <a href="https://www.npmjs.com/package/@keycloakify/keycloak-admin-ui/v/26.0.2-rc.0">
+    <a href="https://www.npmjs.com/package/@keycloakify/keycloak-admin-ui">
       <img src="https://img.shields.io/npm/dm/@keycloakify/keycloak-admin-ui">
     </a>
     <p align="center">
