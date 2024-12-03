@@ -27,13 +27,11 @@
     },
     "author": "The Keycloak Team, re-packaged by u/garronej",
     "license": "Apache-2.0",
-    "files": [
-        "src/",
-        "dist/",
-        "!dist/tsconfig.tsbuildinfo",
-        "messages/"
+    "keywords": [
+        "keycloak",
+        "keycloakify",
+        "keycloak-admin-ui"
     ],
-    "keywords": [],
     "homepage": "https://github.com/keycloakify/keycloak-admin-ui",
     "devDependencies": {
         "@types/make-fetch-happen": "^10.0.4",

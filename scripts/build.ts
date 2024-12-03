@@ -14,6 +14,7 @@ import { assert, is, type Equals } from "tsafe/assert";
 import fetch from "make-fetch-happen";
 import * as fs from "fs";
 import chalk from "chalk";
+import child_process from "child_process";
 import { id } from "tsafe/id";
 import { z } from "zod";
 
@@ -21,14 +22,14 @@ import { z } from "zod";
     const { parsedPackageJson } = (() => {
         type ParsedPackageJson = {
             name: string;
+            main: string;
+            types: string;
             version: string;
-            repository: {
-                type: string;
-                url: string;
-            };
+            repository: Record<string, unknown>;
             license: string;
             author: string;
             homepage: string;
+            keywords: string[];
             dependencies?: Record<string, string>;
         };
 
@@ -37,14 +38,14 @@ import { z } from "zod";
 
             const zTargetType = z.object({
                 name: z.string(),
+                main: z.string(),
+                types: z.string(),
                 version: z.string(),
-                repository: z.object({
-                    type: z.string(),
-                    url: z.string()
-                }),
+                repository: z.record(z.unknown()),
                 license: z.string(),
                 author: z.string(),
                 homepage: z.string(),
+                keywords: z.array(z.string()),
                 dependencies: z.record(z.string()).optional()
             });
 
@@ -266,6 +267,8 @@ import { z } from "zod";
         fs.rmSync(distDirPath, { recursive: true });
     }
 
+    child_process.execSync(`npx tsc`, { cwd: getThisCodebaseRootDirPath() });
+
     const keycloakThemeDirPath = pathJoin(distDirPath, "keycloak-theme");
     const adminDirPath = pathJoin(keycloakThemeDirPath, "admin");
 
@@ -389,11 +392,14 @@ import { z } from "zod";
             JSON.stringify(
                 {
                     name: parsedPackageJson.name,
+                    main: parsedPackageJson.main,
+                    types: parsedPackageJson.types,
                     version: parsedPackageJson.version,
                     repository: parsedPackageJson.repository,
                     license: parsedPackageJson.license,
                     author: parsedPackageJson.author,
                     homepage: parsedPackageJson.homepage,
+                    keywords: parsedPackageJson.keywords,
                     dependencies: parsedPackageJson.dependencies,
                     peerDependencies: await (async () => {
                         const peerDependencies = Object.fromEntries(
