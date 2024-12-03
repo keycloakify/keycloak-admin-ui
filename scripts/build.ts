@@ -152,7 +152,7 @@ import { z } from "zod";
 
             modifiedSourceCode = modifiedSourceCode.replaceAll(
                 `"@keycloak/keycloak-ui-shared"`,
-                `"${new Array(fileRelativePath.split(pathSep).length + 1).fill("..").join("/")}/shared/keycloak-ui-shared"`
+                `"${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/") || ".."}/shared/keycloak-ui-shared"`
             );
 
             if (fileRelativePath === `i18n${pathSep}i18n.ts`) {
