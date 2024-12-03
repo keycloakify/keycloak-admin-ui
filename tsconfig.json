@@ -17,10 +17,7 @@
         "downlevelIteration": true,
         "jsx": "react-jsx",
         "noFallthroughCasesInSwitch": true,
-        "skipLibCheck": true,
-        "paths": {
-            "@keycloakify/keycloak-admin-ui/*": ["./src/*"]
-        }
+        "skipLibCheck": true
     },
     "include": ["src"]
 }

@@ -3,8 +3,7 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    basename as pathBasename,
-    dirname as pathDirname
+    basename as pathBasename
 } from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
@@ -146,42 +145,6 @@ import { z } from "zod";
             }
 
             if (fileRelativePath === "main.tsx") {
-                await writeFile({
-                    fileRelativePath: pathJoin(pathDirname(fileRelativePath), "KcAdminUi.tsx"),
-                    modifiedData: Buffer.from(
-                        [
-                            `import "@patternfly/patternfly/patternfly-addons.css";`,
-                            `import "@patternfly/react-core/dist/styles/base.css";`,
-                            `import "./index.css";`,
-                            `import { useEffect, useReducer } from "react";`,
-                            `import { initializeDarkMode } from "@keycloakify/keycloak-admin-ui/ui-shared";`,
-                            `import { createBrowserRouter, RouterProvider } from "react-router-dom";`,
-                            `import { initI18n } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`,
-                            `import { routes } from "@keycloakify/keycloak-admin-ui/routes";`,
-                            ``,
-                            `const router = createBrowserRouter(routes);`,
-                            `const prI18nInitialized = initI18n();`,
-                            ``,
-                            `initializeDarkMode();`,
-                            ``,
-                            `export default function KcAdminUi() {`,
-                            `  const [isI18nInitialized, setI18nInitialized] = useReducer(() => true, false);`,
-                            ``,
-                            `  useEffect(() => {`,
-                            `    prI18nInitialized.then(() => setI18nInitialized());`,
-                            `  }, []);`,
-                            ``,
-                            `  if (!isI18nInitialized) {`,
-                            `    return null;`,
-                            `  }`,
-                            ``,
-                            `  return <RouterProvider router={router} />;`,
-                            `}`
-                        ].join("\n"),
-                        "utf8"
-                    )
-                });
-
                 return;
             }
 
@@ -325,6 +288,11 @@ import { z } from "zod";
         });
     }
 
+    transformCodebase({
+        srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "keycloak-theme"),
+        destDirPath: keycloakThemeDirPath
+    });
+
     {
         const { extractedDirPath } = await downloadAndExtractArchive({
             url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakAdminUiVersion}.jar`,
@@ -429,7 +397,8 @@ import { z } from "zod";
                             assert(typeof version === "string");
                             assert(/^[1-9]/.test(version));
 
-                            peerDependencies[name] = `${version}001`;
+                            peerDependencies[name.replace("@keycloak", "@keycloakify")] =
+                                `${version}001`;
                         }
 
                         for (const name of Object.keys(peerDependencies)) {
