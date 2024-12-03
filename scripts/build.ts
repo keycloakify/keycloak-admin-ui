@@ -3,7 +3,8 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    basename as pathBasename
+    basename as pathBasename,
+    dirname as pathDirname
 } from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
@@ -12,8 +13,7 @@ import { isInside } from "./tools/isInside";
 import { assert, is, type Equals } from "tsafe/assert";
 import fetch from "make-fetch-happen";
 import * as fs from "fs";
-//import chalk from "chalk";
-//import * as child_process from "child_process";
+import chalk from "chalk";
 import { id } from "tsafe/id";
 import { z } from "zod";
 
@@ -76,8 +76,6 @@ import { z } from "zod";
 
     const cacheDirPath = pathJoin(getThisCodebaseRootDirPath(), "node_modules", ".cache", "scripts");
 
-    let keycloakAdminUiVersion: string | undefined = undefined;
-
     const { extractedDirPath } = await downloadAndExtractArchive({
         url: `https://github.com/keycloak/keycloak/archive/refs/tags/${keycloakVersion}.zip`,
         cacheDirPath,
@@ -106,9 +104,14 @@ import { z } from "zod";
             }
 
             if (fileRelativePath === "package.json") {
-                keycloakAdminUiVersion = JSON.parse((await readFile()).toString("utf8"))["version"];
+                const version = JSON.parse((await readFile()).toString("utf8")).version as unknown;
 
-                assert(typeof keycloakAdminUiVersion === "string");
+                assert(typeof version === "string");
+
+                await writeFile({
+                    fileRelativePath: "package.json",
+                    modifiedData: Buffer.from(JSON.stringify({ version }), "utf8")
+                });
 
                 return;
             }
@@ -128,10 +131,6 @@ import { z } from "zod";
                 fileRelativePath = pathRelative(dirPath, fileRelativePath);
             }
 
-            if (fileRelativePath === "main.tsx") {
-                return;
-            }
-
             if (fileRelativePath === "index.ts") {
                 return;
             }
@@ -140,87 +139,162 @@ import { z } from "zod";
                 return;
             }
 
-            const sourceCode = (await readFile()).toString("utf8");
+            if (!fileRelativePath.endsWith(".ts") && !fileRelativePath.endsWith(".tsx")) {
+                await writeFile({ fileRelativePath });
+                return;
+            }
 
-            let modifiedSourceCode: string | undefined = undefined;
+            if (fileRelativePath === "main.tsx") {
+                await writeFile({
+                    fileRelativePath: pathJoin(pathDirname(fileRelativePath), "KcAdminUi.tsx"),
+                    modifiedData: Buffer.from(
+                        [
+                            `import "@patternfly/patternfly/patternfly-addons.css";`,
+                            `import "@patternfly/react-core/dist/styles/base.css";`,
+                            `import "./index.css";`,
+                            `import { useEffect, useReducer } from "react";`,
+                            `import { initializeDarkMode } from "@keycloakify/keycloak-admin-ui/ui-shared";`,
+                            `import { createBrowserRouter, RouterProvider } from "react-router-dom";`,
+                            `import { initI18n } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`,
+                            `import { routes } from "@keycloakify/keycloak-admin-ui/routes";`,
+                            ``,
+                            `const router = createBrowserRouter(routes);`,
+                            `const prI18nInitialized = initI18n();`,
+                            ``,
+                            `initializeDarkMode();`,
+                            ``,
+                            `export default function KcAdminUi() {`,
+                            `  const [isI18nInitialized, setI18nInitialized] = useReducer(() => true, false);`,
+                            ``,
+                            `  useEffect(() => {`,
+                            `    prI18nInitialized.then(() => setI18nInitialized());`,
+                            `  }, []);`,
+                            ``,
+                            `  if (!isI18nInitialized) {`,
+                            `    return null;`,
+                            `  }`,
+                            ``,
+                            `  return <RouterProvider router={router} />;`,
+                            `}`
+                        ].join("\n"),
+                        "utf8"
+                    )
+                });
 
-            if (fileRelativePath.endsWith(".ts") || fileRelativePath.endsWith(".tsx")) {
-                modifiedSourceCode = sourceCode.replaceAll(
-                    `"@keycloak/keycloak-ui-shared"`,
-                    //`"@keycloakify/keycloak-admin-ui/ui-shared"`
-                    `"${new Array(fileRelativePath.split(pathSep).length + 1).fill("..").join("/")}/shared/keycloak-ui-shared"`
+                return;
+            }
+
+            let modifiedSourceCode = (await readFile()).toString("utf8");
+
+            modifiedSourceCode = modifiedSourceCode.replaceAll(
+                `"@keycloak/keycloak-ui-shared"`,
+                `"${new Array(fileRelativePath.split(pathSep).length + 1).fill("..").join("/")}/shared/keycloak-ui-shared"`
+            );
+
+            if (fileRelativePath === `i18n${pathSep}i18n.ts`) {
+                const modifiedSourceCode_before = modifiedSourceCode;
+                modifiedSourceCode = modifiedSourceCode.replaceAll(
+                    "export const i18n",
+                    [`export function initI18n() { return i18n.init(); }`, "", "const i18n"].join("\n")
                 );
+                assert(modifiedSourceCode !== modifiedSourceCode_before);
+            } else {
+                const search = `from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
 
-                if (fileRelativePath === `i18n${pathSep}i18n.ts`) {
-                    const modifiedSourceCode_before = modifiedSourceCode;
-                    modifiedSourceCode = modifiedSourceCode.replaceAll(
-                        "export const i18n",
-                        [`export function initI18n() { return i18n.init(); }`, "", "const i18n"].join(
-                            "\n"
-                        )
-                    );
-                    assert(modifiedSourceCode !== modifiedSourceCode_before);
-                } else {
-                    const search = `from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
+                if (modifiedSourceCode.includes(search)) {
+                    modifiedSourceCode = modifiedSourceCode
+                        .split("\n")
+                        .map(line => {
+                            if (!line.includes(search)) {
+                                return line;
+                            }
 
-                    if (modifiedSourceCode.includes(search)) {
-                        modifiedSourceCode = modifiedSourceCode
-                            .split("\n")
-                            .map(line => {
-                                if (!line.includes(search)) {
-                                    return line;
-                                }
+                            const tokens = line
+                                .split("{")[1]
+                                .split("}")[0]
+                                .split(",")
+                                .map(token => token.trim())
+                                .filter(t => t !== "i18n");
 
-                                const tokens = line
-                                    .split("{")[1]
-                                    .split("}")[0]
-                                    .split(",")
-                                    .map(token => token.trim())
-                                    .filter(t => t !== "i18n");
+                            if (tokens.length === 0) {
+                                return undefined;
+                            }
 
-                                if (tokens.length === 0) {
-                                    return undefined;
-                                }
+                            return `import { ${tokens.join(", ")} } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
+                        })
+                        .filter(line => line !== undefined)
+                        .join("\n");
 
-                                return `import { ${tokens.join(", ")} } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
-                            })
-                            .filter(line => line !== undefined)
-                            .join("\n");
+                    modifiedSourceCode = modifiedSourceCode.replaceAll("i18n.", "getI18n().");
 
-                        modifiedSourceCode = modifiedSourceCode.replaceAll("i18n.", "getI18n().");
+                    modifiedSourceCode = [
+                        `import { getI18n } from "react-i18next";`,
+                        modifiedSourceCode
+                    ].join("\n");
+                }
+            }
 
-                        modifiedSourceCode = [
-                            `import { getI18n } from "react-i18next";`,
-                            modifiedSourceCode
-                        ].join("\n");
-                    }
+            if (fileRelativePath === "PageHeader.tsx") {
+                for (const [search, replace] of [
+                    [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
+                    [`const logo = environment.logo ? environment.logo : "/logo.svg";`, ""],
+                    [`src={environment.resourceUrl + logo}`, `src={logoSvgUrl}`]
+                ] as const) {
+                    const sourceCode_before = modifiedSourceCode;
+
+                    const sourceCode_after: string =
+                        search === undefined
+                            ? [replace, modifiedSourceCode].join("\n")
+                            : modifiedSourceCode.replace(search, replace);
+
+                    assert(sourceCode_before !== sourceCode_after);
+
+                    modifiedSourceCode = sourceCode_after;
                 }
             }
 
             await writeFile({
                 fileRelativePath,
-                modifiedData:
-                    modifiedSourceCode === undefined
-                        ? undefined
-                        : Buffer.from(modifiedSourceCode, "utf8")
+                modifiedData: Buffer.from(modifiedSourceCode, "utf8")
             });
         }
     });
 
-    assert(typeof keycloakAdminUiVersion === "string");
-
     const distDirPath = pathJoin(getThisCodebaseRootDirPath(), "dist");
 
-    const keycloakThemeDirPath = pathJoin(distDirPath, "keycloak-theme");
+    if (fs.existsSync(distDirPath)) {
+        fs.rmSync(distDirPath, { recursive: true });
+    }
 
+    const keycloakThemeDirPath = pathJoin(distDirPath, "keycloak-theme");
     const adminDirPath = pathJoin(keycloakThemeDirPath, "admin");
 
-    {
-        const publicDirPath = pathJoin(adminDirPath, "public");
+    let keycloakAdminUiVersion: string | undefined = undefined;
 
-        if (!fs.existsSync(publicDirPath)) {
-            fs.mkdirSync(publicDirPath, { recursive: true });
+    transformCodebase({
+        srcDirPath: extractedDirPath,
+        destDirPath: adminDirPath,
+        transformSourceCode: ({ fileRelativePath, sourceCode }) => {
+            if (fileRelativePath === "package.json") {
+                const version = JSON.parse(sourceCode.toString("utf8")).version as unknown;
+
+                assert(typeof version === "string");
+
+                keycloakAdminUiVersion = version;
+
+                return;
+            }
+
+            return { modifiedSourceCode: sourceCode };
         }
+    });
+
+    assert(keycloakAdminUiVersion !== undefined);
+
+    {
+        const assetsDirPath = pathJoin(adminDirPath, "assets");
+
+        fs.mkdirSync(assetsDirPath, { recursive: true });
 
         (["logo.svg"] as const).map(async fileBasename => {
             const response = await fetch(
@@ -238,27 +312,15 @@ import { z } from "zod";
                             targetContent: content
                         };
                 }
-                assert<Equals<typeof fileBasename, never>>(false);
+                assert<Equals<typeof fileBasename, never>>;
             })();
 
             fs.writeFileSync(
-                pathJoin(publicDirPath, targetFileBasename),
+                pathJoin(assetsDirPath, targetFileBasename),
                 Buffer.from(targetContent, "utf8")
             );
         });
     }
-
-    transformCodebase({
-        srcDirPath: extractedDirPath,
-        destDirPath: adminDirPath
-    });
-
-    /*
-    const parsedAdminUiPackageJson = await fetch(
-        `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,
-        fetchOptions
-    ).then(response => response.json());
-    */
 
     {
         const { extractedDirPath } = await downloadAndExtractArchive({
@@ -280,82 +342,107 @@ import { z } from "zod";
 
         transformCodebase({
             srcDirPath: extractedDirPath,
-            destDirPath: pathJoin(adminDirPath, "messages")
+            destDirPath: pathJoin(distDirPath, "messages")
         });
     }
 
-    /*
-    let devDependenciesToInstall: Record<string, string> | undefined = undefined;
+    const parsedPackageJson_keycloakAdminUi = await (async () => {
+        type ParsedPackageJson = {
+            dependencies?: Record<string, string>;
+            peerDependencies?: Record<string, string>;
+            devDependencies?: Record<string, string>;
+        };
 
-    {
-        for (const name of Object.keys(thisParsedPackageJson["peerDependencies"])) {
-            delete thisParsedPackageJson["devDependencies"][name];
-        }
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
 
-        const parsedSharedUiPackageJson = await fetch(
-            `https://unpkg.com/@keycloak/keycloak-ui-shared@${keycloakUiSharedVersion}/package.json`,
+            const zTargetType = z.object({
+                dependencies: z.record(z.string()).optional(),
+                peerDependencies: z.record(z.string()).optional(),
+                devDependencies: z.record(z.string()).optional()
+            });
+
+            type InferredType = z.infer<typeof zTargetType>;
+
+            assert<Equals<ParsedPackageJson, InferredType>>;
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        assert<Equals<z.TypeOf<typeof zParsedPackageJson>, ParsedPackageJson>>;
+
+        const parsedPackageJson = await fetch(
+            `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,
             fetchOptions
         ).then(response => response.json());
 
-        thisParsedPackageJson["peerDependencies"] = Object.fromEntries(
-            Object.entries({
-                ...parsedAdminUiPackageJson["dependencies"],
-                ...parsedSharedUiPackageJson["dependencies"]
-            }).filter(
-                ([name]) =>
-                    name !== "react" &&
-                    name !== "react-dom" &&
-                    name !== parsedSharedUiPackageJson["name"]
-            )
-        );
+        zParsedPackageJson.parse(parsedPackageJson);
 
-        devDependenciesToInstall = {};
+        assert(is<ParsedPackageJson>(parsedPackageJson));
 
-        for (const name of Object.keys(thisParsedPackageJson["peerDependencies"])) {
-            const typeName = name.startsWith("@")
-                ? `@types/${name.substring(1).replace("/", "__")}`
-                : `@types/${name}`;
-
-            const versionRange = {
-                ...parsedAdminUiPackageJson["devDependencies"],
-                ...parsedSharedUiPackageJson["devDependencies"]
-            }[typeName];
-
-            if (versionRange === undefined) {
-                continue;
-            }
-
-            devDependenciesToInstall[typeName] = versionRange;
-        }
-
-        Object.assign(thisParsedPackageJson["devDependencies"], {
-            ...thisParsedPackageJson["peerDependencies"],
-            ...devDependenciesToInstall
-        });
-    }
+        return parsedPackageJson;
+    })();
 
     fs.writeFileSync(
-        pathJoin(getThisCodebaseRootDirPath(), "package.json"),
-        JSON.stringify(thisParsedPackageJson, undefined, 2)
-    );
-
-    child_process.execSync("yarn install --ignore-scripts", {
-        cwd: getThisCodebaseRootDirPath(),
-        stdio: "ignore"
-    });
-
-    child_process.execSync("yarn format", {
-        cwd: getThisCodebaseRootDirPath(),
-        stdio: "ignore"
-    });
-
-    fs.writeFileSync(
-        pathJoin(getThisCodebaseRootDirPath(), "dependencies.gen.json"),
+        pathJoin(distDirPath, "package.json"),
         Buffer.from(
             JSON.stringify(
                 {
-                    dependencies: thisParsedPackageJson["peerDependencies"],
-                    devDependencies: devDependenciesToInstall
+                    name: parsedPackageJson.name,
+                    version: parsedPackageJson.version,
+                    repository: parsedPackageJson.repository,
+                    license: parsedPackageJson.license,
+                    author: parsedPackageJson.author,
+                    homepage: parsedPackageJson.homepage,
+                    dependencies: parsedPackageJson.dependencies,
+                    peerDependencies: await (async () => {
+                        const peerDependencies = Object.fromEntries(
+                            Object.entries({
+                                ...parsedPackageJson_keycloakAdminUi.dependencies,
+                                ...parsedPackageJson_keycloakAdminUi.peerDependencies
+                            }).filter(([name]) => {
+                                if (name === "admin-ui") {
+                                    return false;
+                                }
+                                if (name === "react") {
+                                    return false;
+                                }
+                                if (name === "react-dom") {
+                                    return false;
+                                }
+
+                                return true;
+                            })
+                        );
+
+                        {
+                            const name = "@keycloak/keycloak-ui-shared";
+
+                            const version = peerDependencies[name];
+
+                            assert(typeof version === "string");
+                            assert(/^[1-9]/.test(version));
+
+                            peerDependencies[name] = `${version}001`;
+                        }
+
+                        for (const name of Object.keys(peerDependencies)) {
+                            const typeName = name.startsWith("@")
+                                ? `@types/${name.substring(1).replace("/", "__")}`
+                                : `@types/${name}`;
+
+                            const versionRange =
+                                parsedPackageJson_keycloakAdminUi.devDependencies?.[typeName];
+
+                            if (versionRange === undefined) {
+                                continue;
+                            }
+
+                            peerDependencies[typeName] = versionRange;
+                        }
+
+                        return peerDependencies;
+                    })()
                 },
                 null,
                 2
@@ -364,35 +451,16 @@ import { z } from "zod";
         )
     );
 
-    const readme = fs
-        .readFileSync(pathJoin(__dirname, "README-template.md"))
-        .toString("utf8")
-        .replaceAll("{{ACCOUNT_UI_VERSION}}", keycloakAdminUiVersion)
-        .replaceAll("{{KEYCLOAK_VERSION}}", keycloakVersion)
-        .replaceAll("{{THIS_VERSION}}", thisVersion)
-        .replaceAll(
-            "{{DEPENDENCIES}}",
-            JSON.stringify(
-                {
-                    dependencies: {
-                        [thisParsedPackageJson["name"]]: thisVersion,
-                        ...thisParsedPackageJson["peerDependencies"]
-                    },
-                    devDependencies: devDependenciesToInstall
-                },
-                null,
-                2
-            )
+    for (const fileBasename of ["README.md", "LICENSE"] as const) {
+        fs.cpSync(
+            pathJoin(getThisCodebaseRootDirPath(), fileBasename),
+            pathJoin(distDirPath, fileBasename)
         );
-
-    fs.writeFileSync(pathJoin(getThisCodebaseRootDirPath(), "README.md"), Buffer.from(readme, "utf8"));
-
-    child_process.execSync("yarn format");
+    }
 
     console.log(
         chalk.green(
             `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAdminUiVersion} from keycloak version ${keycloakVersion}`
         )
     );
-    */
 })();
