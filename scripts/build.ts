@@ -350,8 +350,24 @@ import { z } from "zod";
                             assert(typeof version === "string");
                             assert(/^[1-9]/.test(version));
 
-                            peerDependencies[name.replace("@keycloak", "@keycloakify")] =
-                                `${version}001`;
+                            const name_keycloakify = name.replace("@keycloak", "@keycloakify");
+
+                            const versions_keycloakify: string[] = JSON.parse(
+                                child_process
+                                    .execSync(`npm show ${name_keycloakify} versions --json`)
+                                    .toString("utf8")
+                                    .trim()
+                            );
+
+                            const version_keycloakify = [...versions_keycloakify]
+                                .reverse()
+                                .find(version_keycloakify => version_keycloakify.startsWith(version));
+
+                            assert(version_keycloakify !== undefined);
+
+                            console.log({ name_keycloakify, version_keycloakify });
+
+                            peerDependencies[name_keycloakify] = version_keycloakify;
                         }
 
                         for (const name of Object.keys(peerDependencies)) {
