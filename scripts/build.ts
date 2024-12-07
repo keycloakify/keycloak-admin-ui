@@ -21,8 +21,6 @@ import { z } from "zod";
     const { parsedPackageJson } = (() => {
         type ParsedPackageJson = {
             name: string;
-            main: string;
-            types: string;
             version: string;
             repository: Record<string, unknown>;
             license: string;
@@ -37,8 +35,6 @@ import { z } from "zod";
 
             const zTargetType = z.object({
                 name: z.string(),
-                main: z.string(),
-                types: z.string(),
                 version: z.string(),
                 repository: z.record(z.unknown()),
                 license: z.string(),
@@ -360,8 +356,8 @@ import { z } from "zod";
             JSON.stringify(
                 {
                     name: parsedPackageJson.name,
-                    main: parsedPackageJson.main,
-                    types: parsedPackageJson.types,
+                    main: "index.js",
+                    types: "index.d.ts",
                     version: parsedPackageJson.version,
                     repository: parsedPackageJson.repository,
                     license: parsedPackageJson.license,
