@@ -4,11 +4,11 @@ import "./index.css";
 import { useEffect, useReducer } from "react";
 import { initializeDarkMode } from "../shared/keycloak-ui-shared";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { initI18n } from "./i18n/i18n";
+import { i18n } from "./i18n/i18n";
 import { routes } from "./routes";
 
 const router = createBrowserRouter(routes);
-const prI18nInitialized = initI18n();
+const prI18nInitialized = i18n.init();
 
 initializeDarkMode();
 

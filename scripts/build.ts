@@ -151,49 +151,6 @@ import { z } from "zod";
                 `"${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/") || ".."}/shared/keycloak-ui-shared"`
             );
 
-            if (fileRelativePath === `i18n${pathSep}i18n.ts`) {
-                const modifiedSourceCode_before = modifiedSourceCode;
-                modifiedSourceCode = modifiedSourceCode.replaceAll(
-                    "export const i18n",
-                    [`export function initI18n() { return i18n.init(); }`, "", "const i18n"].join("\n")
-                );
-                assert(modifiedSourceCode !== modifiedSourceCode_before);
-            } else {
-                const search = `from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
-
-                if (modifiedSourceCode.includes(search)) {
-                    modifiedSourceCode = modifiedSourceCode
-                        .split("\n")
-                        .map(line => {
-                            if (!line.includes(search)) {
-                                return line;
-                            }
-
-                            const tokens = line
-                                .split("{")[1]
-                                .split("}")[0]
-                                .split(",")
-                                .map(token => token.trim())
-                                .filter(t => t !== "i18n");
-
-                            if (tokens.length === 0) {
-                                return undefined;
-                            }
-
-                            return `import { ${tokens.join(", ")} } from "@keycloakify/keycloak-admin-ui/i18n/i18n";`;
-                        })
-                        .filter(line => line !== undefined)
-                        .join("\n");
-
-                    modifiedSourceCode = modifiedSourceCode.replaceAll("i18n.", "getI18n().");
-
-                    modifiedSourceCode = [
-                        `import { getI18n } from "react-i18next";`,
-                        modifiedSourceCode
-                    ].join("\n");
-                }
-            }
-
             if (fileRelativePath === "PageHeader.tsx") {
                 for (const [search, replace] of [
                     [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
