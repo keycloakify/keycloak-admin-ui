@@ -172,7 +172,10 @@ import { z } from "zod";
 
             await writeFile({
                 fileRelativePath,
-                modifiedData: Buffer.from(["// @ts-nocheck", "", modifiedSourceCode].join("\n"), "utf8")
+                modifiedData: Buffer.from(
+                    ["/* eslint-disable */", "", "// @ts-nocheck", "", modifiedSourceCode].join("\n"),
+                    "utf8"
+                )
             });
         }
     });
