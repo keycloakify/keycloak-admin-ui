@@ -368,6 +368,7 @@ import { z } from "zod";
 
                             assert(version_keycloakify !== undefined);
 
+                            delete peerDependencies[name];
                             peerDependencies[name_keycloakify] = version_keycloakify;
                         }
 
