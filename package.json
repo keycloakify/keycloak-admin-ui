@@ -7,7 +7,6 @@
         "url": "git://github.com/keycloakify/keycloak-admin-ui.git"
     },
     "scripts": {
-        "prepare": "tsx scripts/postinstall.ts",
         "build": "tsx scripts/build.ts",
         "_format": "prettier '**/*.{ts,tsx,json,md}'",
         "format": "npm run _format -- --write",
@@ -33,7 +32,6 @@
     ],
     "homepage": "https://github.com/keycloakify/keycloak-admin-ui",
     "devDependencies": {
-        "@keycloak/keycloak-admin-ui": "26.0.7",
         "@types/make-fetch-happen": "^10.0.4",
         "@types/node": "^20.2.1",
         "husky": "^4.3.8",

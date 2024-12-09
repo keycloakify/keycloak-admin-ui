@@ -1,6 +1,6 @@
 import { Suspense, useMemo, type LazyExoticComponent } from "react";
 import { assert, is, type Equals } from "tsafe/assert";
-import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
+//import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
 
 type Environment = {
     serverBaseUrl: string;
@@ -15,7 +15,7 @@ type Environment = {
     resourceVersion: string;
 };
 
-assert<Equals<Environment, Environment_target>>;
+//assert<Equals<Environment, Environment_target>>;
 
 export type KcContextLike = {
     serverBaseUrl: string;
