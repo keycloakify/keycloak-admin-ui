@@ -368,8 +368,6 @@ import { z } from "zod";
 
                             assert(version_keycloakify !== undefined);
 
-                            console.log({ name_keycloakify, version_keycloakify });
-
                             peerDependencies[name_keycloakify] = version_keycloakify;
                         }
 
