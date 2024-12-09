@@ -1,6 +1,6 @@
 {
     "name": "@keycloakify/keycloak-admin-ui",
-    "version": "26.0.6010",
+    "version": "26.0.7001",
     "description": "Repackaged Keycloak Admin UI",
     "repository": {
         "type": "git",
@@ -33,7 +33,7 @@
     ],
     "homepage": "https://github.com/keycloakify/keycloak-admin-ui",
     "devDependencies": {
-        "@keycloak/keycloak-admin-ui": "26.0.6",
+        "@keycloak/keycloak-admin-ui": "26.0.7",
         "@types/make-fetch-happen": "^10.0.4",
         "@types/node": "^20.2.1",
         "husky": "^4.3.8",

@@ -162,36 +162,36 @@
   dependencies:
     minipass "^7.0.4"
 
-"@keycloak/keycloak-admin-client@26.0.6":
-  version "26.0.6"
-  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-client/-/keycloak-admin-client-26.0.6.tgz#b2ac56de7f4251c8a6a938745843e98000498646"
-  integrity sha512-pZmaSAyg+LwQ3qnZF+01ZkURpcoEdLAloUK5KOZjE9jyNd86EHdx98/XmTYaJIuQ6ydMXxTWWc5Grq18H+PvJQ==
+"@keycloak/keycloak-admin-client@26.0.7":
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-client/-/keycloak-admin-client-26.0.7.tgz#240bd33da4599bc49e29f7780287c4b2212cc002"
+  integrity sha512-2vdx04sxnTQavnE7zuztyfmf1l5opG1Bi76hh3Wj02m6vR+aSiHFxlTXJFHVZtE9Emko+qgU7a5kEFC+Il+EwQ==
   dependencies:
     camelize-ts "^3.0.0"
     url-join "^5.0.0"
     url-template "^3.1.1"
 
-"@keycloak/keycloak-admin-ui@26.0.6":
-  version "26.0.6"
-  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-ui/-/keycloak-admin-ui-26.0.6.tgz#3cc28c890bc5c1ab36caf748f0ebf30777f90c44"
-  integrity sha512-XhXPoFZMLdO9U3IV1pAhjqJhMFpjorHAVlnYBhe/yffK4RyPwrHugYRHgruayfaCJozrn8+M6ipmME0yTMrc6g==
+"@keycloak/keycloak-admin-ui@26.0.7":
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-admin-ui/-/keycloak-admin-ui-26.0.7.tgz#87e4e7c370b6238158722be897ea3e30cc762466"
+  integrity sha512-zeQy0FJKG+Kqk7AeA8BdC8gzXKh5Mn0dKlhB6/4PMmhh7oWIo6O+1hTu08nP0DfL5O+WaaDiDUCrSsUsE5jFHQ==
   dependencies:
-    "@keycloak/keycloak-admin-client" "26.0.6"
-    "@keycloak/keycloak-ui-shared" "26.0.6"
+    "@keycloak/keycloak-admin-client" "26.0.7"
+    "@keycloak/keycloak-ui-shared" "26.0.7"
     "@patternfly/patternfly" "^5.4.0"
     "@patternfly/react-code-editor" "^5.4.3"
     "@patternfly/react-core" "^5.4.1"
     "@patternfly/react-icons" "^5.4.0"
     "@patternfly/react-styles" "^5.4.0"
     "@patternfly/react-table" "^5.4.1"
-    admin-ui "file:../../Library/Caches/Yarn/v6/npm-@keycloak-keycloak-admin-ui-26.0.6-3cc28c890bc5c1ab36caf748f0ebf30777f90c44-integrity/node_modules/@keycloak/keycloak-admin-ui"
+    admin-ui "file:../../Library/Caches/Yarn/v6/npm-@keycloak-keycloak-admin-ui-26.0.7-87e4e7c370b6238158722be897ea3e30cc762466-integrity/node_modules/@keycloak/keycloak-admin-ui"
     dagre "^0.8.5"
     file-saver "^2.0.5"
     file-selector "^0.6.0"
     flat "^6.0.1"
     i18next "^23.15.1"
     i18next-http-backend "^2.6.1"
-    keycloak-js "26.0.6"
+    keycloak-js "26.0.7"
     lodash-es "^4.17.21"
     monaco-editor "^0.52.0"
     p-debounce "^4.0.0"
@@ -204,18 +204,18 @@
     reactflow "^11.11.4"
     use-react-router-breadcrumbs "^4.0.1"
 
-"@keycloak/keycloak-ui-shared@26.0.6":
-  version "26.0.6"
-  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-ui-shared/-/keycloak-ui-shared-26.0.6.tgz#d0ed99de96db60095b1401950d57f42e6de3f434"
-  integrity sha512-TUxcnsUElU1c1zaaifNxmUUEJGnDu/pfU4OjpFb/x5WFZrry39F1s0YSO5NsjMux10twIfHRDIAafweNPnYEUA==
+"@keycloak/keycloak-ui-shared@26.0.7":
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/@keycloak/keycloak-ui-shared/-/keycloak-ui-shared-26.0.7.tgz#68149f69b0092909ed3f602f8759eb00fd6e8b84"
+  integrity sha512-FAwEwlJJORiMk2BbP8UR2B4Xwn7UNbpPGBhQSZIxhtUr77sOx0v2Xnar0KX4UErTW7+T2W3i1wbCg3ovxcMW/A==
   dependencies:
-    "@keycloak/keycloak-admin-client" "26.0.6"
+    "@keycloak/keycloak-admin-client" "26.0.7"
     "@patternfly/react-core" "^5.4.1"
     "@patternfly/react-icons" "^5.4.0"
     "@patternfly/react-styles" "^5.4.0"
     "@patternfly/react-table" "^5.4.1"
     i18next "^23.15.1"
-    keycloak-js "26.0.6"
+    keycloak-js "26.0.7"
     lodash-es "^4.17.21"
     react "^18.3.1"
     react-dom "^18.3.1"
@@ -663,7 +663,7 @@
     "@types/node" "*"
 
 "admin-ui@file:":
-  version "26.0.6010"
+  version "26.0.7001"
   dependencies:
     tsafe "^1.8.5"
 
@@ -1351,10 +1351,10 @@ json-parse-even-better-errors@^2.3.0:
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
   integrity sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==
 
-keycloak-js@26.0.6:
-  version "26.0.6"
-  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-26.0.6.tgz#3c33bc6960d646c60f464ed0eaf6fcaff9305aaa"
-  integrity sha512-HHRuMOm5w4vAkhWyqs7VPQqYUCSyPagTdQcUIi7xF6XU9GoSZgh2jRtry5P4t6XxhyuMiCwWg7JN8W9cDyqRfQ==
+keycloak-js@26.0.7:
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/keycloak-js/-/keycloak-js-26.0.7.tgz#2025256f7c519df654240648052ea06344e2377e"
+  integrity sha512-vKCk1ISMiouYRLjMzi5fKp58RnYxKEBS29BoDgVfYwVW94IXchj9jLqBvIet31VD1v79l3WaWT+WMX7fH8O4wA==
 
 lines-and-columns@^1.1.6:
   version "1.2.4"
