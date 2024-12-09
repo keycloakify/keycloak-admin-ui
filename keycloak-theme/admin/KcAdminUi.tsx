@@ -1,13 +1,14 @@
 import "@patternfly/patternfly/patternfly-addons.css";
 import "@patternfly/react-core/dist/styles/base.css";
-import "./index.css";
 import { useEffect, useReducer } from "react";
 import { initializeDarkMode } from "../shared/keycloak-ui-shared";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 import { i18n } from "./i18n/i18n";
-import { routes } from "./routes";
+import { RootRoute } from "./routes";
 
-const router = createBrowserRouter(routes);
+import "./index.css";
+
+const router = createHashRouter([RootRoute]);
 const prI18nInitialized = i18n.init();
 
 initializeDarkMode();
