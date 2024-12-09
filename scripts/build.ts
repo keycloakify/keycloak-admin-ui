@@ -405,6 +405,11 @@ import { z } from "zod";
         );
     }
 
+    transformCodebase({
+        srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "src"),
+        destDirPath: pathJoin(distDirPath, "src")
+    });
+
     console.log(
         chalk.green(
             `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAdminUiVersion} from keycloak version ${keycloakVersion}`
