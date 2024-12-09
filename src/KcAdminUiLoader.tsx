@@ -1,8 +1,21 @@
 import { Suspense, useMemo, type LazyExoticComponent } from "react";
-import { assert, is } from "tsafe/assert";
+import { assert, is, type Equals } from "tsafe/assert";
+import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
 
-// TODO: Generate the actual type with meta programming.
-type Environment = Record<string, unknown>;
+type Environment = {
+    serverBaseUrl: string;
+    realm: string;
+    clientId: string;
+    resourceUrl: string;
+    logo: string;
+    logoUrl: string;
+    adminBaseUrl: string;
+    consoleBaseUrl: string;
+    masterRealm: string;
+    resourceVersion: string;
+};
+
+assert<Equals<Environment, Environment_target>>;
 
 export type KcContextLike = {
     serverBaseUrl: string;
@@ -70,10 +83,6 @@ function init(params: { kcContext: KcContextLike }) {
 
     const { kcContext } = params;
 
-    const referrerUrl = readQueryParamOrRestoreFromSessionStorage({
-        name: "referrer_uri"
-    });
-
     const environment = {
         serverBaseUrl: kcContext.serverBaseUrl,
         adminBaseUrl: kcContext.adminBaseUrl,
@@ -82,8 +91,8 @@ function init(params: { kcContext: KcContextLike }) {
         realm: kcContext.loginRealm ?? "master",
         clientId: kcContext.clientId,
         resourceUrl: kcContext.resourceUrl,
-        logo: undefined,
-        logoUrl: referrerUrl === undefined ? "/" : referrerUrl.replace("_hash_", "#"),
+        logo: "",
+        logoUrl: "",
         consoleBaseUrl: kcContext.consoleBaseUrl,
         masterRealm: kcContext.masterRealm,
         resourceVersion: kcContext.resourceVersion
@@ -99,23 +108,4 @@ function init(params: { kcContext: KcContextLike }) {
 
         document.body.appendChild(script);
     }
-}
-
-function readQueryParamOrRestoreFromSessionStorage(params: { name: string }): string | undefined {
-    const { name } = params;
-
-    const url = new URL(window.location.href);
-
-    const value = url.searchParams.get(name);
-
-    const PREFIX = "keycloakify-admin-ui:";
-
-    if (value !== null) {
-        sessionStorage.setItem(`${PREFIX}${name}`, value);
-        url.searchParams.delete(name);
-        window.history.replaceState({}, "", url.toString());
-        return value;
-    }
-
-    return sessionStorage.getItem(`${PREFIX}${name}`) ?? undefined;
 }
