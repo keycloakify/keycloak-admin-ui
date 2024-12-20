@@ -328,31 +328,24 @@ import { z } from "zod";
                 srcDirPath: pathJoin(extractedDirPath, messagesDirBasename),
                 destDirPath,
                 transformSourceCode: ({ filePath, sourceCode }) => {
-                    assert(filePath.endsWith(".properties"));
-
                     const basename = pathBasename(filePath);
 
-                    const basename_override = `${basename.replace(".properties", "")}_override.properties`;
+                    const match = basename.match(/^messages_([^.]+)\.properties$/);
 
-                    fs.writeFileSync(
-                        pathJoin(destDirPath, basename_override),
-                        Buffer.from(
-                            [
-                                `# Use this file to override the default translations defined in ${basename}`,
-                                "# Example:",
-                                "",
-                                "# cancel=Cancel the operation",
-                                "# myCustomKey=My custom translation",
-                                ""
-                            ].join("\n"),
-                            "utf8"
-                        )
-                    );
+                    assert(match !== null);
+
+                    const locale = match[1];
 
                     return {
                         modifiedSourceCode: Buffer.from(
                             [
-                                `# NOTE: To modify a translation or add new messages, consider ejecting the ${basename_override} file instead of this file.`,
+                                `# IMPORTANT: This file contains the base translation. Modifying it directly is not recommended.`,
+                                `# To override or add custom messages, create a file named messages_${locale}_override.properties in the same directory.`,
+                                `# This file will be automatically loaded and merged with the base translation.`,
+                                `# If you're implementing theme variants, you can also create variant-specific \`.properties\` files.`,
+                                `# For example let's say you have defined \`themeName: ["vanilla", "chocolate"]\` then you can create the following files:`,
+                                `# messages_${locale}_override_vanilla.properties`,
+                                `# messages_${locale}_override_chocolate.properties`,
                                 "",
                                 sourceCode.toString("utf8")
                             ].join("\n"),

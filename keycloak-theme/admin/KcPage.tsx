@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { KcAdminUiLoader } from "@keycloakify/keycloak-admin-ui";
-import type { KcContext } from "./KcContext";
+import { KcContext, setKcContext } from "./KcContext";
 
 const KcAdminUi = lazy(() => import("./KcAdminUi"));
 
