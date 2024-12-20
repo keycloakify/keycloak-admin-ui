@@ -1,5 +1,10 @@
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
-import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
+import {
+    join as pathJoin,
+    relative as pathRelative,
+    sep as pathSep,
+    basename as pathBasename
+} from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
 import { transformCodebase } from "./tools/transformCodebase";
@@ -264,8 +269,6 @@ import { z } from "zod";
                         break i18n_messages;
                     }
 
-                    assert(fileRelativePath.endsWith(".properties"));
-
                     await writeFile({
                         fileRelativePath: pathJoin(
                             messagesDirBasename,
@@ -304,6 +307,10 @@ import { z } from "zod";
                         return;
                     }
 
+                    if (pathBasename(fileRelativePath) === "robots.txt") {
+                        return;
+                    }
+
                     await writeFile({
                         fileRelativePath: pathJoin(
                             publicDirBasename,
@@ -314,10 +321,47 @@ import { z } from "zod";
             }
         });
 
-        transformCodebase({
-            srcDirPath: pathJoin(extractedDirPath, messagesDirBasename),
-            destDirPath: pathJoin(distDirPath, "messages")
-        });
+        {
+            const destDirPath = pathJoin(adminDirPath, "i18n");
+
+            transformCodebase({
+                srcDirPath: pathJoin(extractedDirPath, messagesDirBasename),
+                destDirPath,
+                transformSourceCode: ({ filePath, sourceCode }) => {
+                    assert(filePath.endsWith(".properties"));
+
+                    const basename = pathBasename(filePath);
+
+                    const basename_override = `${basename.replace(".properties", "")}_override.properties`;
+
+                    fs.writeFileSync(
+                        pathJoin(destDirPath, basename_override),
+                        Buffer.from(
+                            [
+                                `# Use this file to override the default translations defined in ${basename}`,
+                                "# Example:",
+                                "",
+                                "# cancel=Cancel the operation",
+                                "# myCustomKey=My custom translation",
+                                ""
+                            ].join("\n"),
+                            "utf8"
+                        )
+                    );
+
+                    return {
+                        modifiedSourceCode: Buffer.from(
+                            [
+                                `# NOTE: To modify a translation or add new messages, consider ejecting the ${basename_override} file instead of this file.`,
+                                "",
+                                sourceCode.toString("utf8")
+                            ].join("\n"),
+                            "utf8"
+                        )
+                    };
+                }
+            });
+        }
 
         transformCodebase({
             srcDirPath: pathJoin(extractedDirPath, publicDirBasename),
