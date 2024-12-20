@@ -1,10 +1,5 @@
 import { downloadAndExtractArchive } from "./tools/downloadAndExtractArchive";
-import {
-    join as pathJoin,
-    relative as pathRelative,
-    sep as pathSep,
-    basename as pathBasename
-} from "path";
+import { join as pathJoin, relative as pathRelative, sep as pathSep } from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
 import { transformCodebase } from "./tools/transformCodebase";
@@ -151,23 +146,52 @@ import { z } from "zod";
                 `"${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/") || ".."}/shared/keycloak-ui-shared"`
             );
 
-            if (fileRelativePath === "PageHeader.tsx") {
-                for (const [search, replace] of [
-                    [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
-                    [`const logo = environment.logo ? environment.logo : "/logo.svg";`, ""],
-                    [`src={environment.resourceUrl + logo}`, `src={logoSvgUrl}`]
-                ] as const) {
-                    const sourceCode_before = modifiedSourceCode;
+            if (modifiedSourceCode.includes("environment.resourceUrl")) {
+                switch (fileRelativePath) {
+                    case "PageHeader.tsx":
+                        for (const [search, replace] of [
+                            [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
+                            [`const logo = environment.logo ? environment.logo : "/logo.svg";`, ""],
+                            [`src={environment.resourceUrl + logo}`, `src={logoSvgUrl}`],
+                            [undefined, `import imgAvatarSvgUrl from "./assets/img_avatar.svg";`],
+                            ['environment.resourceUrl + "/img_avatar.svg"', "imgAvatarSvgUrl"]
+                        ] as const) {
+                            const sourceCode_before = modifiedSourceCode;
 
-                    const sourceCode_after: string =
-                        search === undefined
-                            ? [replace, modifiedSourceCode].join("\n")
-                            : modifiedSourceCode.replace(search, replace);
+                            const sourceCode_after: string =
+                                search === undefined
+                                    ? [replace, modifiedSourceCode].join("\n")
+                                    : modifiedSourceCode.replace(search, replace);
 
-                    assert(sourceCode_before !== sourceCode_after);
+                            assert(sourceCode_before !== sourceCode_after);
 
-                    modifiedSourceCode = sourceCode_after;
+                            modifiedSourceCode = sourceCode_after;
+                        }
+                        break;
+                    case pathJoin("dashboard", "Dashboard.tsx"):
+                        for (const [search, replace] of [
+                            [undefined, `import iconSvgUrl from "./assets/icon.svg";`],
+                            [
+                                `const brandImage = environment.logo ? environment.logo : "/icon.svg";`,
+                                ""
+                            ],
+                            [`src={environment.resourceUrl + brandImage}`, `src={iconSvgUrl}`]
+                        ] as const) {
+                            const sourceCode_before = modifiedSourceCode;
+
+                            const sourceCode_after: string =
+                                search === undefined
+                                    ? [replace, modifiedSourceCode].join("\n")
+                                    : modifiedSourceCode.replace(search, replace);
+
+                            assert(sourceCode_before !== sourceCode_after);
+
+                            modifiedSourceCode = sourceCode_after;
+                        }
+                        break;
                 }
+
+                assert(!modifiedSourceCode.includes("environment.resourceUrl"));
             }
 
             await writeFile({
@@ -213,63 +237,91 @@ import { z } from "zod";
 
     assert(keycloakAdminUiVersion !== undefined);
 
-    {
-        const assetsDirPath = pathJoin(adminDirPath, "assets");
-
-        fs.mkdirSync(assetsDirPath, { recursive: true });
-
-        (["logo.svg"] as const).map(async fileBasename => {
-            const response = await fetch(
-                `https://raw.githubusercontent.com/keycloak/keycloak/${keycloakVersion}/js/apps/admin-ui/public/${fileBasename}`,
-                fetchOptions
-            );
-
-            const content = await response.text();
-
-            const { targetFileBasename, targetContent } = await (async () => {
-                switch (fileBasename) {
-                    case "logo.svg":
-                        return {
-                            targetFileBasename: "logo.svg",
-                            targetContent: content
-                        };
-                }
-                assert<Equals<typeof fileBasename, never>>;
-            })();
-
-            fs.writeFileSync(
-                pathJoin(assetsDirPath, targetFileBasename),
-                Buffer.from(targetContent, "utf8")
-            );
-        });
-    }
-
     transformCodebase({
         srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "keycloak-theme"),
         destDirPath: keycloakThemeDirPath
     });
 
     {
+        const messagesDirBasename = "messages";
+        const publicDirBasename = "public";
+
         const { extractedDirPath } = await downloadAndExtractArchive({
             url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakAdminUiVersion}.jar`,
             cacheDirPath,
             fetchOptions,
-            uniqueIdOfOnArchiveFile: "bring_in_admin_i18n_messages",
+            uniqueIdOfOnArchiveFile: "i18n_messages_and_public_assets",
             onArchiveFile: async ({ fileRelativePath, writeFile }) => {
-                if (
-                    !fileRelativePath.startsWith(pathJoin("theme", "keycloak.v2", "admin", "messages"))
-                ) {
-                    return;
+                i18n_messages: {
+                    const dirRelativePath = pathJoin("theme", "keycloak.v2", "admin", "messages");
+
+                    if (
+                        !isInside({
+                            dirPath: dirRelativePath,
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        break i18n_messages;
+                    }
+
+                    assert(fileRelativePath.endsWith(".properties"));
+
+                    await writeFile({
+                        fileRelativePath: pathJoin(
+                            messagesDirBasename,
+                            pathRelative(dirRelativePath, fileRelativePath)
+                        )
+                    });
                 }
-                await writeFile({
-                    fileRelativePath: pathBasename(fileRelativePath)
-                });
+
+                public_assets: {
+                    const dirRelativePath = pathJoin("theme", "keycloak.v2", "admin", "resources");
+
+                    if (
+                        !isInside({
+                            dirPath: dirRelativePath,
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        break public_assets;
+                    }
+
+                    if (
+                        isInside({
+                            dirPath: pathJoin(dirRelativePath, "assets"),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        return;
+                    }
+
+                    if (
+                        isInside({
+                            dirPath: pathJoin(dirRelativePath, ".vite"),
+                            filePath: fileRelativePath
+                        })
+                    ) {
+                        return;
+                    }
+
+                    await writeFile({
+                        fileRelativePath: pathJoin(
+                            publicDirBasename,
+                            pathRelative(dirRelativePath, fileRelativePath)
+                        )
+                    });
+                }
             }
         });
 
         transformCodebase({
-            srcDirPath: extractedDirPath,
+            srcDirPath: pathJoin(extractedDirPath, messagesDirBasename),
             destDirPath: pathJoin(distDirPath, "messages")
+        });
+
+        transformCodebase({
+            srcDirPath: pathJoin(extractedDirPath, publicDirBasename),
+            destDirPath: pathJoin(adminDirPath, "assets")
         });
     }
 
