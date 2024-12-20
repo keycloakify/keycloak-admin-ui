@@ -175,7 +175,7 @@ import { z } from "zod";
                         break;
                     case pathJoin("dashboard", "Dashboard.tsx"):
                         for (const [search, replace] of [
-                            [undefined, `import iconSvgUrl from "./assets/icon.svg";`],
+                            [undefined, `import iconSvgUrl from "../assets/icon.svg";`],
                             [
                                 `const brandImage = environment.logo ? environment.logo : "/icon.svg";`,
                                 ""
