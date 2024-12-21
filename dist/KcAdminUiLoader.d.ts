@@ -1,10 +1,10 @@
 export type KcContextLike = {
-    serverBaseUrl: string;
-    adminBaseUrl: string;
+    serverBaseUrl?: string;
+    adminBaseUrl?: string;
     authUrl: string;
     authServerUrl: string;
     loginRealm?: string;
-    clientId: string;
+    clientId?: string;
     resourceUrl: string;
     consoleBaseUrl: string;
     masterRealm: string;
