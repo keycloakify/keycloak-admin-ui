@@ -26,6 +26,7 @@ jobs:
     - uses: actions/setup-node@v4
     - uses: bahmutov/npm-install@v1
     - run: npm run build
+    - run: git diff --exit-code || (echo "Unstaged changes detected after build" && exit 1)
 
   check_if_version_upgraded:
     name: Check if version upgrade
