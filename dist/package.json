@@ -2,7 +2,7 @@
   "name": "@keycloakify/keycloak-admin-ui",
   "main": "index.js",
   "types": "index.d.ts",
-  "version": "26.0.7005",
+  "version": "260007.0.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/keycloakify/keycloak-admin-ui.git"
@@ -42,7 +42,7 @@
     "use-react-router-breadcrumbs": "^4.0.1",
     "keycloak-js": "26.0.7",
     "@keycloak/keycloak-admin-client": "26.0.7",
-    "@keycloakify/keycloak-ui-shared": "26.0.7002",
+    "@keycloakify/keycloak-ui-shared": "~260007.0.0",
     "@types/dagre": "^0.7.52",
     "@types/file-saver": "^2.0.7",
     "@types/lodash-es": "^4.17.12"

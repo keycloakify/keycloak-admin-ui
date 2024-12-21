@@ -64,7 +64,11 @@ import { z } from "zod";
         return { parsedPackageJson };
     })();
 
-    const keycloakVersion = parsedPackageJson.version.slice(0, -3);
+    const keycloakVersion = (() => {
+        const major = parsedPackageJson.version.split(".")[0];
+
+        return `${parseInt(major[0] + major[1])}.${parseInt(major[2] + major[3])}.${parseInt(major[4] + major[5])}`;
+    })();
 
     const fetchOptions = getProxyFetchOptions({
         npmConfigGetCwd: getThisCodebaseRootDirPath()
@@ -454,10 +458,7 @@ import { z } from "zod";
                         {
                             const name = "@keycloak/keycloak-ui-shared";
 
-                            const version = peerDependencies[name];
-
-                            assert(typeof version === "string");
-                            assert(/^[1-9]/.test(version));
+                            assert(peerDependencies[name] === keycloakVersion);
 
                             const name_keycloakify = name.replace("@keycloak", "@keycloakify");
 
@@ -470,12 +471,19 @@ import { z } from "zod";
 
                             const version_keycloakify = [...versions_keycloakify]
                                 .reverse()
-                                .find(version_keycloakify => version_keycloakify.startsWith(version));
+                                .find(version_keycloakify =>
+                                    version_keycloakify.startsWith(
+                                        keycloakVersion
+                                            .split(".")
+                                            .map(n => n.padStart(2, "0"))
+                                            .join("")
+                                    )
+                                );
 
                             assert(version_keycloakify !== undefined);
 
                             delete peerDependencies[name];
-                            peerDependencies[name_keycloakify] = version_keycloakify;
+                            peerDependencies[name_keycloakify] = `~${version_keycloakify}`;
                         }
 
                         for (const name of Object.keys(peerDependencies)) {
