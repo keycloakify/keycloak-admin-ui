@@ -199,6 +199,23 @@ import { z } from "zod";
                 assert(!modifiedSourceCode.includes("environment.resourceUrl"));
             }
 
+            if (fileRelativePath === pathJoin("components", "roles-list", "RolesList.tsx")) {
+                for (const [search, replace] of [
+                    ["useTranslation(messageBundle)", `useTranslation()`]
+                ] as const) {
+                    const sourceCode_before = modifiedSourceCode;
+
+                    const sourceCode_after: string =
+                        search === undefined
+                            ? [replace, modifiedSourceCode].join("\n")
+                            : modifiedSourceCode.replace(search, replace);
+
+                    assert(sourceCode_before !== sourceCode_after);
+
+                    modifiedSourceCode = sourceCode_after;
+                }
+            }
+
             await writeFile({
                 fileRelativePath,
                 modifiedData: Buffer.from(
