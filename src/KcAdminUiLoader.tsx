@@ -1,5 +1,5 @@
 import { Suspense, useMemo, type LazyExoticComponent } from "react";
-import { assert, is, type Equals } from "tsafe/assert";
+import { assert, is } from "tsafe/assert";
 //import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
 
 type Environment = {
@@ -18,12 +18,12 @@ type Environment = {
 //assert<Equals<Environment, Environment_target>>;
 
 export type KcContextLike = {
-    serverBaseUrl: string;
-    adminBaseUrl: string;
+    serverBaseUrl?: string;
+    adminBaseUrl?: string;
     authUrl: string;
     authServerUrl: string;
     loginRealm?: string; // "master"
-    clientId: string;
+    clientId?: string;
     resourceUrl: string;
     consoleBaseUrl: string;
     masterRealm: string;
@@ -84,12 +84,12 @@ function init(params: { kcContext: KcContextLike }) {
     const { kcContext } = params;
 
     const environment = {
-        serverBaseUrl: kcContext.serverBaseUrl,
-        adminBaseUrl: kcContext.adminBaseUrl,
+        serverBaseUrl: kcContext.serverBaseUrl ?? kcContext.authServerUrl,
+        adminBaseUrl: kcContext.adminBaseUrl ?? kcContext.authServerUrl,
         authUrl: kcContext.authUrl,
         authServerUrl: kcContext.authServerUrl,
         realm: kcContext.loginRealm ?? "master",
-        clientId: kcContext.clientId,
+        clientId: kcContext.clientId ?? "security-admin-console",
         resourceUrl: kcContext.resourceUrl,
         logo: "",
         logoUrl: "",
@@ -97,6 +97,16 @@ function init(params: { kcContext: KcContextLike }) {
         masterRealm: kcContext.masterRealm,
         resourceVersion: kcContext.resourceVersion
     };
+
+    {
+        const undefinedKeys = Object.entries(environment)
+            .filter(([, value]) => value === undefined)
+            .map(([key]) => key);
+
+        if (undefinedKeys.length > 0) {
+            console.error("Need KcContext polyfill for ", undefinedKeys.join(", "));
+        }
+    }
 
     {
         assert<typeof environment extends Environment ? true : false>();
@@ -108,4 +118,50 @@ function init(params: { kcContext: KcContextLike }) {
 
         document.body.appendChild(script);
     }
+
+    const realFetch = window.fetch.bind(window);
+
+    window.fetch = (...args) => {
+        intercept: {
+            const [url, ...rest] = args;
+
+            const parsedUrl = (() => {
+                if (url instanceof URL) {
+                    return url;
+                }
+
+                if (typeof url === "string") {
+                    return new URL(url.startsWith("/") ? `${window.location.origin}${url}` : url);
+                }
+
+                return undefined;
+            })();
+
+            if (parsedUrl === undefined) {
+                break intercept;
+            }
+
+            patch_1: {
+                if (kcContext.serverBaseUrl !== undefined) {
+                    break patch_1;
+                }
+
+                const prefix = `/admin/realms/${environment.realm}/ui-ext/`;
+
+                if (!parsedUrl.pathname.startsWith(prefix)) {
+                    break patch_1;
+                }
+
+                const newPathname = parsedUrl.pathname
+                    .replace("ui-ext/", "")
+                    .replace("/authentication-management/", "/authentication/");
+
+                parsedUrl.pathname = newPathname;
+
+                return realFetch(parsedUrl.toString(), ...rest);
+            }
+        }
+
+        return realFetch(...args);
+    };
 }
