@@ -444,9 +444,6 @@ import { z } from "zod";
                                 if (name === "admin-ui") {
                                     return false;
                                 }
-                                if (name === "react") {
-                                    return false;
-                                }
                                 if (name === "react-dom") {
                                     return false;
                                 }
