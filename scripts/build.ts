@@ -459,14 +459,14 @@ import { z } from "zod";
 
                             const name_keycloakify = name.replace("@keycloak", "@keycloakify");
 
-                            const versions_keycloakify: string[] = JSON.parse(
-                                child_process
-                                    .execSync(`npm show ${name_keycloakify} versions --json`)
-                                    .toString("utf8")
-                                    .trim()
-                            );
-
-                            const version_keycloakify = [...versions_keycloakify]
+                            const version_keycloakify = (
+                                JSON.parse(
+                                    child_process
+                                        .execSync(`npm show ${name_keycloakify} versions --json`)
+                                        .toString("utf8")
+                                        .trim()
+                                ) as string[]
+                            )
                                 .reverse()
                                 .find(version_keycloakify =>
                                     version_keycloakify.startsWith(
