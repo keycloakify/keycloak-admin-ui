@@ -1,3 +1,4 @@
+import { type ReactElement } from "react";
 export type KcContextLike = {
     serverBaseUrl?: string;
     adminBaseUrl?: string;
@@ -16,7 +17,7 @@ type LazyExoticComponentLike = {
 export type KcAdminUiLoaderProps = {
     kcContext: KcContextLike;
     KcAdminUi: LazyExoticComponentLike;
-    loadingFallback?: JSX.Element;
+    loadingFallback?: ReactElement<any, any>;
 };
 export declare function KcAdminUiLoader(props: KcAdminUiLoaderProps): import("react/jsx-runtime").JSX.Element;
 export {};
