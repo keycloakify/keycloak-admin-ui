@@ -1,4 +1,4 @@
-import { Suspense, useMemo, type LazyExoticComponent } from "react";
+import { Suspense, useMemo, type LazyExoticComponent, type ReactElement } from "react";
 import { assert, is } from "tsafe/assert";
 //import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
 
@@ -37,13 +37,13 @@ type LazyExoticComponentLike = {
 export type KcAdminUiLoaderProps = {
     kcContext: KcContextLike;
     KcAdminUi: LazyExoticComponentLike;
-    loadingFallback?: JSX.Element;
+    loadingFallback?: ReactElement<any, any>;
 };
 
 export function KcAdminUiLoader(props: KcAdminUiLoaderProps) {
     const { kcContext, KcAdminUi, loadingFallback } = props;
 
-    assert(is<LazyExoticComponent<() => JSX.Element | null>>(KcAdminUi));
+    assert(is<LazyExoticComponent<() => ReactElement<any, any> | null>>(KcAdminUi));
 
     useMemo(() => init({ kcContext }), []);
 
