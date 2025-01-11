@@ -12,9 +12,9 @@ import {
   Divider,
   PageSection,
   PageSectionVariants,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import styles from "@patternfly/react-styles/css/components/Table/table";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+import { Table, Tbody, Td, Th, Thead, Tr } from "../../shared/@patternfly/react-table";
 import {
   Fragment,
   DragEvent as ReactDragEvent,

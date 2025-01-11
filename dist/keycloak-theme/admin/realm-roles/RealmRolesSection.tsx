@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { PageSection } from "@patternfly/react-core";
+import { PageSection } from "../../shared/@patternfly/react-core";
 import { useAdminClient } from "../admin-client";
 import { RolesList } from "../components/roles-list/RolesList";
 import { ViewHeader } from "../components/view-header/ViewHeader";

@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { ActionGroup, Button } from "@patternfly/react-core";
+import { ActionGroup, Button } from "../../../shared/@patternfly/react-core";
 import { FormProvider, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SelectControl, SelectVariant } from "../../../shared/keycloak-ui-shared";

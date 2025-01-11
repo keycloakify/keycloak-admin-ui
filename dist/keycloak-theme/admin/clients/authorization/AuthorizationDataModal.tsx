@@ -11,7 +11,7 @@ import {
   TextArea,
   TextContent,
   TextVariants,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 
 import { prettyPrintJSON } from "../../util";

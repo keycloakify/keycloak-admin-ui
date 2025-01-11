@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Tab, TabTitleText } from "@patternfly/react-core";
+import { Tab, TabTitleText } from "../../../shared/@patternfly/react-core";
 
 import { useTranslation } from "react-i18next";
 import {

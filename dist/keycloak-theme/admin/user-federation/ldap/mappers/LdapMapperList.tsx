@@ -15,7 +15,7 @@ import {
   Button,
   ButtonVariant,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, To, useNavigate, useParams } from "react-router-dom";

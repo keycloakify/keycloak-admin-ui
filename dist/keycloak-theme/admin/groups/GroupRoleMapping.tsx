@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type { RoleMappingPayload } from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import { AlertVariant } from "@patternfly/react-core";
+import { AlertVariant } from "../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";
 import { useAlerts } from "../../shared/keycloak-ui-shared";

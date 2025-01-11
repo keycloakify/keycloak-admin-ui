@@ -4,7 +4,7 @@
 
 import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
 import { HelpItem, useAlerts } from "../../../shared/keycloak-ui-shared";
-import { AlertVariant, Button, ButtonVariant } from "@patternfly/react-core";
+import { AlertVariant, Button, ButtonVariant } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, To, useNavigate } from "react-router-dom";

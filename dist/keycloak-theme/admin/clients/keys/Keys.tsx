@@ -16,7 +16,7 @@ import {
   PageSection,
   Text,
   TextContent,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { saveAs } from "file-saver";
 import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";

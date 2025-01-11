@@ -19,12 +19,12 @@ import {
   SplitItem,
   Stack,
   StackItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   AngleLeftIcon,
   AngleRightIcon,
   CheckIcon,
-} from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-icons";
 import { debounce } from "lodash-es";
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

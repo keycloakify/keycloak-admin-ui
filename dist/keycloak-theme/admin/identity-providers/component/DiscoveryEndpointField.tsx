@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { FormGroup, Spinner, Switch } from "@patternfly/react-core";
+import { FormGroup, Spinner, Switch } from "../../../shared/@patternfly/react-core";
 import debouncePromise from "p-debounce";
 import { ReactNode, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";

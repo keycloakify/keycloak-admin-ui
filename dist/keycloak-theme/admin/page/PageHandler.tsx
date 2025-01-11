@@ -5,7 +5,7 @@
 import ComponentRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentRepresentation";
 import ComponentTypeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentTypeRepresentation";
 import { useAlerts, useFetch } from "../../shared/keycloak-ui-shared";
-import { ActionGroup, Button, Form, PageSection } from "@patternfly/react-core";
+import { ActionGroup, Button, Form, PageSection } from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

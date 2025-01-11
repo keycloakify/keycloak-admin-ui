@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { FormGroup, Grid, GridItem } from "@patternfly/react-core";
+import { FormGroup, Grid, GridItem } from "../../../../shared/@patternfly/react-core";
 
 import { FormAccess } from "../../../components/form/FormAccess";
 import { KeyValueInput } from "../../../components/key-value-form/KeyValueInput";

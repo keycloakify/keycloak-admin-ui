@@ -21,8 +21,8 @@ import {
   TextInputGroup,
   TextInputGroupMain,
   TextInputGroupUtilities,
-} from "@patternfly/react-core";
-import { TimesIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { TimesIcon } from "../../../shared/@patternfly/react-icons";
 import { debounce } from "lodash-es";
 import { useCallback, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";

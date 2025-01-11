@@ -11,7 +11,7 @@ import {
   FormGroup,
   Modal,
   ModalVariant,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 type AccessTokenDialogProps = {
   token: string;

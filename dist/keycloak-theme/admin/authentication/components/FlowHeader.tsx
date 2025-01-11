@@ -9,7 +9,7 @@ import {
   DataListDragButton,
   DataListItemCells,
   DataListCell,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 import "./flow-header.css";
 

@@ -8,7 +8,7 @@ import {
   Divider,
   FormGroup,
   Switch,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { Controller, FormProvider, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";

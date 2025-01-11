@@ -7,7 +7,7 @@ import {
   mainPageContentId,
   useEnvironment,
 } from "../shared/keycloak-ui-shared";
-import { Page } from "@patternfly/react-core";
+import { Page } from "../shared/@patternfly/react-core";
 import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 

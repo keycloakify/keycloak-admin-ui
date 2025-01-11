@@ -20,7 +20,7 @@ import {
   FormGroup,
   PageSection,
   SelectOption,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { camelCase } from "lodash-es";
 import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";

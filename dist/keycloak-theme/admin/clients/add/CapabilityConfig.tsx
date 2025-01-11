@@ -11,7 +11,7 @@ import {
   InputGroup,
   Switch,
   InputGroupItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";

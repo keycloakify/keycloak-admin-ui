@@ -9,7 +9,7 @@ import {
   TextAreaControl,
   TextControl,
 } from "../../shared/keycloak-ui-shared";
-import { FormGroup } from "@patternfly/react-core";
+import { FormGroup } from "../../shared/@patternfly/react-core";
 import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

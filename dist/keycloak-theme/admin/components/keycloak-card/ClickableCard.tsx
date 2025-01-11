@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { KeyboardEvent, useId } from "react";
-import { Card, CardHeader, CardProps } from "@patternfly/react-core";
+import { Card, CardHeader, CardProps } from "../../../shared/@patternfly/react-core";
 
 type ClickableCardProps = Omit<CardProps, "onClick"> & {
   onClick: () => void;

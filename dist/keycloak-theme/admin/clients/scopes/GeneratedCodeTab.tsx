@@ -10,7 +10,7 @@ import {
   EmptyStateBody,
   EmptyStateHeader,
   TextArea,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { CopyToClipboardButton } from "./CopyToClipboardButton";
 

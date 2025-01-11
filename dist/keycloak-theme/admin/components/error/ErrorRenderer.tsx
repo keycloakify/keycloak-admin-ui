@@ -12,7 +12,7 @@ import {
   AlertActionLink,
   AlertVariant,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 
 export const ErrorRenderer = ({ error }: FallbackProps) => {

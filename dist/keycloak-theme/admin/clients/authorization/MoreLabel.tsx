@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { Label } from "@patternfly/react-core";
+import { Label } from "../../../shared/@patternfly/react-core";
 
 type MoreLabelProps = {
   array: unknown[] | undefined;

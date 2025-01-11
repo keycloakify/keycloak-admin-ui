@@ -8,7 +8,7 @@ import {
   FormGroup,
   Split,
   SplitItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

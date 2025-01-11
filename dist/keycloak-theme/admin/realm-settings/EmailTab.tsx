@@ -13,7 +13,7 @@ import {
   Checkbox,
   FormGroup,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

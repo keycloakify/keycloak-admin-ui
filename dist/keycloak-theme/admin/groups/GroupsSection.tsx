@@ -18,8 +18,8 @@ import {
   TabTitleText,
   Tabs,
   Tooltip,
-} from "@patternfly/react-core";
-import { AngleLeftIcon, TreeIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { AngleLeftIcon, TreeIcon } from "../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";

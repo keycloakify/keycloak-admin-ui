@@ -7,7 +7,7 @@ import {
   MenuToggle,
   Select,
   SelectList,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";

@@ -21,7 +21,7 @@ import {
   DropdownItem,
   DropdownList,
   MenuToggle,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 type MapperListProps = {
   model: ClientScopeRepresentation | ClientRepresentation;

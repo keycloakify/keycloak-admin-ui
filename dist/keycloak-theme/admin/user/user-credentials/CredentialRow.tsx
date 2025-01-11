@@ -4,20 +4,20 @@
 
 import { ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { Td } from "@patternfly/react-table";
+import { Td } from "../../../shared/@patternfly/react-table";
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownList,
   MenuToggle,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import type CredentialRepresentation from "@keycloak/keycloak-admin-client/lib/defs/credentialRepresentation";
 import useToggle from "../../utils/useToggle";
 import useLocaleSort from "../../utils/useLocaleSort";
 import { CredentialDataDialog } from "./CredentialDataDialog";
 import useFormatDate from "../../utils/useFormatDate";
-import { EllipsisVIcon } from "@patternfly/react-icons";
+import { EllipsisVIcon } from "../../../shared/@patternfly/react-icons";
 
 type CredentialRowProps = {
   credential: CredentialRepresentation;

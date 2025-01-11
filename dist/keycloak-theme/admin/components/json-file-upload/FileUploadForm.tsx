@@ -11,7 +11,7 @@ import {
   HelperTextItem,
   Modal,
   ModalVariant,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   ChangeEvent,
   DragEvent as ReactDragEvent,

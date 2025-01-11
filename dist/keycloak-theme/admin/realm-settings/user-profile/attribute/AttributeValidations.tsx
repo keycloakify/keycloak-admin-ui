@@ -8,9 +8,9 @@ import {
   Divider,
   Text,
   TextVariants,
-} from "@patternfly/react-core";
-import { PlusCircleIcon } from "@patternfly/react-icons";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+} from "../../../../shared/@patternfly/react-core";
+import { PlusCircleIcon } from "../../../../shared/@patternfly/react-icons";
+import { Table, Tbody, Td, Th, Thead, Tr } from "../../../../shared/@patternfly/react-table";
 import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

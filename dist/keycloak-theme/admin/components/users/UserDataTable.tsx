@@ -26,13 +26,13 @@ import {
   ToolbarContent,
   ToolbarItem,
   Tooltip,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   ExclamationCircleIcon,
   InfoCircleIcon,
   WarningTriangleIcon,
-} from "@patternfly/react-icons";
-import type { IRowData } from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-icons";
+import type { IRowData } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";

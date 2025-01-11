@@ -32,7 +32,7 @@ import {
   TextContent,
   TextVariants,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { groupBy, sortBy } from "lodash-es";
 import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";

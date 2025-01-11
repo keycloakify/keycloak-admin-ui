@@ -23,8 +23,8 @@ import {
   SelectOption,
   Switch,
   TextInput,
-} from "@patternfly/react-core";
-import { GlobeRouteIcon } from "@patternfly/react-icons";
+} from "../../../../shared/@patternfly/react-core";
+import { GlobeRouteIcon } from "../../../../shared/@patternfly/react-icons";
 import { isEqual } from "lodash-es";
 import { useEffect, useState } from "react";
 import {

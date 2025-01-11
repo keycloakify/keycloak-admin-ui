@@ -11,8 +11,8 @@ import {
   TextContent,
   TextList,
   TextListItem,
-} from "@patternfly/react-core";
-import { ExpandableRowContent, Tbody, Td, Tr } from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-core";
+import { ExpandableRowContent, Tbody, Td, Tr } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

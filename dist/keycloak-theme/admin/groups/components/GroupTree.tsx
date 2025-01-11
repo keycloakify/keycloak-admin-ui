@@ -18,14 +18,14 @@ import {
   Tooltip,
   TreeView,
   TreeViewDataItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 import {
   PaginatingTableToolbar,
   useAlerts,
   useFetch,
 } from "../../../shared/keycloak-ui-shared";
-import { AngleRightIcon, EllipsisVIcon } from "@patternfly/react-icons";
+import { AngleRightIcon, EllipsisVIcon } from "../../../shared/@patternfly/react-icons";
 import { unionBy } from "lodash-es";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

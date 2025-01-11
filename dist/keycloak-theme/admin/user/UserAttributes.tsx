@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
-import { PageSection, PageSectionVariants } from "@patternfly/react-core";
+import { PageSection, PageSectionVariants } from "../../shared/@patternfly/react-core";
 import { UseFormReturn, useFormContext } from "react-hook-form";
 
 import {

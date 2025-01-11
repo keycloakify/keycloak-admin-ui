@@ -22,7 +22,7 @@ import {
   PageSection,
   Stack,
   StackItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

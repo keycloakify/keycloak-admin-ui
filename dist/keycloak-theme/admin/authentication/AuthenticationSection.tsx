@@ -18,7 +18,7 @@ import {
   Tab,
   TabTitleText,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { sortBy } from "lodash-es";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";

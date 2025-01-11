@@ -9,8 +9,8 @@ import {
   Modal,
   ModalVariant,
   Tooltip,
-} from "@patternfly/react-core";
-import { PencilAltIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { PencilAltIcon } from "../../../shared/@patternfly/react-icons";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

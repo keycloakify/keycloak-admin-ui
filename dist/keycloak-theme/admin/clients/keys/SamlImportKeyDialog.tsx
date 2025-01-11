@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { AlertVariant } from "@patternfly/react-core";
+import { AlertVariant } from "../../../shared/@patternfly/react-core";
 import { FormProvider, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

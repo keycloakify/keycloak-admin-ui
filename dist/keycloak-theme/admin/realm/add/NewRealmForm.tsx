@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
-import { ActionGroup, Button, PageSection } from "@patternfly/react-core";
+import { ActionGroup, Button, PageSection } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

@@ -21,8 +21,8 @@ import {
   Tab,
   TabTitleText,
   Tooltip,
-} from "@patternfly/react-core";
-import { InfoCircleIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { InfoCircleIcon } from "../../shared/@patternfly/react-icons";
 import { TFunction } from "i18next";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";

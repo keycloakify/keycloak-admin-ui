@@ -33,9 +33,9 @@ import {
   Tab,
   TabTitleText,
   Tooltip,
-} from "@patternfly/react-core";
-import { CheckCircleIcon, WarningTriangleIcon } from "@patternfly/react-icons";
-import { cellWidth } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { CheckCircleIcon, WarningTriangleIcon } from "../../shared/@patternfly/react-icons";
+import { cellWidth } from "../../shared/@patternfly/react-table";
 import { pickBy } from "lodash-es";
 import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";

@@ -14,7 +14,7 @@ import {
   Stack,
   StackItem,
   TextArea,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   Children,
   cloneElement,

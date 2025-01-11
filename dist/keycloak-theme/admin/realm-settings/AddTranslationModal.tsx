@@ -8,7 +8,7 @@ import {
   Form,
   Modal,
   ModalVariant,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { FormProvider, SubmitHandler, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { TextControl } from "../../shared/keycloak-ui-shared";

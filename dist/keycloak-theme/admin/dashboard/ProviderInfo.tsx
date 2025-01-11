@@ -3,8 +3,8 @@
 // @ts-nocheck
 
 import { TableToolbar } from "../../shared/keycloak-ui-shared";
-import { ExpandableSection, PageSection } from "@patternfly/react-core";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+import { ExpandableSection, PageSection } from "../../shared/@patternfly/react-core";
+import { Table, Tbody, Td, Th, Thead, Tr } from "../../shared/@patternfly/react-table";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useServerInfo } from "../context/server-info/ServerInfoProvider";

@@ -8,9 +8,9 @@ import {
   HelpItem,
   useFetch,
 } from "../../../../shared/keycloak-ui-shared";
-import { Button, Checkbox, FormGroup } from "@patternfly/react-core";
-import { MinusCircleIcon } from "@patternfly/react-icons";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+import { Button, Checkbox, FormGroup } from "../../../../shared/@patternfly/react-core";
+import { MinusCircleIcon } from "../../../../shared/@patternfly/react-icons";
+import { Table, Tbody, Td, Th, Thead, Tr } from "../../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";

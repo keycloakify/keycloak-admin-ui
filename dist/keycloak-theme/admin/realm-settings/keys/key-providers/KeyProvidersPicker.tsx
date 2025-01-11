@@ -9,7 +9,7 @@ import {
   DataListItemCells,
   DataListItemRow,
   Modal,
-} from "@patternfly/react-core";
+} from "../../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { useServerInfo } from "../../../context/server-info/ServerInfoProvider";
 import { KEY_PROVIDER_TYPE } from "../../../util";

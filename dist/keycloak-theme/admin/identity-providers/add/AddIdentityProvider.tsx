@@ -8,7 +8,7 @@ import {
   AlertVariant,
   Button,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

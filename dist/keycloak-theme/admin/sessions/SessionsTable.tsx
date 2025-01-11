@@ -12,9 +12,9 @@ import {
   ListVariant,
   ToolbarItem,
   Tooltip,
-} from "@patternfly/react-core";
-import { CubesIcon, InfoCircleIcon } from "@patternfly/react-icons";
-import { IRowData } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { CubesIcon, InfoCircleIcon } from "../../shared/@patternfly/react-icons";
+import { IRowData } from "../../shared/@patternfly/react-table";
 import { ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useMatch, useNavigate } from "react-router-dom";

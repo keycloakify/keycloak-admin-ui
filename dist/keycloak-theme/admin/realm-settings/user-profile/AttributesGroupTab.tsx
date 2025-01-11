@@ -8,7 +8,7 @@ import {
   ButtonVariant,
   PageSection,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";

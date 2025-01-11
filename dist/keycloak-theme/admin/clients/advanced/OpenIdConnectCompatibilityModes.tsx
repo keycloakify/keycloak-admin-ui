@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { ActionGroup, Button, FormGroup, Switch } from "@patternfly/react-core";
+import { ActionGroup, Button, FormGroup, Switch } from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

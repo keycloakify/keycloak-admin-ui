@@ -15,7 +15,7 @@ import {
   Select,
   SelectOption,
   SelectProps,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 export enum ClientScope {
   default = "default",

@@ -4,7 +4,7 @@
 
 import ComponentRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentRepresentation";
 import { useAlerts, useFetch } from "../../../shared/keycloak-ui-shared";
-import { Button, ButtonVariant, ToolbarItem } from "@patternfly/react-core";
+import { Button, ButtonVariant, ToolbarItem } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useParams } from "react-router-dom";

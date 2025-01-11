@@ -10,7 +10,7 @@ import {
   TextControl,
   useEnvironment,
 } from "../../../shared/keycloak-ui-shared";
-import { FormGroup, Title } from "@patternfly/react-core";
+import { FormGroup, Title } from "../../../shared/@patternfly/react-core";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { FormGroup } from "@patternfly/react-core";
+import { FormGroup } from "../../../shared/@patternfly/react-core";
 import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
 

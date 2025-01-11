@@ -4,7 +4,7 @@
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 import type GlobalRequestResult from "@keycloak/keycloak-admin-client/lib/defs/globalRequestResult";
-import { AlertVariant, PageSection, Text } from "@patternfly/react-core";
+import { AlertVariant, PageSection, Text } from "../../shared/@patternfly/react-core";
 import type { TFunction } from "i18next";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";

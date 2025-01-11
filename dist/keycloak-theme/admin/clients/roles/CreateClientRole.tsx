@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import { AlertVariant } from "@patternfly/react-core";
+import { AlertVariant } from "../../../shared/@patternfly/react-core";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";

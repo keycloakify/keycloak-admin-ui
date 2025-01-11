@@ -23,7 +23,7 @@ import {
   InputGroupItem,
   Switch,
   TextInput,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { TFunction } from "i18next";
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, UseFormReturn } from "react-hook-form";

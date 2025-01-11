@@ -8,9 +8,9 @@ import {
   ButtonVariant,
   Chip,
   ChipGroup,
-} from "@patternfly/react-core";
-import { CubesIcon } from "@patternfly/react-icons";
-import { cellWidth } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { CubesIcon } from "../../shared/@patternfly/react-icons";
+import { cellWidth } from "../../shared/@patternfly/react-table";
 import { sortBy } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

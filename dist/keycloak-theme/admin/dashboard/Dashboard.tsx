@@ -35,7 +35,7 @@ import {
   TextContent,
   TextVariants,
   Title,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";

@@ -28,14 +28,14 @@ import {
   TextInput,
   TextVariants,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   CheckIcon,
   EllipsisVIcon,
   PencilAltIcon,
   SearchIcon,
   TimesIcon,
-} from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-icons";
 import {
   ActionsColumn,
   IRow,
@@ -46,7 +46,7 @@ import {
   Th,
   Thead,
   Tr,
-} from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-table";
 import { cloneDeep, isEqual, uniqWith } from "lodash-es";
 import { ChangeEvent, useEffect, useState, type FormEvent } from "react";
 import { useForm } from "react-hook-form";

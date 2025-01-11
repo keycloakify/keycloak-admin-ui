@@ -5,7 +5,7 @@
 import type ClientProfileRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientProfileRepresentation";
 import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
 import { KeycloakDataTable, useFetch } from "../../shared/keycloak-ui-shared";
-import { Button, Label, Modal, ModalVariant } from "@patternfly/react-core";
+import { Button, Label, Modal, ModalVariant } from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";

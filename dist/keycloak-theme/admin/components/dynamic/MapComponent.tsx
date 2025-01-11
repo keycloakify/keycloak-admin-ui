@@ -14,8 +14,8 @@ import {
   FlexItem,
   FormGroup,
   TextInput,
-} from "@patternfly/react-core";
-import { MinusCircleIcon, PlusCircleIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { MinusCircleIcon, PlusCircleIcon } from "../../../shared/@patternfly/react-icons";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";

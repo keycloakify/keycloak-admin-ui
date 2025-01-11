@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type CertificateRepresentation from "@keycloak/keycloak-admin-client/lib/defs/certificateRepresentation";
-import { FormGroup, TextArea } from "@patternfly/react-core";
+import { FormGroup, TextArea } from "../../../shared/@patternfly/react-core";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";

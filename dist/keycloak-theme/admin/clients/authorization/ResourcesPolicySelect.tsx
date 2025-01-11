@@ -21,7 +21,7 @@ import {
   Chip,
   ChipGroup,
   SelectOption,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import {
   Controller,

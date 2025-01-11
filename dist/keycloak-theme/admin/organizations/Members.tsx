@@ -10,7 +10,7 @@ import {
   DropdownList,
   MenuToggle,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

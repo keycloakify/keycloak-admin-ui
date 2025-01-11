@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import IdentityProviderRepresentation from "@keycloak/keycloak-admin-client/lib/defs/identityProviderRepresentation";
-import { ExpandableSection } from "@patternfly/react-core";
+import { ExpandableSection } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

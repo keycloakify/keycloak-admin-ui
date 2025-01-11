@@ -10,7 +10,7 @@ import {
   FlexItem,
   Title,
   TitleSizes,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 
 import type AuthenticationFlowRepresentation from "@keycloak/keycloak-admin-client/lib/defs/authenticationFlowRepresentation";
 import type { AuthenticationProviderRepresentation } from "@keycloak/keycloak-admin-client/lib/defs/authenticatorConfigRepresentation";

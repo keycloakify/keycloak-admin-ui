@@ -5,7 +5,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Breadcrumb, BreadcrumbItem } from "@patternfly/react-core";
+import { Breadcrumb, BreadcrumbItem } from "../../../shared/@patternfly/react-core";
 
 import { useSubGroups } from "../../groups/SubGroupsContext";
 import { useRealm } from "../../context/realm-context/RealmContext";

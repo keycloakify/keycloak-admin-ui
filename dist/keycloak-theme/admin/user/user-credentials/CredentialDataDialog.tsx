@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { Modal, ModalVariant } from "@patternfly/react-core";
+import { Modal, ModalVariant } from "../../../shared/@patternfly/react-core";
 import {
   Table,
   TableVariant,
@@ -12,7 +12,7 @@ import {
   Th,
   Thead,
   Tr,
-} from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-table";
 
 type CredentialDataDialogProps = {
   credentialData: [string, string][];

@@ -11,7 +11,7 @@ import {
   Th,
   Thead,
   Tr,
-} from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-table";
 import { DescriptionList } from "@patternfly/react-core/dist/esm/components";
 import { useTranslation } from "react-i18next";
 import { AuthorizationEvaluateResourcePolicies } from "./AuthorizationEvaluateResourcePolicies";

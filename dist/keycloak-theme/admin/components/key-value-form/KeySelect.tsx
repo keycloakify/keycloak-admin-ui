@@ -8,7 +8,7 @@ import {
   GridItem,
   SelectOption,
   TextInput,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { UseControllerProps, useController } from "react-hook-form";
 import { useTranslation } from "react-i18next";

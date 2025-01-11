@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Switch } from "@patternfly/react-core";
+import { Switch } from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

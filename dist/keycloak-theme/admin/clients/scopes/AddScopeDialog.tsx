@@ -14,12 +14,12 @@ import {
   Modal,
   ModalVariant,
   SelectOption,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   CaretDownIcon,
   CaretUpIcon,
   FilterIcon,
-} from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-icons";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {

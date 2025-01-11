@@ -26,7 +26,7 @@ import {
   Modal,
   ModalVariant,
   SelectOption,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import {
   Table,
   TableVariant,
@@ -36,7 +36,7 @@ import {
   Thead,
   Tr,
   cellWidth,
-} from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-table";
 import { pickBy } from "lodash-es";
 import { PropsWithChildren, useMemo, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";

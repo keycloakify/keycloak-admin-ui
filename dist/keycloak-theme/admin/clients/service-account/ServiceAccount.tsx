@@ -6,8 +6,8 @@ import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/
 import type { RoleMappingPayload } from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
 import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
 import { useAlerts, useFetch } from "../../../shared/keycloak-ui-shared";
-import { AlertVariant, PageSection } from "@patternfly/react-core";
-import { InfoCircleIcon } from "@patternfly/react-icons";
+import { AlertVariant, PageSection } from "../../../shared/@patternfly/react-core";
+import { InfoCircleIcon } from "../../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

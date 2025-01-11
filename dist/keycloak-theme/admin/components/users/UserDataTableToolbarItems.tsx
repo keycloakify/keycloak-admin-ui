@@ -15,8 +15,8 @@ import {
   MenuToggle,
   SearchInput,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { ArrowRightIcon, EllipsisVIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { ArrowRightIcon, EllipsisVIcon } from "../../../shared/@patternfly/react-icons";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 

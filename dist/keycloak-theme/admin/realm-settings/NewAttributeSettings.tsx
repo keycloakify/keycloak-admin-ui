@@ -13,7 +13,7 @@ import {
   Button,
   Form,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { flatten } from "flat";
 import { useState } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";

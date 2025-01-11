@@ -12,8 +12,8 @@ import {
   Tooltip,
   EmptyStateHeader,
   EmptyStateFooter,
-} from "@patternfly/react-core";
-import { PlusCircleIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { PlusCircleIcon } from "../../../shared/@patternfly/react-icons";
 
 import { PermissionType, toNewPermission } from "../routes/NewPermission";
 import { useRealm } from "../../context/realm-context/RealmContext";

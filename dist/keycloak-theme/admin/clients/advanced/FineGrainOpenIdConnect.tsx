@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { ProviderRepresentation } from "@keycloak/keycloak-admin-client/lib/defs/serverInfoRepesentation";
-import { ActionGroup, Button, FormGroup } from "@patternfly/react-core";
+import { ActionGroup, Button, FormGroup } from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { HelpItem, SelectControl } from "../../../shared/keycloak-ui-shared";
 import { FormAccess } from "../../components/form/FormAccess";

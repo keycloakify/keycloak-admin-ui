@@ -3,8 +3,8 @@
 // @ts-nocheck
 
 import type ClientInitialAccessPresentation from "@keycloak/keycloak-admin-client/lib/defs/clientInitialAccessPresentation";
-import { AlertVariant, Button, ButtonVariant } from "@patternfly/react-core";
-import { wrappable } from "@patternfly/react-table";
+import { AlertVariant, Button, ButtonVariant } from "../../../shared/@patternfly/react-core";
+import { wrappable } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";

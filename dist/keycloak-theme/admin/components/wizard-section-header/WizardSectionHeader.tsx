@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Text, TextContent, Title } from "@patternfly/react-core";
+import { Text, TextContent, Title } from "../../../shared/@patternfly/react-core";
 
 import "./wizard-section-header.css";
 

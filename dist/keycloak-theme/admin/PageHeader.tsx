@@ -19,8 +19,8 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { BarsIcon, EllipsisVIcon, HelpIcon } from "@patternfly/react-icons";
+} from "../shared/@patternfly/react-core";
+import { BarsIcon, EllipsisVIcon, HelpIcon } from "../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHref } from "react-router-dom";

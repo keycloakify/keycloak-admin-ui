@@ -12,8 +12,8 @@ import {
   Switch,
   TextInput,
   ValidatedOptions,
-} from "@patternfly/react-core";
-import { MinusCircleIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { MinusCircleIcon } from "../../../shared/@patternfly/react-icons";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormErrorText, HelpItem } from "../../../shared/keycloak-ui-shared";

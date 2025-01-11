@@ -8,7 +8,7 @@ import {
   SelectControl,
   SelectVariant,
 } from "../../../shared/keycloak-ui-shared";
-import { FormGroup, NumberInput, SelectOption } from "@patternfly/react-core";
+import { FormGroup, NumberInput, SelectOption } from "../../../shared/@patternfly/react-core";
 import { isEqual } from "lodash-es";
 import { Controller, UseFormReturn, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

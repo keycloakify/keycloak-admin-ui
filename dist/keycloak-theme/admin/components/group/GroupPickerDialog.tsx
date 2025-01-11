@@ -21,8 +21,8 @@ import {
   DataListItemRow,
   Modal,
   ModalVariant,
-} from "@patternfly/react-core";
-import { AngleRightIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { AngleRightIcon } from "../../../shared/@patternfly/react-icons";
 import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

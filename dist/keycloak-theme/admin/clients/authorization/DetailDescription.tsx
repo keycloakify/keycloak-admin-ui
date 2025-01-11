@@ -6,7 +6,7 @@ import {
   DescriptionListDescription,
   DescriptionListGroup,
   DescriptionListTerm,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { Link, Path } from "react-router-dom";
 

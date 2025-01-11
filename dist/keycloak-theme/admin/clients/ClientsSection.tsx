@@ -15,9 +15,9 @@ import {
   TabTitleText,
   ToolbarItem,
   Tooltip,
-} from "@patternfly/react-core";
-import { WarningTriangleIcon } from "@patternfly/react-icons";
-import { IRowData, TableText, cellWidth } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { WarningTriangleIcon } from "../../shared/@patternfly/react-icons";
+import { IRowData, TableText, cellWidth } from "../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

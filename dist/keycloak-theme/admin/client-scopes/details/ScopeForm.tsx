@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type ClientScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientScopeRepresentation";
-import { ActionGroup, Button } from "@patternfly/react-core";
+import { ActionGroup, Button } from "../../../shared/@patternfly/react-core";
 import { useEffect } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

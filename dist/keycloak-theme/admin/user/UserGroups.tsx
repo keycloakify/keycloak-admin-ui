@@ -11,9 +11,9 @@ import {
   ButtonVariant,
   Checkbox,
   Popover,
-} from "@patternfly/react-core";
-import { QuestionCircleIcon } from "@patternfly/react-icons";
-import { cellWidth } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { QuestionCircleIcon } from "../../shared/@patternfly/react-icons";
+import { cellWidth } from "../../shared/@patternfly/react-table";
 import { intersectionBy, sortBy, uniqBy } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

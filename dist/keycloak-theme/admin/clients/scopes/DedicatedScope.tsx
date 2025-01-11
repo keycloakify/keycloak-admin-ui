@@ -10,7 +10,7 @@ import {
   FormGroup,
   PageSection,
   Switch,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";

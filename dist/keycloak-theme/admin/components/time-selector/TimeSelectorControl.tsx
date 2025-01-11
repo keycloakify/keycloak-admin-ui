@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { FormGroup, ValidatedOptions } from "@patternfly/react-core";
+import { FormGroup, ValidatedOptions } from "../../../shared/@patternfly/react-core";
 import {
   Controller,
   ControllerProps,

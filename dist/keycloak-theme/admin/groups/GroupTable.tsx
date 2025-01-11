@@ -7,7 +7,7 @@ import {
   GroupQuery,
   SubGroupQuery,
 } from "@keycloak/keycloak-admin-client/lib/resources/groups";
-import { SearchInput, ToolbarItem } from "@patternfly/react-core";
+import { SearchInput, ToolbarItem } from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";

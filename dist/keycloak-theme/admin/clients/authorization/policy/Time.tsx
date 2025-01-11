@@ -12,7 +12,7 @@ import {
   Split,
   SplitItem,
   TimePicker,
-} from "@patternfly/react-core";
+} from "../../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { FormErrorText, HelpItem } from "../../../../shared/keycloak-ui-shared";
 import { useTranslation } from "react-i18next";

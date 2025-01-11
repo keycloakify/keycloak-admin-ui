@@ -12,7 +12,7 @@ import {
   Modal,
   ModalVariant,
   TextInput,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { capitalize } from "lodash-es";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

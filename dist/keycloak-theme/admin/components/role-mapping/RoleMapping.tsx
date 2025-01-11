@@ -13,8 +13,8 @@ import {
   ButtonVariant,
   Checkbox,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { cellWidth } from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-core";
+import { cellWidth } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

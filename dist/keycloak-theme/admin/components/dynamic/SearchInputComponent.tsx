@@ -7,8 +7,8 @@ import {
   TextInputGroup,
   TextInputGroupMain,
   TextInputGroupUtilities,
-} from "@patternfly/react-core";
-import { ArrowRightIcon, SearchIcon, TimesIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { ArrowRightIcon, SearchIcon, TimesIcon } from "../../../shared/@patternfly/react-icons";
 import { useTranslation } from "react-i18next";
 
 type SearchInputComponentProps = {

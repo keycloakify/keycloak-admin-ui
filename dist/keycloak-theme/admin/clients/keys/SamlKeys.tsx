@@ -21,7 +21,7 @@ import {
   Switch,
   Text,
   TextContent,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { saveAs } from "file-saver";
 import { Fragment, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";

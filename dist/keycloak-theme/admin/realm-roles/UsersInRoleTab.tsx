@@ -2,8 +2,8 @@
 
 // @ts-nocheck
 
-import { Button, PageSection, Popover } from "@patternfly/react-core";
-import { QuestionCircleIcon } from "@patternfly/react-icons";
+import { Button, PageSection, Popover } from "../../shared/@patternfly/react-core";
+import { QuestionCircleIcon } from "../../shared/@patternfly/react-icons";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useHelp } from "../../shared/keycloak-ui-shared";

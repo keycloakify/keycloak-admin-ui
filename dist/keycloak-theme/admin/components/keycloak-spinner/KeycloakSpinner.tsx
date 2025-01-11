@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Bullseye, Spinner } from "@patternfly/react-core";
+import { Bullseye, Spinner } from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 
 export const KeycloakSpinner = () => {

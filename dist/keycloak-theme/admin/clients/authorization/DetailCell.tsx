@@ -4,7 +4,7 @@
 
 import type ResourceServerRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceServerRepresentation";
 import { useFetch } from "../../../shared/keycloak-ui-shared";
-import { DescriptionList } from "@patternfly/react-core";
+import { DescriptionList } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useAdminClient } from "../../admin-client";
 import { KeycloakSpinner } from "../../../shared/keycloak-ui-shared";

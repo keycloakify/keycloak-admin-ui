@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { label } from "../../shared/keycloak-ui-shared";
-import { IFormatter, IFormatterValueType } from "@patternfly/react-table";
+import { IFormatter, IFormatterValueType } from "../../shared/@patternfly/react-table";
 import { TFunction } from "i18next";
 
 export const translationFormatter =

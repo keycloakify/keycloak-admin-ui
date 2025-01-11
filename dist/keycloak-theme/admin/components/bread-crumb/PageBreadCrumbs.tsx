@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Breadcrumb, BreadcrumbItem } from "@patternfly/react-core";
+import { Breadcrumb, BreadcrumbItem } from "../../../shared/@patternfly/react-core";
 import { uniqBy } from "lodash-es";
 import { isValidElement } from "react";
 import { useTranslation } from "react-i18next";

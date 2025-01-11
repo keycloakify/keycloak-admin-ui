@@ -4,7 +4,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Modal, ModalVariant } from "@patternfly/react-core";
+import { Button, Modal, ModalVariant } from "../../../shared/@patternfly/react-core";
 
 import { EventsTypeTable, EventType } from "./EventsTypeTable";
 import { useServerInfo } from "../../context/server-info/ServerInfoProvider";

@@ -21,8 +21,8 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { DomainIcon, TableIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { DomainIcon, TableIcon } from "../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";

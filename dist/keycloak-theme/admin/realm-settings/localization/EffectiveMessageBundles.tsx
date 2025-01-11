@@ -18,7 +18,7 @@ import {
   TextContent,
   TextInput,
   TextVariants,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { pickBy } from "lodash-es";
 import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";

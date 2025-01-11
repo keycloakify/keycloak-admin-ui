@@ -11,7 +11,7 @@ import {
   InputGroupItem,
   Split,
   SplitItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";

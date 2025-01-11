@@ -9,8 +9,8 @@ import {
   Form,
   FormGroup,
   TextInput,
-} from "@patternfly/react-core";
-import { CheckIcon, PencilAltIcon, TimesIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { CheckIcon, PencilAltIcon, TimesIcon } from "../../../shared/@patternfly/react-icons";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

@@ -14,8 +14,8 @@ import {
   Tab,
   TabTitleText,
   Tooltip,
-} from "@patternfly/react-core";
-import { InfoCircleIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { InfoCircleIcon } from "../../shared/@patternfly/react-icons";
 import { cloneDeep, sortBy } from "lodash-es";
 import { useMemo, useState } from "react";
 import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";

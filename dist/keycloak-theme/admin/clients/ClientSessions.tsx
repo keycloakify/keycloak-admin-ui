@@ -4,7 +4,7 @@
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 import type UserSessionRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userSessionRepresentation";
-import { PageSection } from "@patternfly/react-core";
+import { PageSection } from "../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";
 import type { LoaderFunction } from "../../shared/keycloak-ui-shared";

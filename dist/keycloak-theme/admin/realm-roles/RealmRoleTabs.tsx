@@ -11,7 +11,7 @@ import {
   PageSection,
   Tab,
   TabTitleText,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import {
   FormProvider,

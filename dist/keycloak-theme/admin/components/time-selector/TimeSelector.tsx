@@ -13,7 +13,7 @@ import {
   SplitItem,
   TextInput,
   TextInputProps,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 

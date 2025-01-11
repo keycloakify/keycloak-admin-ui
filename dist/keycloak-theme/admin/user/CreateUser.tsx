@@ -10,7 +10,7 @@ import {
   useAlerts,
   useFetch,
 } from "../../shared/keycloak-ui-shared";
-import { AlertVariant, PageSection } from "@patternfly/react-core";
+import { AlertVariant, PageSection } from "../../shared/@patternfly/react-core";
 import { TFunction } from "i18next";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

@@ -15,9 +15,9 @@ import {
   ButtonVariant,
   PageSection,
   SelectOption,
-} from "@patternfly/react-core";
-import { FilterIcon } from "@patternfly/react-icons";
-import { cellWidth } from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-core";
+import { FilterIcon } from "../../../shared/@patternfly/react-icons";
+import { cellWidth } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

@@ -13,8 +13,8 @@ import {
   DropdownList,
   MenuToggle,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { EllipsisVIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { EllipsisVIcon } from "../../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

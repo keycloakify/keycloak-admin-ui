@@ -18,8 +18,8 @@ import {
   Text,
   TextContent,
   TextVariants,
-} from "@patternfly/react-core";
-import { DatabaseIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { DatabaseIcon } from "../../shared/@patternfly/react-icons";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

@@ -2,8 +2,8 @@
 
 // @ts-nocheck
 
-import { Banner, Flex, FlexItem } from "@patternfly/react-core";
-import { ExclamationTriangleIcon } from "@patternfly/react-icons";
+import { Banner, Flex, FlexItem } from "../shared/@patternfly/react-core";
+import { ExclamationTriangleIcon } from "../shared/@patternfly/react-icons";
 import { useWhoAmI } from "./context/whoami/WhoAmI";
 import { useTranslation } from "react-i18next";
 

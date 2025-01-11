@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
-import { ActionGroup, Button, Form, PageSection } from "@patternfly/react-core";
+import { ActionGroup, Button, Form, PageSection } from "../../../shared/@patternfly/react-core";
 import type { editor } from "monaco-editor";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

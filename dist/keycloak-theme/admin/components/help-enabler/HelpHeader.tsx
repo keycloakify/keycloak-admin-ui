@@ -12,8 +12,8 @@ import {
   Split,
   SplitItem,
   Switch,
-} from "@patternfly/react-core";
-import { HelpIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { HelpIcon } from "../../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import helpUrls from "../../help-urls";

@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { PageSection, Tab, TabTitleText } from "@patternfly/react-core";
+import { PageSection, Tab, TabTitleText } from "../../shared/@patternfly/react-core";
 
 import { ViewHeader } from "../components/view-header/ViewHeader";
 import { useRealm } from "../context/realm-context/RealmContext";

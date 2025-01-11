@@ -13,7 +13,7 @@ import {
   ModalVariant,
   TextContent,
   TextInput,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";

@@ -4,7 +4,7 @@
 
 import { useTranslation } from "react-i18next";
 import { Controller, useFormContext } from "react-hook-form";
-import { FormGroup } from "@patternfly/react-core";
+import { FormGroup } from "../../../../shared/@patternfly/react-core";
 import { CodeEditor, Language } from "@patternfly/react-code-editor";
 
 import { HelpItem } from "../../../../shared/keycloak-ui-shared";

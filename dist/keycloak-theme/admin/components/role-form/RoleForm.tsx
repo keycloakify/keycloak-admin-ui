@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { ActionGroup, Button, PageSection } from "@patternfly/react-core";
+import { ActionGroup, Button, PageSection } from "../../../shared/@patternfly/react-core";
 import {
   SubmitHandler,
   UseFormReturn,

@@ -11,7 +11,7 @@ import {
   ButtonVariant,
   DropdownItem,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../../../shared/@patternfly/react-core";
 import { useState, type JSX } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

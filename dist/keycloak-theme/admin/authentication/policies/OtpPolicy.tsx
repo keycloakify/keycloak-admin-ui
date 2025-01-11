@@ -13,7 +13,7 @@ import {
   FormGroup,
   PageSection,
   Radio,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useEffect, useMemo } from "react";
 import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

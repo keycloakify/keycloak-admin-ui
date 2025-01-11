@@ -12,7 +12,7 @@ import {
   ModalVariant,
   PageSection,
   Radio,
-} from "@patternfly/react-core";
+} from "../../../../shared/@patternfly/react-core";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../../admin-client";

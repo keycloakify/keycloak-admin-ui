@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
-import { Form } from "@patternfly/react-core";
+import { Form } from "../../shared/@patternfly/react-core";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ScrollForm } from "../../shared/keycloak-ui-shared";

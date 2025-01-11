@@ -22,7 +22,7 @@ import {
   Switch,
   Title,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { omit } from "lodash-es";
 import { useState } from "react";
 import { Controller, useForm, type UseFormReturn } from "react-hook-form";

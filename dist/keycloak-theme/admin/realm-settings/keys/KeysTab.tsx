@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type ComponentRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentRepresentation";
-import { Tab, TabTitleText } from "@patternfly/react-core";
+import { Tab, TabTitleText } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 

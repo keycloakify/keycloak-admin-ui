@@ -7,7 +7,7 @@ import {
   SelectControl,
   TextControl,
 } from "../../../shared/keycloak-ui-shared";
-import { FormGroup, Switch } from "@patternfly/react-core";
+import { FormGroup, Switch } from "../../../shared/@patternfly/react-core";
 import { isEqual } from "lodash-es";
 import { useEffect } from "react";
 import {

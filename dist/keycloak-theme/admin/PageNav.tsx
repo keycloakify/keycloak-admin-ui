@@ -10,7 +10,7 @@ import {
   NavList,
   PageSidebar,
   PageSidebarBody,
-} from "@patternfly/react-core";
+} from "../shared/@patternfly/react-core";
 import { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { NavLink, useMatch, useNavigate } from "react-router-dom";

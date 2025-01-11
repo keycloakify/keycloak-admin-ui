@@ -7,7 +7,7 @@ import {
   SelectControl,
   TextControl,
 } from "../../../shared/keycloak-ui-shared";
-import { FormGroup, Switch } from "@patternfly/react-core";
+import { FormGroup, Switch } from "../../../shared/@patternfly/react-core";
 import { Controller, FormProvider, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormAccess } from "../../components/form/FormAccess";

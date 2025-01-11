@@ -21,7 +21,7 @@ import {
   Text,
   TextContent,
   TextInput,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { useEffect, useMemo, useState } from "react";
 import {
   FormProvider,
@@ -47,7 +47,7 @@ import {
   AddTranslationsDialog,
   TranslationsType,
 } from "./attribute/AddTranslationsDialog";
-import { GlobeRouteIcon } from "@patternfly/react-icons";
+import { GlobeRouteIcon } from "../../../shared/@patternfly/react-icons";
 import { useAdminClient } from "../../admin-client";
 
 function parseAnnotations(input: Record<string, unknown>): KeyValueType[] {

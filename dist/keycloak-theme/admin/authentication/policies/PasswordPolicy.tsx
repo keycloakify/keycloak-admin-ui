@@ -24,8 +24,8 @@ import {
   MenuToggle,
   SelectList,
   SelectOption,
-} from "@patternfly/react-core";
-import { PlusCircleIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { PlusCircleIcon } from "../../../shared/@patternfly/react-icons";
 import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Card, CardBody, Text, TextVariants } from "@patternfly/react-core";
+import { Card, CardBody, Text, TextVariants } from "../../../shared/@patternfly/react-core";
 
 import "./flow-title.css";
 

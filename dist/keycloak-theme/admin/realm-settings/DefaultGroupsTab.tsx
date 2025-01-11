@@ -22,8 +22,8 @@ import {
   Text,
   TextContent,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { EllipsisVIcon, QuestionCircleIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { EllipsisVIcon, QuestionCircleIcon } from "../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";

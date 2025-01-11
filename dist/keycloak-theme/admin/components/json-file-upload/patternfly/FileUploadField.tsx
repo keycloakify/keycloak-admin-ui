@@ -12,8 +12,8 @@ import {
   TextAreResizeOrientation,
   TextInput,
   InputGroupItem,
-} from "@patternfly/react-core";
-import { css } from "@patternfly/react-styles";
+} from "../../../../shared/@patternfly/react-core";
+import { css } from "../../../../shared/@patternfly/react-styles";
 import styles from "@patternfly/react-styles/css/components/FileUpload/file-upload";
 import { PropsWithChildren } from "react";
 

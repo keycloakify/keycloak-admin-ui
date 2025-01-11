@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Button, ToolbarItem } from "@patternfly/react-core";
+import { Button, ToolbarItem } from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { ListEmptyState } from "../../../shared/keycloak-ui-shared";
 import { Action, KeycloakDataTable } from "../../../shared/keycloak-ui-shared";

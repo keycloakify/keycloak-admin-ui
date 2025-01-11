@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { KeycloakSelect } from "../../../shared/keycloak-ui-shared";
-import { SelectOption, TextInput } from "@patternfly/react-core";
+import { SelectOption, TextInput } from "../../../shared/@patternfly/react-core";
 import { useMemo, useState } from "react";
 import { UseControllerProps, useController } from "react-hook-form";
 import { useTranslation } from "react-i18next";

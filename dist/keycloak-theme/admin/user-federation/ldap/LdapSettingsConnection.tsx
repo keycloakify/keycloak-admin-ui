@@ -17,7 +17,7 @@ import {
   FormGroup,
   SelectOption,
   Switch,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { get, isEqual } from "lodash-es";
 import { useState } from "react";
 import {

@@ -15,7 +15,7 @@ import {
   Stack,
   StackItem,
   TextArea,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { saveAs } from "file-saver";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

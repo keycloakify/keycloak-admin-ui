@@ -14,8 +14,8 @@ import {
   ButtonVariant,
   PageSection,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { IRowData } from "@patternfly/react-table";
+} from "../../shared/@patternfly/react-core";
+import { IRowData } from "../../shared/@patternfly/react-table";
 import { get } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

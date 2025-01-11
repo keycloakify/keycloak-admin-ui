@@ -9,8 +9,8 @@ import {
   InputGroupItem,
   TextInput,
   TextInputProps,
-} from "@patternfly/react-core";
-import { MinusCircleIcon, PlusCircleIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { MinusCircleIcon, PlusCircleIcon } from "../../../shared/@patternfly/react-icons";
 import { Fragment, useEffect, useMemo } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";

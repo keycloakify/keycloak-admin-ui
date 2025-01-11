@@ -15,9 +15,9 @@ import {
   PageSection,
   Switch,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { sortBy } from "lodash-es";
-import { BellIcon } from "@patternfly/react-icons";
+import { BellIcon } from "../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";

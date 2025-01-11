@@ -16,7 +16,7 @@ import {
   Button,
   PageSection,
   ToolbarItem,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import {
   ExpandableRowContent,
   Table,
@@ -26,7 +26,7 @@ import {
   Th,
   Thead,
   Tr,
-} from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";

@@ -4,9 +4,9 @@
 
 import type ResourceRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceRepresentation";
 import { KeycloakSelect, SelectVariant } from "../../../shared/keycloak-ui-shared";
-import { Button, SelectOption, TextInput } from "@patternfly/react-core";
-import { MinusCircleIcon, PlusCircleIcon } from "@patternfly/react-icons";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@patternfly/react-table";
+import { Button, SelectOption, TextInput } from "../../../shared/@patternfly/react-core";
+import { MinusCircleIcon, PlusCircleIcon } from "../../../shared/@patternfly/react-icons";
+import { Table, Tbody, Td, Th, Thead, Tr } from "../../../shared/@patternfly/react-table";
 import { camelCase } from "lodash-es";
 import { useEffect, useMemo, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";

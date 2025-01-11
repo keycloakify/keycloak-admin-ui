@@ -12,7 +12,7 @@ import {
   Tab,
   Tabs,
   TabTitleText,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 import { isEqual } from "lodash-es";
 import { useState } from "react";
 import { useForm } from "react-hook-form";

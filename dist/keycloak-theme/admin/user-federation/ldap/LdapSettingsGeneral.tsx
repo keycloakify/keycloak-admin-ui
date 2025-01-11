@@ -9,7 +9,7 @@ import {
   SelectVariant,
   TextControl,
 } from "../../../shared/keycloak-ui-shared";
-import { FormGroup, SelectOption } from "@patternfly/react-core";
+import { FormGroup, SelectOption } from "../../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
 import { Controller, FormProvider, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";

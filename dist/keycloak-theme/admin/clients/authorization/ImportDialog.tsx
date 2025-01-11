@@ -14,7 +14,7 @@ import {
   Modal,
   Radio,
   Switch,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 import type ResourceServerRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceServerRepresentation";
 import { JsonFileUpload } from "../../components/json-file-upload/JsonFileUpload";

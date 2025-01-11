@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { ButtonVariant, DropdownItem } from "@patternfly/react-core";
+import { ButtonVariant, DropdownItem } from "../../shared/@patternfly/react-core";
 import { ViewHeader } from "../components/view-header/ViewHeader";
 import { useTranslation } from "react-i18next";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";

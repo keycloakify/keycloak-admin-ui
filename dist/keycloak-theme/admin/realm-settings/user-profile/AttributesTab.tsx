@@ -12,8 +12,8 @@ import {
   Toolbar,
   ToolbarContent,
   ToolbarItem,
-} from "@patternfly/react-core";
-import { FilterIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { FilterIcon } from "../../../shared/@patternfly/react-icons";
 import { uniqBy } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

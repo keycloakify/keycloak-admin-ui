@@ -19,7 +19,7 @@ import {
   ModalVariant,
   Text,
   TextContent,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 import type KeyStoreConfig from "@keycloak/keycloak-admin-client/lib/defs/keystoreConfig";
 import { HelpItem, SelectControl } from "../../../shared/keycloak-ui-shared";

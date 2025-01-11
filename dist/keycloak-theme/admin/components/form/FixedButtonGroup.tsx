@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { ActionGroup, ActionGroupProps, Button } from "@patternfly/react-core";
+import { ActionGroup, ActionGroupProps, Button } from "../../../shared/@patternfly/react-core";
 
 import style from "./fixed-buttons.module.css";
 

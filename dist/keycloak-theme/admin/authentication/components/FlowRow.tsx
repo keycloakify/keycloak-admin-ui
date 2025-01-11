@@ -16,8 +16,8 @@ import {
   Text,
   TextVariants,
   Tooltip,
-} from "@patternfly/react-core";
-import { TrashIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { TrashIcon } from "../../../shared/@patternfly/react-icons";
 import { useTranslation } from "react-i18next";
 import type { ExpandableExecution } from "../execution-model";
 import { AddFlowDropdown } from "./AddFlowDropdown";

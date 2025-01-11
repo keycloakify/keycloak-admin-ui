@@ -4,7 +4,7 @@
 
 import ComponentTypeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentTypeRepresentation";
 import { KeycloakSelect } from "../../../../shared/keycloak-ui-shared";
-import { FormGroup, SelectOption } from "@patternfly/react-core";
+import { FormGroup, SelectOption } from "../../../../shared/@patternfly/react-core";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useServerInfo } from "../../../context/server-info/ServerInfoProvider";

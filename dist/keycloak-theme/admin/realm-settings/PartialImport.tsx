@@ -29,7 +29,7 @@ import {
   StackItem,
   Text,
   TextContent,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";

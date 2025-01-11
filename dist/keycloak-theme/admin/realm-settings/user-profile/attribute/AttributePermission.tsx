@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { Checkbox, FormGroup, Grid, GridItem } from "@patternfly/react-core";
+import { Checkbox, FormGroup, Grid, GridItem } from "../../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

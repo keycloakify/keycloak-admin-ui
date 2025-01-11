@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { useTranslation } from "react-i18next";
-import { FormGroup } from "@patternfly/react-core";
+import { FormGroup } from "../../../shared/@patternfly/react-core";
 
 import type { ComponentProps } from "./components";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";

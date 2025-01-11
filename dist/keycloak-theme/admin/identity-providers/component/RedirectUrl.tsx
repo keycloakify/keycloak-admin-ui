@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { ClipboardCopy, FormGroup } from "@patternfly/react-core";
+import { ClipboardCopy, FormGroup } from "../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { HelpItem, useEnvironment } from "../../../shared/keycloak-ui-shared";
 import { useRealm } from "../../context/realm-context/RealmContext";

@@ -30,8 +30,8 @@ import {
   PageSection,
   Text,
   TextVariants,
-} from "@patternfly/react-core";
-import { PlusCircleIcon, TrashIcon } from "@patternfly/react-icons";
+} from "../../shared/@patternfly/react-core";
+import { PlusCircleIcon, TrashIcon } from "../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

@@ -17,7 +17,7 @@ import {
   Text,
   TextContent,
   TextVariants,
-} from "@patternfly/react-core";
+} from "../../../shared/@patternfly/react-core";
 
 import type ProtocolMapperRepresentation from "@keycloak/keycloak-admin-client/lib/defs/protocolMapperRepresentation";
 import type { ProtocolMapperTypeRepresentation } from "@keycloak/keycloak-admin-client/lib/defs/serverInfoRepesentation";

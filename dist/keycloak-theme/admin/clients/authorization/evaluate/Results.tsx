@@ -18,9 +18,9 @@ import {
   MenuToggle,
   SelectList,
   SelectOption,
-} from "@patternfly/react-core";
-import { SearchIcon } from "@patternfly/react-icons";
-import { Table, Th, Thead, Tr } from "@patternfly/react-table";
+} from "../../../../shared/@patternfly/react-core";
+import { SearchIcon } from "../../../../shared/@patternfly/react-icons";
+import { Table, Th, Thead, Tr } from "../../../../shared/@patternfly/react-table";
 import { KeyboardEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 

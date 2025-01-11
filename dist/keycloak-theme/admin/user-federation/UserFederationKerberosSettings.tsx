@@ -10,7 +10,7 @@ import {
   Button,
   Form,
   PageSection,
-} from "@patternfly/react-core";
+} from "../../shared/@patternfly/react-core";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";

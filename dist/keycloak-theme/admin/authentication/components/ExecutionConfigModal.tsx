@@ -14,8 +14,8 @@ import {
   Modal,
   ModalVariant,
   Tooltip,
-} from "@patternfly/react-core";
-import { CogIcon, TrashIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { CogIcon, TrashIcon } from "../../../shared/@patternfly/react-icons";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

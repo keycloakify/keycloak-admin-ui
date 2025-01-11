@@ -10,8 +10,8 @@ import {
   DropdownList,
   MenuToggle,
   Tooltip,
-} from "@patternfly/react-core";
-import { PlusIcon } from "@patternfly/react-icons";
+} from "../../../shared/@patternfly/react-core";
+import { PlusIcon } from "../../../shared/@patternfly/react-icons";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

@@ -3,8 +3,8 @@
 // @ts-nocheck
 
 import type UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
-import { Button, Modal, ModalVariant, Label } from "@patternfly/react-core";
-import { InfoCircleIcon } from "@patternfly/react-icons";
+import { Button, Modal, ModalVariant, Label } from "../../shared/@patternfly/react-core";
+import { InfoCircleIcon } from "../../shared/@patternfly/react-icons";
 import { differenceBy } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";

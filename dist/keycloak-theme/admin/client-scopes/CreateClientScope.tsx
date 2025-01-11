@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { AlertVariant, PageSection } from "@patternfly/react-core";
+import { AlertVariant, PageSection } from "../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAdminClient } from "../admin-client";

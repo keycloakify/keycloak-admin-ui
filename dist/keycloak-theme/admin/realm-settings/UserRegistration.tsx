@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import { AlertVariant, Tab, Tabs, TabTitleText } from "@patternfly/react-core";
+import { AlertVariant, Tab, Tabs, TabTitleText } from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";

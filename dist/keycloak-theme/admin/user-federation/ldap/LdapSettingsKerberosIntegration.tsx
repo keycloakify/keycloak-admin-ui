@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { FormGroup, Switch } from "@patternfly/react-core";
+import { FormGroup, Switch } from "../../../shared/@patternfly/react-core";
 import {
   Controller,
   FormProvider,

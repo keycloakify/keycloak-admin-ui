@@ -5,7 +5,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FormProvider, useForm } from "react-hook-form";
-import { ActionGroup, Button } from "@patternfly/react-core";
+import { ActionGroup, Button } from "../../../shared/@patternfly/react-core";
 
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import { FormAccess } from "../../components/form/FormAccess";

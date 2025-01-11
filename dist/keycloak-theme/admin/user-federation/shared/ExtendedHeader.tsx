@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { AlertVariant, Divider, DropdownItem } from "@patternfly/react-core";
+import { AlertVariant, Divider, DropdownItem } from "../../../shared/@patternfly/react-core";
 import { useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";

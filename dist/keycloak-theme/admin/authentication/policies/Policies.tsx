@@ -4,7 +4,7 @@
 
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import { useFetch } from "../../../shared/keycloak-ui-shared";
-import { Tab, Tabs, TabTitleText } from "@patternfly/react-core";
+import { Tab, Tabs, TabTitleText } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";

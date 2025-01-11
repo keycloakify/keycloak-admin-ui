@@ -14,7 +14,7 @@ import {
   Tr,
   type TableProps,
   ThProps,
-} from "@patternfly/react-table";
+} from "../../../shared/@patternfly/react-table";
 import type { ThInfoType } from "@patternfly/react-table/dist/esm/components/Table/base/types";
 import { get } from "lodash-es";
 import {
