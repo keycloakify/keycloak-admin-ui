@@ -70,8 +70,6 @@ import { z } from "zod";
         return `${parseInt(major[0] + major[1])}.${parseInt(major[2] + major[3])}.${parseInt(major[4] + major[5])}`;
     })();
 
-    console.log(keycloakVersion);
-
     const fetchOptions = getProxyFetchOptions({
         npmConfigGetCwd: getThisCodebaseRootDirPath()
     });
@@ -171,9 +169,12 @@ import { z } from "zod";
                             [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
                             [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
                             [
-                                `logo.startsWith("/")
-                ? joinPath(environment.resourceUrl, logo)`,
-                                `src={logoSvgUrl}`
+                                `src={
+              logo.startsWith("/")
+                ? joinPath(environment.resourceUrl, logo)
+                : logo
+            }`,
+                                'src={customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl}'
                             ],
                             [undefined, `import imgAvatarSvgUrl from "./assets/img_avatar.svg";`],
                             ['environment.resourceUrl + "/img_avatar.svg"', "imgAvatarSvgUrl"]
@@ -437,10 +438,6 @@ import { z } from "zod";
         })();
 
         assert<Equals<z.TypeOf<typeof zParsedPackageJson>, ParsedPackageJson>>;
-
-        console.log(
-            `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`
-        );
 
         const parsedPackageJson = await fetch(
             `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,

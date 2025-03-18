@@ -212,10 +212,7 @@ export const Header = () => {
         </MastheadToggle>
         <MastheadBrand href={logoUrl}>
           <img
-            src={
-              src={logoSvgUrl}
-                : logo
-            }
+            src={customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl}
             id="masthead-logo"
             alt={t("logo")}
             aria-label={t("logo")}
