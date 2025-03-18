@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import imgAvatarSvgUrl from "./assets/img_avatar.svg";
-import logoSvgUrl from "./assets/logo.svg";
+import logoSvgUrl from "./assets/theme/logo.svg";
 import { useEnvironment, useHelp } from "../shared/keycloak-ui-shared";
 import {
   Avatar,

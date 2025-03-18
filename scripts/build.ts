@@ -166,7 +166,7 @@ import { z } from "zod";
                 switch (fileRelativePath) {
                     case "PageHeader.tsx":
                         for (const [search, replace] of [
-                            [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
+                            [undefined, `import logoSvgUrl from "./assets/theme/logo.svg";`],
                             [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
                             [
                                 `src={
