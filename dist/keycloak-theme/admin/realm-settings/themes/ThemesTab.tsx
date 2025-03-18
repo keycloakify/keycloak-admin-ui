@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import loginCssUrl from "../../assets/login.css?url";
+import loginCssUrl from "../../assets/theme/login.css?url";
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import { useEnvironment } from "../../../shared/keycloak-ui-shared";
 import { Tab, TabTitleText } from "../../../shared/@patternfly/react-core";

@@ -166,7 +166,7 @@ import { z } from "zod";
                 switch (fileRelativePath) {
                     case "PageHeader.tsx":
                         for (const [search, replace] of [
-                            [undefined, `import logoSvgUrl from "./assets/theme/logo.svg";`],
+                            [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
                             [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
                             [
                                 `src={
@@ -214,7 +214,7 @@ import { z } from "zod";
                         break;
                     case pathJoin("realm-settings", "themes", "ThemesTab.tsx"):
                         for (const [search, replace] of [
-                            [undefined, `import loginCssUrl from "../../assets/login.css?url";`],
+                            [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
                             [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]
                         ] as const) {
                             const sourceCode_before = modifiedSourceCode;
