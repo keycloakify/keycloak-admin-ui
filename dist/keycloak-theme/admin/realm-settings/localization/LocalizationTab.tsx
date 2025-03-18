@@ -11,14 +11,14 @@ import {
   TabTitleText,
   Tabs,
 } from "../../../shared/@patternfly/react-core";
-import { useEffect, useMemo, useState } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useMemo, useState } from "react";
+import { FormProvider, useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormAccess } from "../../components/form/FormAccess";
 import { useServerInfo } from "../../context/server-info/ServerInfoProvider";
 import { useWhoAmI } from "../../context/whoami/WhoAmI";
 import { DEFAULT_LOCALE } from "../../i18n/i18n";
-import { convertToFormValues, localeToDisplayName } from "../../util";
+import { localeToDisplayName } from "../../util";
 import { EffectiveMessageBundles } from "./EffectiveMessageBundles";
 import { RealmOverrides } from "./RealmOverrides";
 
@@ -37,8 +37,8 @@ export const LocalizationTab = ({
   const { whoAmI } = useWhoAmI();
 
   const [activeTab, setActiveTab] = useState(0);
-  const form = useForm();
-  const { setValue, control, handleSubmit, formState } = form;
+  const form = useFormContext<RealmRepresentation>();
+  const { control, reset, handleSubmit, formState } = form;
 
   const defaultSupportedLocales = realm.supportedLocales?.length
     ? realm.supportedLocales
@@ -52,14 +52,7 @@ export const LocalizationTab = ({
     return Array.from(new Set(locales));
   }, [themeTypes]);
 
-  const setupForm = () => {
-    convertToFormValues(realm, setValue);
-    setValue("supportedLocales", defaultSupportedLocales);
-  };
-
-  useEffect(setupForm, []);
-
-  const watchSupportedLocales: string[] = useWatch({
+  const watchSupportedLocales = useWatch({
     control,
     name: "supportedLocales",
     defaultValue: defaultSupportedLocales,
@@ -74,7 +67,7 @@ export const LocalizationTab = ({
   const defaultLocales = useWatch({
     name: "defaultLocale",
     control,
-    defaultValue: realm.defaultLocale ? [realm.defaultLocale] : [],
+    defaultValue: "en",
   });
 
   return (
@@ -126,7 +119,7 @@ export const LocalizationTab = ({
                     defaultValue: DEFAULT_LOCALE,
                   }}
                   data-testid="select-default-locale"
-                  options={watchSupportedLocales.map((l) => ({
+                  options={watchSupportedLocales!.map((l) => ({
                     key: l,
                     value: localeToDisplayName(l, whoAmI.getLocale()) || l,
                   }))}
@@ -143,7 +136,7 @@ export const LocalizationTab = ({
             >
               {t("save")}
             </Button>
-            <Button variant="link" onClick={setupForm}>
+            <Button variant="link" onClick={() => reset(realm)}>
               {t("revert")}
             </Button>
           </ActionGroup>
@@ -156,8 +149,8 @@ export const LocalizationTab = ({
         data-testid="rs-localization-realm-overrides-tab"
       >
         <RealmOverrides
-          internationalizationEnabled={internationalizationEnabled}
-          watchSupportedLocales={watchSupportedLocales}
+          internationalizationEnabled={internationalizationEnabled || false}
+          watchSupportedLocales={watchSupportedLocales || []}
           realm={realm}
           tableData={tableData}
         />
@@ -170,7 +163,7 @@ export const LocalizationTab = ({
       >
         <EffectiveMessageBundles
           defaultSupportedLocales={defaultSupportedLocales}
-          defaultLocales={defaultLocales}
+          defaultLocales={[defaultLocales!]}
         />
       </Tab>
     </Tabs>

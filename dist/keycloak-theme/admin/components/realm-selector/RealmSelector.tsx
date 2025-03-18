@@ -115,7 +115,7 @@ export const RealmSelector = () => {
     debounce((value: string) => {
       setFirst(0);
       setSearch(value);
-    }, 1000),
+    }, 300),
     [],
   );
 
@@ -140,18 +140,15 @@ export const RealmSelector = () => {
   );
 
   const sortedRealms = useMemo(
-    () => [
-      ...(first === 0 && !search
-        ? recentRealms.reduce((acc, name) => {
-            const realm = realms.find((r) => r.name === name);
-            if (realm) {
-              acc.push(realm);
-            }
-            return acc;
-          }, [] as RealmNameRepresentation[])
-        : []),
-      ...realms.filter((r) => !recentRealms.includes(r.name)),
-    ],
+    () =>
+      realms.sort((a, b) => {
+        if (a.name === realm) return -1;
+        if (b.name === realm) return 1;
+        if (recentRealms.includes(a.name)) return -1;
+        if (recentRealms.includes(b.name)) return 1;
+
+        return a.name.localeCompare(b.name, whoAmI.getLocale());
+      }),
     [recentRealms, realms, first, search],
   );
 
@@ -204,7 +201,12 @@ export const RealmSelector = () => {
         {(realms.length !== 0
           ? [
               first !== 0 ? (
-                <DropdownItem onClick={() => setFirst(first - MAX_RESULTS)}>
+                <DropdownItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFirst(first - MAX_RESULTS);
+                  }}
+                >
                   <AngleLeftIcon /> {t("previous")}
                 </DropdownItem>
               ) : (
@@ -222,13 +224,18 @@ export const RealmSelector = () => {
                   <RealmText
                     {...realm}
                     showIsRecent={
-                      realms.length > 5 && recentRealms.includes(realm.name)
+                      realms.length > 5 && recentRealms?.includes(realm.name)
                     }
                   />
                 </DropdownItem>
               )),
               realms.length > MAX_RESULTS ? (
-                <DropdownItem onClick={() => setFirst(first + MAX_RESULTS)}>
+                <DropdownItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFirst(first + MAX_RESULTS);
+                  }}
+                >
                   <AngleRightIcon />
                   {t("next")}
                 </DropdownItem>

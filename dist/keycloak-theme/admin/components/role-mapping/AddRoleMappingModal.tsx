@@ -2,6 +2,11 @@
 
 // @ts-nocheck
 
+import RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
+import {
+  KeycloakDataTable,
+  ListEmptyState,
+} from "../../../shared/keycloak-ui-shared";
 import {
   Button,
   Dropdown,
@@ -13,14 +18,13 @@ import {
   ToolbarItem,
 } from "../../../shared/@patternfly/react-core";
 import { FilterIcon } from "../../../shared/@patternfly/react-icons";
+import { cellWidth, TableText } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";
 import { useAccess } from "../../context/access/Access";
 import { translationFormatter } from "../../utils/translationFormatter";
 import useLocaleSort from "../../utils/useLocaleSort";
-import { ListEmptyState } from "../../../shared/keycloak-ui-shared";
-import { KeycloakDataTable } from "../../../shared/keycloak-ui-shared";
 import { ResourcesKey, Row, ServiceRole } from "./RoleMapping";
 import { getAvailableRoles } from "./queries";
 import { getAvailableClientRoles } from "./resource";
@@ -36,6 +40,15 @@ type AddRoleMappingModalProps = {
 };
 
 type FilterType = "roles" | "clients";
+
+const RoleDescription = ({ role }: { role: RoleRepresentation }) => {
+  const { t } = useTranslation();
+  return (
+    <TableText wrapModifier="truncate">
+      {translationFormatter(t)(role.description) as string}
+    </TableText>
+  );
+};
 
 export const AddRoleMappingModal = ({
   id,
@@ -188,11 +201,12 @@ export const AddRoleMappingModal = ({
           {
             name: "name",
             cellRenderer: ServiceRole,
+            transforms: [cellWidth(20)],
           },
           {
             name: "role.description",
             displayKey: "description",
-            cellFormatters: [translationFormatter(t)],
+            cellRenderer: RoleDescription,
           },
         ]}
         emptyState={
@@ -201,9 +215,9 @@ export const AddRoleMappingModal = ({
             instructions={t("noRealmRolesToAssign")}
             secondaryActions={[
               {
-                text: t("filterByClients"),
+                text: t("filterByRoles"),
                 onClick: () => {
-                  setFilterType("clients");
+                  setFilterType("roles");
                   refresh();
                 },
               },

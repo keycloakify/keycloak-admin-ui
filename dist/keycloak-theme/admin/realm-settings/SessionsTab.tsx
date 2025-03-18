@@ -10,13 +10,11 @@ import {
   PageSection,
   Switch,
 } from "../../shared/@patternfly/react-core";
-import { useEffect } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormPanel, HelpItem } from "../../shared/keycloak-ui-shared";
 import { FormAccess } from "../components/form/FormAccess";
 import { TimeSelector } from "../components/time-selector/TimeSelector";
-import { convertToFormValues } from "../util";
 
 import "./realm-settings-section.css";
 
@@ -31,19 +29,13 @@ export const RealmSettingsSessionsTab = ({
 }: RealmSettingsSessionsTabProps) => {
   const { t } = useTranslation();
 
-  const { setValue, control, handleSubmit, formState } =
-    useForm<RealmRepresentation>();
+  const { control, handleSubmit, formState, reset } =
+    useFormContext<RealmRepresentation>();
 
   const offlineSessionMaxEnabled = useWatch({
     control,
     name: "offlineSessionMaxLifespanEnabled",
   });
-
-  const setupForm = () => {
-    convertToFormValues(realm, setValue);
-  };
-
-  useEffect(setupForm, []);
 
   return (
     <PageSection variant="light">
@@ -382,7 +374,7 @@ export const RealmSettingsSessionsTab = ({
             >
               {t("save")}
             </Button>
-            <Button variant="link" onClick={setupForm}>
+            <Button variant="link" onClick={() => reset(realm)}>
               {t("revert")}
             </Button>
           </ActionGroup>

@@ -20,6 +20,8 @@ import { StringComponent } from "./StringComponent";
 import { TextComponent } from "./TextComponent";
 import { UrlComponent } from "./UrlComponent";
 import { UserProfileAttributeListComponent } from "./UserProfileAttributeListComponent";
+import { IntComponent } from "./IntComponent";
+import { NumberComponent } from "./NumberComponent";
 
 export type ComponentProps = Omit<ConfigPropertyRepresentation, "type"> & {
   isDisabled?: boolean;
@@ -27,9 +29,16 @@ export type ComponentProps = Omit<ConfigPropertyRepresentation, "type"> & {
   stringify?: boolean;
 };
 
+export type NumberComponentProps = ComponentProps & {
+  min?: number;
+  max?: number;
+};
+
 type ComponentType =
   | "String"
   | "Text"
+  | "Integer"
+  | "Number"
   | "boolean"
   | "List"
   | "Role"
@@ -50,6 +59,8 @@ export const COMPONENTS: {
   String: StringComponent,
   Text: TextComponent,
   boolean: BooleanComponent,
+  Integer: IntComponent,
+  Number: NumberComponent,
   List: ListComponent,
   Role: RoleComponent,
   Script: ScriptComponent,

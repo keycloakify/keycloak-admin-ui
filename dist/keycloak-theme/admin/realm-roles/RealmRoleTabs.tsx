@@ -56,6 +56,7 @@ import { useParams } from "../utils/useParams";
 import { UsersInRoleTab } from "./UsersInRoleTab";
 import { RealmRoleRoute, RealmRoleTab, toRealmRole } from "./routes/RealmRole";
 import { toRealmRoles } from "./routes/RealmRoles";
+import { AdminEvents } from "../events/AdminEvents";
 
 export default function RealmRoleTabs() {
   const { adminClient } = useAdminClient();
@@ -201,6 +202,7 @@ export default function RealmRoleTabs() {
   const attributesTab = useTab("attributes");
   const usersInRoleTab = useTab("users-in-role");
   const permissionsTab = useTab("permissions");
+  const eventsTab = useTab("events");
 
   const [toggleDeleteDialog, DeleteConfirm] = useConfirmDialog({
     titleKey: "roleDeleteConfirm",
@@ -349,6 +351,15 @@ export default function RealmRoleTabs() {
                   <PermissionsTab id={id} type="roles" />
                 </Tab>
               )}
+            {hasAccess("view-events") && (
+              <Tab
+                data-testid="admin-events-tab"
+                title={<TabTitleText>{t("adminEvents")}</TabTitleText>}
+                {...eventsTab}
+              >
+                <AdminEvents resourcePath={`roles-by-id/${id}`} />
+              </Tab>
+            )}
           </RoutableTabs>
         </FormProvider>
       </PageSection>

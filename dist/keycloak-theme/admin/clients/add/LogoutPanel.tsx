@@ -7,6 +7,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { HelpItem, TextControl } from "../../../shared/keycloak-ui-shared";
 
+import { DefaultSwitchControl } from "../../components/SwitchControl";
 import { FixedButtonsGroup } from "../../components/form/FixedButtonGroup";
 import { FormAccess } from "../../components/form/FormAccess";
 import { useAccess } from "../../context/access/Access";
@@ -33,6 +34,10 @@ export const LogoutPanel = ({
 
   const protocol = watch("protocol");
   const frontchannelLogout = watch("frontchannelLogout");
+  const frontchannelLogoutTooltip =
+    protocol === "openid-connect"
+      ? "frontchannelLogoutOIDCHelp"
+      : "frontchannelLogoutHelp";
 
   return (
     <FormAccess
@@ -44,7 +49,7 @@ export const LogoutPanel = ({
         label={t("frontchannelLogout")}
         labelIcon={
           <HelpItem
-            helpText={t("frontchannelLogoutHelp")}
+            helpText={t(frontchannelLogoutTooltip)}
             fieldLabelId="frontchannelLogout"
           />
         }
@@ -82,7 +87,18 @@ export const LogoutPanel = ({
           }}
         />
       )}
-      {protocol === "openid-connect" && (
+      {protocol === "openid-connect" && frontchannelLogout && (
+        <DefaultSwitchControl
+          name={convertAttributeNameToForm<FormFields>(
+            "attributes.frontchannel.logout.session.required",
+          )}
+          defaultValue="true"
+          label={t("frontchannelLogoutSessionRequired")}
+          labelIcon={t("frontchannelLogoutSessionRequiredHelp")}
+          stringify
+        />
+      )}
+      {protocol === "openid-connect" && !frontchannelLogout && (
         <>
           <TextControl
             data-testid="backchannelLogoutUrl"

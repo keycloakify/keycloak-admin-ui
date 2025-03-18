@@ -299,11 +299,6 @@
      },
      {
         "groupName":"Social",
-        "name":"Openshift v3",
-        "id":"openshift-v3"
-     },
-     {
-        "groupName":"Social",
         "name":"GitLab",
         "id":"gitlab"
      },
@@ -378,11 +373,6 @@
         "groupName":"Social",
         "name":"Openshift v4",
         "id":"openshift-v4"
-     },
-     {
-        "groupName":"Social",
-        "name":"Openshift v3",
-        "id":"openshift-v3"
      },
      {
         "groupName":"Social",
@@ -1587,9 +1577,6 @@
            "openshift-v4":{
               "order":0
            },
-           "openshift-v3":{
-              "order":0
-           },
            "gitlab":{
               "order":0
            },
@@ -2070,7 +2057,7 @@
            "id":"saml-user-attribute-mapper",
            "name":"User Attribute",
            "category":"AttributeStatement Mapper",
-           "helpText":"Map a custom user attribute to a to a SAML attribute.",
+           "helpText":"Map a custom user attribute to a SAML attribute.",
            "priority":0,
            "properties":[
               {
@@ -6444,7 +6431,7 @@
         },
         {
            "id":"saml-user-attribute-mapper",
-           "helpText":"Map a custom user attribute to a to a SAML attribute.",
+           "helpText":"Map a custom user attribute to a SAML attribute.",
            "properties":[
               {
                  "name":"user.attribute",

@@ -171,7 +171,7 @@ export const LdapSettingsConnection = ({
         >
           <Controller
             name="config.connectionPooling"
-            defaultValue={["false"]}
+            defaultValue={["true"]}
             control={form.control}
             render={({ field }) => (
               <Switch

@@ -11,7 +11,8 @@ export type OrganizationTab =
   | "settings"
   | "attributes"
   | "members"
-  | "identityProviders";
+  | "identityProviders"
+  | "events";
 
 export type EditOrganizationParams = {
   realm: string;

@@ -16,7 +16,6 @@ import {
   ErrorBoundaryProvider,
   KeycloakSpinner,
 } from "../shared/keycloak-ui-shared";
-import { Banners } from "./Banners";
 import { Header } from "./PageHeader";
 import { PageNav } from "./PageNav";
 import { AdminClientContext, initAdminClient } from "./admin-client";
@@ -31,7 +30,7 @@ import type { Environment } from "./environment";
 import { SubGroups } from "./groups/SubGroupsContext";
 import { AuthWall } from "./root/AuthWall";
 
-const AppContexts = ({ children }: PropsWithChildren) => (
+export const AppContexts = ({ children }: PropsWithChildren) => (
   <ErrorBoundaryProvider>
     <ServerInfoProvider>
       <RealmContextProvider>
@@ -63,7 +62,6 @@ export const App = () => {
   return (
     <AdminClientContext.Provider value={{ keycloak, adminClient }}>
       <AppContexts>
-        <Banners />
         <Page
           header={<Header />}
           isManagedSidebar

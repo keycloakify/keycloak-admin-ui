@@ -44,6 +44,7 @@ import { getId, getLastId } from "./groupIdUtils";
 import { toGroups } from "./routes/Groups";
 
 import "./GroupsSection.css";
+import { AdminEvents } from "../events/AdminEvents";
 
 export default function GroupsSection() {
   const { adminClient } = useAdminClient();
@@ -80,6 +81,8 @@ export default function GroupsSection() {
     hasAccess("view-users") ||
     currentGroup()?.access?.viewMembers ||
     currentGroup()?.access?.manageMembers;
+
+  const [activeEventsTab, setActiveEventsTab] = useState("adminEvents");
 
   useFetch(
     async () => {
@@ -236,6 +239,43 @@ export default function GroupsSection() {
                       title={<TabTitleText>{t("permissions")}</TabTitleText>}
                     >
                       <PermissionsTab id={id} type="groups" />
+                    </Tab>
+                  )}
+                  {hasAccess("view-events") && (
+                    <Tab
+                      eventKey={5}
+                      data-testid="admin-events-tab"
+                      title={<TabTitleText>{t("adminEvents")}</TabTitleText>}
+                    >
+                      <Tabs
+                        activeKey={activeEventsTab}
+                        onSelect={(_, key) => setActiveEventsTab(key as string)}
+                      >
+                        <Tab
+                          eventKey="adminEvents"
+                          title={
+                            <TabTitleText>{t("adminEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`groups/${id}`} />
+                        </Tab>
+                        <Tab
+                          eventKey="membershipEvents"
+                          title={
+                            <TabTitleText>{t("membershipEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`users/*/groups/${id}`} />
+                        </Tab>
+                        <Tab
+                          eventKey="childGroupEvents"
+                          title={
+                            <TabTitleText>{t("childGroupEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`groups/${id}/children`} />
+                        </Tab>
+                      </Tabs>
                     </Tab>
                   )}
                 </Tabs>

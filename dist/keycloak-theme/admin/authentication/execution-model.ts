@@ -97,7 +97,7 @@ export class ExecutionList {
         return ex;
       }
       current.index++;
-      if (ex.executionList) {
+      if (ex.executionList && !ex.isCollapsed) {
         const found = this.findExecution(index, current, ex.executionList);
         if (found) {
           return found;

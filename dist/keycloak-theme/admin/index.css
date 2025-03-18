@@ -30,3 +30,20 @@ input[type="checkbox"] {
   color: var(--pf-v5-global--primary-color--100);
   width: fit-content;
 }
+
+div.pf-v5-c-page {
+  grid-column-start: banners;
+  grid-template-rows: max-content max-content 1fr;
+  grid-template-areas:
+    "banners banners"
+    "header header"
+    "nav main";
+}
+
+.pf-v5-c-page__sidebar {
+  grid-row-start: 3;
+}
+
+div.w-tc-editor {
+  font-family: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace';
+}

@@ -129,6 +129,12 @@ export const ResourcesPolicySelect = ({
               permissionId,
             })
           : Promise.resolve([]),
+        preSelected && name === "resources"
+          ? adminClient.clients.getResource({
+              id: clientId,
+              resourceId: preSelected,
+            })
+          : Promise.resolve([]),
       ]);
     },
     ([providers, ...policies]) => {

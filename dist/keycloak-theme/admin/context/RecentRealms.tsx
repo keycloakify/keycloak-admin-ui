@@ -2,13 +2,15 @@
 
 // @ts-nocheck
 
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren } from "react";
 
 import {
   createNamedContext,
+  useFetch,
   useRequiredContext,
   useStoredState,
 } from "../../shared/keycloak-ui-shared";
+import { useAdminClient } from "../admin-client";
 import { useRealm } from "./realm-context/RealmContext";
 
 const MAX_REALMS = 4;
@@ -20,16 +22,35 @@ export const RecentRealmsContext = createNamedContext<string[] | undefined>(
 
 export const RecentRealmsProvider = ({ children }: PropsWithChildren) => {
   const { realm } = useRealm();
+  const { adminClient } = useAdminClient();
+
   const [storedRealms, setStoredRealms] = useStoredState(
     localStorage,
     "recentRealms",
     [realm],
   );
 
-  useEffect(() => {
-    const newRealms = [...new Set([realm, ...storedRealms])];
-    setStoredRealms(newRealms.slice(0, MAX_REALMS));
-  }, [realm]);
+  useFetch(
+    () => {
+      return Promise.all(
+        [...new Set([realm, ...storedRealms])].map(async (realm) => {
+          try {
+            const response = await adminClient.realms.findOne({ realm });
+            if (response) {
+              return response.realm;
+            }
+          } catch {
+            return undefined;
+          }
+        }),
+      );
+    },
+    (realms) => {
+      const newRealms = realms.filter((r) => r) as string[];
+      setStoredRealms(newRealms.slice(0, MAX_REALMS));
+    },
+    [realm],
+  );
 
   return (
     <RecentRealmsContext.Provider value={storedRealms}>

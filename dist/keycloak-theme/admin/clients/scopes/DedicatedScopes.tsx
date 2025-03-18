@@ -64,6 +64,7 @@ export default function DedicatedScopes() {
           realm,
           id: client.id!,
           mapperId: mapper.id!,
+          viewMode: "new",
         }),
       );
     } else {
@@ -126,7 +127,7 @@ export default function DedicatedScopes() {
               onAdd={addMappers}
               onDelete={onDeleteMapper}
               detailLink={(mapperId) =>
-                toMapper({ realm, id: client.id!, mapperId })
+                toMapper({ realm, id: client.id!, mapperId, viewMode: "edit" })
               }
             />
           </Tab>

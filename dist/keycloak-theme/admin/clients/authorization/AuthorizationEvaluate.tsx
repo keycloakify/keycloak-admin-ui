@@ -29,7 +29,7 @@ import {
   Title,
 } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
-import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ForbiddenSection } from "../../ForbiddenSection";
 import { useAdminClient } from "../../admin-client";
@@ -100,7 +100,6 @@ const AuthorizationEvaluateContent = ({ client }: Props) => {
 
   const form = useForm<EvaluateFormInputs>({ mode: "onChange" });
   const {
-    control,
     reset,
     trigger,
     formState: { isValid },
@@ -183,9 +182,6 @@ const AuthorizationEvaluateContent = ({ client }: Props) => {
     }
   };
 
-  const user = useWatch({ control, name: "user", defaultValue: [] });
-  const roles = useWatch({ control, name: "roleIds", defaultValue: [] });
-
   if (evaluateResult) {
     return (
       <Results
@@ -217,7 +213,7 @@ const AuthorizationEvaluateContent = ({ client }: Props) => {
                 helpText={t("selectUser")}
                 defaultValue={[]}
                 variant="typeahead"
-                isRequired={roles?.length === 0}
+                isRequired
               />
               <SelectControl
                 name="roleIds"
@@ -228,10 +224,7 @@ const AuthorizationEvaluateContent = ({ client }: Props) => {
                 controller={{
                   defaultValue: [],
                   rules: {
-                    required: {
-                      value: user.length === 0,
-                      message: t("required"),
-                    },
+                    required: true,
                   },
                 }}
                 options={clientRoles.map((role) => role.name!)}

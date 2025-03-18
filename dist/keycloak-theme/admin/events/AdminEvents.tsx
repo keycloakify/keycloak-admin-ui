@@ -4,11 +4,14 @@
 
 import type AdminEventRepresentation from "@keycloak/keycloak-admin-client/lib/defs/adminEventRepresentation";
 import {
+  Action,
+  KeycloakDataTable,
   KeycloakSelect,
+  ListEmptyState,
   SelectVariant,
   TextControl,
+  useFetch,
 } from "../../shared/keycloak-ui-shared";
-import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import {
   ActionGroup,
   Button,
@@ -37,19 +40,19 @@ import {
   Tr,
   cellWidth,
 } from "../../shared/@patternfly/react-table";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 import { pickBy } from "lodash-es";
 import { PropsWithChildren, useMemo, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";
 import DropdownPanel from "../components/dropdown-panel/DropdownPanel";
-import { ListEmptyState } from "../../shared/keycloak-ui-shared";
-import { Action, KeycloakDataTable } from "../../shared/keycloak-ui-shared";
 import { useRealm } from "../context/realm-context/RealmContext";
 import { useServerInfo } from "../context/server-info/ServerInfoProvider";
 import { prettyPrintJSON } from "../util";
 import useFormatDate, { FORMAT_DATE_AND_TIME } from "../utils/useFormatDate";
 import { CellResourceLinkRenderer } from "./ResourceLinks";
+import { EventsBanners } from "../Banners";
 
 import "./events.css";
 
@@ -68,18 +71,6 @@ type AdminEventSearchForm = {
   authUser: string;
   authRealm: string;
   authIpAddress: string;
-};
-
-const defaultValues: AdminEventSearchForm = {
-  resourceTypes: [],
-  operationTypes: [],
-  resourcePath: "",
-  dateFrom: "",
-  dateTo: "",
-  authClient: "",
-  authUser: "",
-  authRealm: "",
-  authIpAddress: "",
 };
 
 const DisplayDialog = ({
@@ -118,7 +109,11 @@ const DetailCell = (event: AdminEventRepresentation) => (
   </DescriptionList>
 );
 
-export const AdminEvents = () => {
+type AdminEventsProps = {
+  resourcePath?: string;
+};
+
+export const AdminEvents = ({ resourcePath }: AdminEventsProps) => {
   const { adminClient } = useAdminClient();
 
   const { t } = useTranslation();
@@ -137,7 +132,20 @@ export const AdminEvents = () => {
     Partial<AdminEventSearchForm>
   >({});
 
+  const defaultValues: AdminEventSearchForm = {
+    resourceTypes: [],
+    operationTypes: [],
+    resourcePath: resourcePath ? resourcePath : "",
+    dateFrom: "",
+    dateTo: "",
+    authClient: "",
+    authUser: "",
+    authRealm: "",
+    authIpAddress: "",
+  };
+
   const [authEvent, setAuthEvent] = useState<AdminEventRepresentation>();
+  const [adminEventsEnabled, setAdminEventsEnabled] = useState<boolean>();
   const [representationEvent, setRepresentationEvent] =
     useState<AdminEventRepresentation>();
 
@@ -164,10 +172,19 @@ export const AdminEvents = () => {
     control,
   } = form;
 
+  useFetch(
+    () => adminClient.realms.getConfigEvents({ realm }),
+    (events) => {
+      setAdminEventsEnabled(events?.adminEventsEnabled!);
+    },
+    [],
+  );
+
   function loader(first?: number, max?: number) {
     return adminClient.realms.findAdminEvents({
       // The admin client wants 'dateFrom' and 'dateTo' to be Date objects, however it cannot actually handle them so we need to cast to any.
       ...(activeFilters as any),
+      resourcePath,
       realm,
       first,
       max,
@@ -266,17 +283,13 @@ export const AdminEvents = () => {
           data-testid="representation-dialog"
           onClose={() => setRepresentationEvent(undefined)}
         >
-          <CodeEditor
-            isLineNumbersVisible
-            isReadOnly
-            code={code}
-            language={Language.json}
-            height="8rem"
-          />
+          <div style={{ height: "8rem", overflow: "scroll" }}>
+            <CodeEditor readOnly value={code} language="json" />
+          </div>
         </DisplayDialog>
       )}
+      {!adminEventsEnabled && <EventsBanners type="adminEvents" />}
       <KeycloakDataTable
-        className="keycloak__events_table"
         key={key}
         loader={loader}
         detailColumns={[
@@ -440,13 +453,15 @@ export const AdminEvents = () => {
                         )}
                       />
                     </FormGroup>
-                    <TextControl
-                      name="resourcePath"
-                      label={t("resourcePath")}
-                    />
+                    {!resourcePath && (
+                      <TextControl
+                        name="resourcePath"
+                        label={t("resourcePath")}
+                      />
+                    )}
                     <TextControl name="authRealm" label={t("realm")} />
                     <TextControl name="authClient" label={t("client")} />
-                    <TextControl name="authUser" label={t("user")} />
+                    <TextControl name="authUser" label={t("userId")} />
                     <TextControl name="authIpAddress" label={t("ipAddress")} />
                     <FormGroup
                       label={t("dateFrom")}
@@ -513,12 +528,15 @@ export const AdminEvents = () => {
                         string | string[],
                       ];
 
+                      if (key === "resourcePath" && !!resourcePath) {
+                        return null;
+                      }
+
                       return (
                         <ChipGroup
                           className="pf-v5-u-mt-md pf-v5-u-mr-md"
                           key={key}
                           categoryName={filterLabels[key]}
-                          isClosable
                           onClick={() => removeFilter(key)}
                         >
                           {typeof value === "string" ? (
