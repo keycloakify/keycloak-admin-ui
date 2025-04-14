@@ -21,7 +21,7 @@ import { useAlerts } from "../../../shared/keycloak-ui-shared";
 import { useConfirmDialog } from "../../components/confirm-dialog/ConfirmDialog";
 import { useAccess } from "../../context/access/Access";
 import useFormatDate from "../../utils/useFormatDate";
-import { CopyToClipboardButton } from "../scopes/CopyToClipboardButton";
+import { CopyToClipboardButton } from "../../components/copy-to-clipboard-button/CopyToClipboardButton";
 
 export type ClientSecretProps = {
   client: ClientRepresentation;

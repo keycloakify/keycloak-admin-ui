@@ -10,7 +10,6 @@ import {
   AlertVariant,
   Button,
   ButtonVariant,
-  DataList,
   DragDrop,
   DropdownItem,
   Droppable,
@@ -23,6 +22,7 @@ import {
   ToolbarItem,
 } from "../../shared/@patternfly/react-core";
 import { DomainIcon, TableIcon } from "../../shared/@patternfly/react-icons";
+import { Table, Tbody } from "../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
@@ -36,6 +36,7 @@ import { BuildInLabel } from "./BuildInLabel";
 import { DuplicateFlowModal } from "./DuplicateFlowModal";
 import { EditFlowModal } from "./EditFlowModal";
 import { EmptyExecutionState } from "./EmptyExecutionState";
+import { AuthenticationProviderContextProvider } from "./components/AuthenticationProviderContext";
 import { FlowDiagram } from "./components/FlowDiagram";
 import { FlowHeader } from "./components/FlowHeader";
 import { FlowRow } from "./components/FlowRow";
@@ -226,7 +227,9 @@ export default function FlowDetails() {
   };
 
   const [toggleDeleteDialog, DeleteConfirm] = useConfirmDialog({
-    titleKey: "deleteConfirmExecution",
+    titleKey: t("deleteConfirmExecution", {
+      name: selectedExecution?.displayName,
+    }),
     children: (
       <Trans i18nKey="deleteConfirmExecutionMessage">
         {" "}
@@ -309,7 +312,7 @@ export default function FlowDetails() {
   ];
 
   return (
-    <>
+    <AuthenticationProviderContextProvider>
       {bindFlowOpen && (
         <BindFlowDialog
           flowAlias={flow?.alias!}
@@ -390,7 +393,7 @@ export default function FlowDetails() {
                     variant="secondary"
                     onClick={() => setShowAddExecutionDialog(true)}
                   >
-                    {t("addStep")}
+                    {t("addExecution")}
                   </Button>
                 </ToolbarItem>
                 <ToolbarItem>
@@ -440,33 +443,34 @@ export default function FlowDetails() {
                 }}
               >
                 <Droppable hasNoWrapper>
-                  <DataList aria-label={t("flows")}>
+                  <Table aria-label={t("flows")} isTreeTable>
                     <FlowHeader />
                     <>
                       {executionList.expandableList.map((execution) => (
-                        <FlowRow
-                          builtIn={!!builtIn}
-                          key={execution.id}
-                          execution={execution}
-                          onRowClick={(execution) => {
-                            execution.isCollapsed = !execution.isCollapsed;
-                            setExecutionList(executionList.clone());
-                          }}
-                          onRowChange={update}
-                          onAddExecution={(execution, type) =>
-                            addExecution(execution.displayName!, type)
-                          }
-                          onAddFlow={(execution, flow) =>
-                            addFlow(execution.displayName!, flow)
-                          }
-                          onDelete={(execution) => {
-                            setSelectedExecution(execution);
-                            toggleDeleteDialog();
-                          }}
-                        />
+                        <Tbody draggable key={execution.id}>
+                          <FlowRow
+                            builtIn={!!builtIn}
+                            execution={execution}
+                            onRowClick={(execution) => {
+                              execution.isCollapsed = !execution.isCollapsed;
+                              setExecutionList(executionList.clone());
+                            }}
+                            onRowChange={update}
+                            onAddExecution={(execution, type) =>
+                              addExecution(execution.displayName!, type)
+                            }
+                            onAddFlow={(execution, flow) =>
+                              addFlow(execution.displayName!, flow)
+                            }
+                            onDelete={(execution) => {
+                              setSelectedExecution(execution);
+                              toggleDeleteDialog();
+                            }}
+                          />
+                        </Tbody>
                       ))}
                     </>
-                  </DataList>
+                  </Table>
                 </Droppable>
               </DragDrop>
             )}
@@ -515,6 +519,6 @@ export default function FlowDetails() {
             />
           ))}
       </PageSection>
-    </>
+    </AuthenticationProviderContextProvider>
   );
 }

@@ -101,8 +101,7 @@ export const AuthorizationEvaluateResourcePolicies = ({
                           })}
                         >
                           {item.policy?.name}
-                        </Link>
-
+                        </Link>{" "}
                         {t("votedToStatus", {
                           status: capitalize(item.status as string),
                         })}

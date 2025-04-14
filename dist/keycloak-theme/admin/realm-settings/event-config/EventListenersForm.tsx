@@ -5,8 +5,19 @@
 import { ActionGroup, Button } from "../../../shared/@patternfly/react-core";
 import { FormProvider, UseFormReturn } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { SelectControl, SelectVariant } from "../../../shared/keycloak-ui-shared";
-import { useServerInfo } from "../../context/server-info/ServerInfoProvider";
+import {
+  KeycloakSpinner,
+  useFetch,
+  SelectControl,
+  SelectVariant,
+} from "../../../shared/keycloak-ui-shared";
+import { useState } from "react";
+import { fetchAdminUI } from "../../context/auth/admin-ui-endpoint";
+import { useAdminClient } from "../../admin-client";
+
+type EventListenerRepresentation = {
+  id: string;
+};
 
 type EventListenersFormProps = {
   form: UseFormReturn;
@@ -19,8 +30,24 @@ export const EventListenersForm = ({
 }: EventListenersFormProps) => {
   const { t } = useTranslation();
 
-  const serverInfo = useServerInfo();
-  const eventListeners = serverInfo.providers?.eventsListener.providers;
+  const [eventListeners, setEventListeners] =
+    useState<EventListenerRepresentation[]>();
+
+  const { adminClient } = useAdminClient();
+
+  useFetch(
+    () =>
+      fetchAdminUI<EventListenerRepresentation[]>(
+        adminClient,
+        "ui-ext/available-event-listeners",
+      ),
+    setEventListeners,
+    [],
+  );
+
+  if (!eventListeners) {
+    return <KeycloakSpinner />;
+  }
 
   return (
     <FormProvider {...form}>
@@ -38,7 +65,7 @@ export const EventListenersForm = ({
           collapsedText: t("showRemaining"),
         }}
         variant={SelectVariant.typeaheadMulti}
-        options={Object.keys(eventListeners!)}
+        options={eventListeners.map((value) => value.id)}
       />
       <ActionGroup>
         <Button

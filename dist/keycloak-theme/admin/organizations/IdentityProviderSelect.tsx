@@ -32,7 +32,7 @@ import { ComponentProps } from "../components/dynamic/components";
 import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";
 import useToggle from "../utils/useToggle";
 
-type IdentityProviderSelectProps = ComponentProps & {
+type IdentityProviderSelectProps = Omit<ComponentProps, "convertToName"> & {
   variant?: "typeaheadMulti" | "typeahead";
   isRequired?: boolean;
 };

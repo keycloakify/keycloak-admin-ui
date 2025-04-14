@@ -18,6 +18,7 @@ export type KcAdminUiLoaderProps = {
     kcContext: KcContextLike;
     KcAdminUi: LazyExoticComponentLike;
     loadingFallback?: ReactElement<any, any>;
+    enableDarkModeIfPreferred?: boolean;
 };
 export declare function KcAdminUiLoader(props: KcAdminUiLoaderProps): import("react/jsx-runtime").JSX.Element;
 export {};

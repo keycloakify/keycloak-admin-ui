@@ -11,9 +11,11 @@ type DynamicComponentProps = {
   properties: ConfigPropertyRepresentation[];
   stringify?: boolean;
   isNew?: boolean;
+  convertToName?: (name: string) => string;
 };
 
 export const DynamicComponents = ({
+  convertToName: convert,
   properties,
   ...rest
 }: DynamicComponentProps) => (
@@ -22,7 +24,14 @@ export const DynamicComponents = ({
       const componentType = property.type!;
       if (isValidComponentType(componentType)) {
         const Component = COMPONENTS[componentType];
-        return <Component key={property.name} {...property} {...rest} />;
+        return (
+          <Component
+            key={property.name}
+            {...property}
+            {...rest}
+            convertToName={convert || convertToName}
+          />
+        );
       } else {
         console.warn(`There is no editor registered for ${componentType}`);
       }

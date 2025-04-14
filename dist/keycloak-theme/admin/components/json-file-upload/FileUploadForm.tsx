@@ -2,9 +2,11 @@
 
 // @ts-nocheck
 
-import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import {
   Button,
+  DropEvent,
+  FileUpload,
+  FileUploadProps,
   FormGroup,
   FormHelperText,
   HelperText,
@@ -18,9 +20,8 @@ import {
   MouseEvent as ReactMouseEvent,
   useState,
 } from "react";
-import { DropEvent } from "react-dropzone";
 import { useTranslation } from "react-i18next";
-import { FileUpload, FileUploadProps } from "./patternfly/FileUpload";
+import CodeEditor from "../form/CodeEditor";
 
 type FileUploadType = {
   value: string;
@@ -40,7 +41,7 @@ export type FileUploadFormProps = Omit<FileUploadProps, "onChange"> & {
   onChange: (value: string) => void;
   helpText?: string;
   unWrap?: boolean;
-  language?: Language;
+  language?: string;
 };
 
 export const FileUploadForm = ({
@@ -116,8 +117,8 @@ export const FileUploadForm = ({
           value={fileUpload.value}
           filename={fileUpload.filename}
           onFileInputChange={handleFileInputChange}
-          onDataChange={handleTextOrDataChange}
-          onTextChange={handleTextOrDataChange}
+          onDataChange={(_, value) => handleTextOrDataChange(value)}
+          onTextChange={(_, value) => handleTextOrDataChange(value)}
           onClearClick={handleClear}
           onReadStarted={() =>
             setFileUpload({ ...fileUpload, isLoading: true })
@@ -132,7 +133,7 @@ export const FileUploadForm = ({
         />
       )}
       {!unWrap && (
-        <FormGroup label={t("resourceFile")} fieldId={id}>
+        <FormGroup label={t("resourceFile")} fieldId={id + "-filename"}>
           <FileUpload
             data-testid={id}
             id={id}
@@ -141,8 +142,8 @@ export const FileUploadForm = ({
             value={fileUpload.value}
             filename={fileUpload.filename}
             onFileInputChange={handleFileInputChange}
-            onDataChange={handleTextOrDataChange}
-            onTextChange={handleTextOrDataChange}
+            onDataChange={(_, value) => handleTextOrDataChange(value)}
+            onTextChange={(_, value) => handleTextOrDataChange(value)}
             onClearClick={handleClear}
             onReadStarted={() =>
               setFileUpload({ ...fileUpload, isLoading: true })
@@ -155,12 +156,11 @@ export const FileUploadForm = ({
           >
             {!rest.hideDefaultPreview && (
               <CodeEditor
-                isLineNumbersVisible
-                code={fileUpload.value}
+                aria-label="File content"
+                value={fileUpload.value}
                 language={language}
-                height="128px"
-                onChange={handleTextOrDataChange}
-                isReadOnly={!rest.allowEditingUploadedText}
+                onChange={(value) => handleTextOrDataChange(value)}
+                readOnly={!rest.allowEditingUploadedText}
               />
             )}
           </FileUpload>

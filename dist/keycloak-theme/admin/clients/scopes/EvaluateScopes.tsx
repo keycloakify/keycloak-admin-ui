@@ -44,6 +44,7 @@ import { prettyPrintJSON } from "../../util";
 import { GeneratedCodeTab } from "./GeneratedCodeTab";
 
 import "./evaluate.css";
+import { ClientSelect } from "../../components/client/ClientSelect";
 
 export type EvaluateScopesProps = {
   clientId: string;
@@ -154,6 +155,8 @@ export const EvaluateScopes = ({ clientId, protocol }: EvaluateScopesProps) => {
   const tabContent5 = useRef(null);
 
   const form = useForm();
+  const { watch } = form;
+  const selectedAudience: string[] = watch("targetAudience");
 
   const { hasAccess } = useAccess();
   const hasViewUsers = hasAccess("view-users");
@@ -205,12 +208,14 @@ export const EvaluateScopes = ({ clientId, protocol }: EvaluateScopesProps) => {
       const scope = selected.join(" ");
       const user = form.getValues("user");
       if (!user) return [];
+      const audience = selectedAudience.join(" ");
 
       return await Promise.all([
         adminClient.clients.evaluateGenerateAccessToken({
           id: clientId,
           userId: user[0],
           scope,
+          audience,
         }),
         adminClient.clients.evaluateGenerateUserInfo({
           id: clientId,
@@ -229,7 +234,7 @@ export const EvaluateScopes = ({ clientId, protocol }: EvaluateScopesProps) => {
       setUserInfo(prettyPrintJSON(userInfo));
       setIdToken(prettyPrintJSON(idToken));
     },
-    [form.getValues("user"), selected],
+    [form.getValues("user"), selected, selectedAudience],
   );
 
   return (
@@ -301,6 +306,16 @@ export const EvaluateScopes = ({ clientId, protocol }: EvaluateScopesProps) => {
               />
             </FormProvider>
           )}
+          <FormProvider {...form}>
+            <ClientSelect
+              name="targetAudience"
+              label={t("targetAudience")}
+              helpText={t("targetAudienceHelp")}
+              defaultValue={[]}
+              variant="typeaheadMulti"
+              placeholderText={t("targetAudiencePlaceHolder")}
+            />
+          </FormProvider>
         </Form>
       </PageSection>
 

@@ -82,6 +82,7 @@ export default function OrganizationSection() {
           )}
           key={key}
           loader={loader}
+          searchPlaceholderKey="searchOrganization"
           isPaginated
           toolbarItem={
             <ToolbarItem>

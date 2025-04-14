@@ -137,7 +137,7 @@ const GroupTreeContextMenu = ({
           <DropdownItem key="create" onClick={toggleCreateOpen}>
             {t("createChildGroup")}
           </DropdownItem>
-          <Divider key="separator" />,
+          <Divider key="separator" />
           <DropdownItem key="delete" onClick={toggleDeleteOpen}>
             {t("delete")}
           </DropdownItem>
@@ -367,6 +367,7 @@ export const GroupTree = ({
               name="exact"
               isChecked={exact}
               onChange={(_event, value) => setExact(value)}
+              className="pf-v5-u-mr-xs"
             />
           </InputGroupItem>
           <InputGroupItem>

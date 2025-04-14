@@ -242,6 +242,8 @@ export default function SessionsTable({
             hasIcon
             icon={CubesIcon}
             message={t("noSessions")}
+            primaryActionText={t("refresh")}
+            onPrimaryAction={refresh}
             instructions={
               emptyInstructions ? emptyInstructions : t("noSessionsDescription")
             }

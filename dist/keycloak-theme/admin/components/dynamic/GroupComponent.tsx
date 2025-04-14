@@ -18,13 +18,13 @@ import { useTranslation } from "react-i18next";
 import { GroupPickerDialog } from "../group/GroupPickerDialog";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";
 import type { ComponentProps } from "./components";
-import { convertToName } from "./DynamicComponents";
 
 export const GroupComponent = ({
   name,
   label,
   helpText,
   required,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);

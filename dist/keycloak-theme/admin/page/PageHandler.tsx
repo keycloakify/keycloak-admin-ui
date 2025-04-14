@@ -4,7 +4,11 @@
 
 import ComponentRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentRepresentation";
 import ComponentTypeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/componentTypeRepresentation";
-import { useAlerts, useFetch } from "../../shared/keycloak-ui-shared";
+import {
+  KeycloakSpinner,
+  useAlerts,
+  useFetch,
+} from "../../shared/keycloak-ui-shared";
 import { ActionGroup, Button, Form, PageSection } from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -37,6 +41,8 @@ export const PageHandler = ({
   const [id, setId] = useState(idAttribute);
   const params = useParams();
 
+  const [isLoading, setIsLoading] = useState(true);
+
   useFetch(
     async () =>
       await Promise.all([
@@ -49,6 +55,7 @@ export const PageHandler = ({
       const tab = (tabs || []).find((t) => t.providerId === providerId);
       form.reset(data || tab || {});
       if (tab) setId(tab.id);
+      setIsLoading(false);
     },
     [],
   );
@@ -79,6 +86,10 @@ export const PageHandler = ({
       addError("itemSaveError", error);
     }
   };
+
+  if (isLoading) {
+    return <KeycloakSpinner />;
+  }
 
   return (
     <PageSection variant="light">

@@ -3,11 +3,7 @@
 // @ts-nocheck
 
 import type ClientScopeRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientScopeRepresentation";
-import {
-  FormErrorText,
-  HelpItem,
-  useFetch,
-} from "../../../../shared/keycloak-ui-shared";
+import { HelpItem, useFetch } from "../../../../shared/keycloak-ui-shared";
 import { Button, Checkbox, FormGroup } from "../../../../shared/@patternfly/react-core";
 import { MinusCircleIcon } from "../../../../shared/@patternfly/react-icons";
 import { Table, Tbody, Td, Th, Thead, Tr } from "../../../../shared/@patternfly/react-table";
@@ -27,12 +23,7 @@ export const ClientScope = () => {
   const { adminClient } = useAdminClient();
 
   const { t } = useTranslation();
-  const {
-    control,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useFormContext<{
+  const { control, getValues, setValue } = useFormContext<{
     clientScopes: RequiredIdValue[];
   }>();
 
@@ -46,11 +37,10 @@ export const ClientScope = () => {
 
   useFetch(
     () => adminClient.clientScopes.find(),
-    (scopes) => {
+    (scopes = []) => {
+      const clientScopes = getValues("clientScopes") || [];
       setSelectedScopes(
-        getValues("clientScopes").map(
-          (s) => scopes.find((c) => c.id === s.id)!,
-        ),
+        clientScopes.map((s) => scopes.find((c) => c.id === s.id)!),
       );
       setScopes(localeSort(scopes, mapByKey("name")));
     },
@@ -67,16 +57,11 @@ export const ClientScope = () => {
         />
       }
       fieldId="clientScopes"
-      isRequired
     >
       <Controller
         name="clientScopes"
         control={control}
         defaultValue={[]}
-        rules={{
-          validate: (value: RequiredIdValue[]) =>
-            value.filter((c) => c.id).length > 0,
-        }}
         render={({ field }) => (
           <>
             {open && (
@@ -166,9 +151,6 @@ export const ClientScope = () => {
             ))}
           </Tbody>
         </Table>
-      )}
-      {errors.clientScopes && (
-        <FormErrorText message={t("requiredClientScope")} />
       )}
     </FormGroup>
   );

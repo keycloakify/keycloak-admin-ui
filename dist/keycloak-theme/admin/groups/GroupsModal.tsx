@@ -4,6 +4,12 @@
 
 import type GroupRepresentation from "@keycloak/keycloak-admin-client/lib/defs/groupRepresentation";
 import {
+  FormSubmitButton,
+  TextControl,
+  useAlerts,
+  useFetch,
+} from "../../shared/keycloak-ui-shared";
+import {
   Alert,
   AlertVariant,
   Button,
@@ -12,16 +18,11 @@ import {
   Modal,
   ModalVariant,
 } from "../../shared/@patternfly/react-core";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-  FormSubmitButton,
-  TextControl,
-  useFetch,
-} from "../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../admin-client";
-import { useAlerts } from "../../shared/keycloak-ui-shared";
-import { useState } from "react";
+import useIsFeatureEnabled, { Feature } from "../utils/useIsFeatureEnabled";
 
 type GroupsModalProps = {
   id?: string;
@@ -52,6 +53,7 @@ export const GroupsModal = ({
   const { adminClient } = useAdminClient();
   const { t } = useTranslation();
   const { addAlert, addError } = useAlerts();
+  const isFeatureEnabled = useIsFeatureEnabled();
   const [duplicateGroupDetails, setDuplicateGroupDetails] =
     useState<GroupRepresentation | null>(null);
 
@@ -136,15 +138,17 @@ export const GroupsModal = ({
         });
       }
 
-      const permissions = await adminClient.groups.listPermissions({
-        id: sourceGroup.id!,
-      });
+      if (isFeatureEnabled(Feature.AdminFineGrainedAuthz)) {
+        const permissions = await adminClient.groups.listPermissions({
+          id: sourceGroup.id!,
+        });
 
-      if (permissions) {
-        await adminClient.groups.updatePermission(
-          { id: createdGroup.id },
-          permissions,
-        );
+        if (permissions) {
+          await adminClient.groups.updatePermission(
+            { id: createdGroup.id },
+            permissions,
+          );
+        }
       }
 
       const realmRoles = await adminClient.groups.listRealmRoleMappings({

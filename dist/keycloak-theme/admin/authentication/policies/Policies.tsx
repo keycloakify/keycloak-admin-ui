@@ -50,6 +50,7 @@ export const Policies = () => {
     >
       <Tab
         id="passwordPolicy"
+        data-testid="passwordPolicy"
         eventKey={1}
         title={<TabTitleText>{t("passwordPolicy")}</TabTitleText>}
       >
@@ -57,6 +58,7 @@ export const Policies = () => {
       </Tab>
       <Tab
         id="otpPolicy"
+        data-testid="otpPolicy"
         eventKey={2}
         title={<TabTitleText>{t("otpPolicy")}</TabTitleText>}
       >
@@ -64,6 +66,7 @@ export const Policies = () => {
       </Tab>
       <Tab
         id="webauthnPolicy"
+        data-testid="webauthnPolicy"
         eventKey={3}
         title={<TabTitleText>{t("webauthnPolicy")}</TabTitleText>}
       >
@@ -71,6 +74,7 @@ export const Policies = () => {
       </Tab>
       <Tab
         id="webauthnPasswordlessPolicy"
+        data-testid="webauthnPasswordlessPolicy"
         eventKey={4}
         title={<TabTitleText>{t("webauthnPasswordlessPolicy")}</TabTitleText>}
       >

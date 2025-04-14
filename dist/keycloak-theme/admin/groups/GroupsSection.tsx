@@ -29,6 +29,7 @@ import { PermissionsTab } from "../components/permission-tab/PermissionTab";
 import { ViewHeader } from "../components/view-header/ViewHeader";
 import { useAccess } from "../context/access/Access";
 import { useRealm } from "../context/realm-context/RealmContext";
+import { AdminEvents } from "../events/AdminEvents";
 import helpUrls from "../help-urls";
 import useIsFeatureEnabled, { Feature } from "../utils/useIsFeatureEnabled";
 import useToggle from "../utils/useToggle";
@@ -80,6 +81,8 @@ export default function GroupsSection() {
     hasAccess("view-users") ||
     currentGroup()?.access?.viewMembers ||
     currentGroup()?.access?.manageMembers;
+
+  const [activeEventsTab, setActiveEventsTab] = useState("adminEvents");
 
   useFetch(
     async () => {
@@ -214,7 +217,7 @@ export default function GroupsSection() {
                     </Tab>
                   )}
                   <Tab
-                    data-testid="attributes"
+                    data-testid="attributesTab"
                     eventKey={2}
                     title={<TabTitleText>{t("attributes")}</TabTitleText>}
                   >
@@ -236,6 +239,43 @@ export default function GroupsSection() {
                       title={<TabTitleText>{t("permissions")}</TabTitleText>}
                     >
                       <PermissionsTab id={id} type="groups" />
+                    </Tab>
+                  )}
+                  {hasAccess("view-events") && (
+                    <Tab
+                      eventKey={5}
+                      data-testid="admin-events-tab"
+                      title={<TabTitleText>{t("adminEvents")}</TabTitleText>}
+                    >
+                      <Tabs
+                        activeKey={activeEventsTab}
+                        onSelect={(_, key) => setActiveEventsTab(key as string)}
+                      >
+                        <Tab
+                          eventKey="adminEvents"
+                          title={
+                            <TabTitleText>{t("adminEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`groups/${id}`} />
+                        </Tab>
+                        <Tab
+                          eventKey="membershipEvents"
+                          title={
+                            <TabTitleText>{t("membershipEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`users/*/groups/${id}`} />
+                        </Tab>
+                        <Tab
+                          eventKey="childGroupEvents"
+                          title={
+                            <TabTitleText>{t("childGroupEvents")}</TabTitleText>
+                          }
+                        >
+                          <AdminEvents resourcePath={`groups/${id}/children`} />
+                        </Tab>
+                      </Tabs>
                     </Tab>
                   )}
                 </Tabs>

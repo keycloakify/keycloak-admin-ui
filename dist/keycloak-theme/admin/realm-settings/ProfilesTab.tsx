@@ -6,10 +6,11 @@ import type ClientProfileRepresentation from "@keycloak/keycloak-admin-client/li
 import {
   Action,
   KeycloakDataTable,
+  KeycloakSpinner,
+  ListEmptyState,
   useAlerts,
   useFetch,
 } from "../../shared/keycloak-ui-shared";
-import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import {
   ActionGroup,
   AlertVariant,
@@ -31,8 +32,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { useAdminClient } from "../admin-client";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
-import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";
-import { ListEmptyState } from "../../shared/keycloak-ui-shared";
+import CodeEditor from "../components/form/CodeEditor";
 import { useRealm } from "../context/realm-context/RealmContext";
 import { prettyPrintJSON } from "../util";
 import { toAddClientProfile } from "./routes/AddClientProfile";
@@ -256,15 +256,10 @@ export default function ProfilesTab() {
         <FormGroup fieldId={"jsonEditor"}>
           <div className="pf-v5-u-mt-md pf-v5-u-ml-lg">
             <CodeEditor
-              isLineNumbersVisible
-              isLanguageLabelVisible
-              isReadOnly={false}
-              code={code}
-              language={Language.json}
-              height="30rem"
-              onChange={(value) => {
-                setCode(value ?? "");
-              }}
+              value={code}
+              language="json"
+              onChange={(value) => setCode(value ?? "")}
+              height={480}
             />
           </div>
           <ActionGroup>

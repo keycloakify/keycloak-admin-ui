@@ -6,10 +6,11 @@ import type ClientPolicyRepresentation from "@keycloak/keycloak-admin-client/lib
 import {
   Action,
   KeycloakDataTable,
+  KeycloakSpinner,
+  ListEmptyState,
   useAlerts,
   useFetch,
 } from "../../shared/keycloak-ui-shared";
-import { CodeEditor, Language } from "@patternfly/react-code-editor";
 import {
   AlertVariant,
   Button,
@@ -30,8 +31,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { useAdminClient } from "../admin-client";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
-import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";
-import { ListEmptyState } from "../../shared/keycloak-ui-shared";
+import CodeEditor from "../components/form/CodeEditor";
 import { useRealm } from "../context/realm-context/RealmContext";
 import { prettyPrintJSON } from "../util";
 import { translationFormatter } from "../utils/translationFormatter";
@@ -293,13 +293,10 @@ export const PoliciesTab = () => {
         <>
           <div className="pf-v5-u-mt-md pf-v5-u-ml-lg">
             <CodeEditor
-              isLineNumbersVisible
-              isLanguageLabelVisible
-              isReadOnly={false}
-              code={code}
-              language={Language.json}
-              height="30rem"
-              onChange={setCode}
+              value={code}
+              language="json"
+              onChange={(value) => setCode(value)}
+              height={480}
             />
           </div>
           <div className="pf-v5-u-mt-md">

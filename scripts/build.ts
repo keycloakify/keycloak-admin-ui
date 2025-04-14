@@ -167,10 +167,13 @@ import { z } from "zod";
                     case "PageHeader.tsx":
                         for (const [search, replace] of [
                             [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
-                            [`const logo = environment.logo ? environment.logo : "/logo.svg";`, ""],
-                            [`src={environment.resourceUrl + logo}`, `src={logoSvgUrl}`],
-                            [undefined, `import imgAvatarSvgUrl from "./assets/img_avatar.svg";`],
-                            ['environment.resourceUrl + "/img_avatar.svg"', "imgAvatarSvgUrl"]
+                            [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
+                            [
+                                `logo.startsWith("/")
+          ? joinPath(environment.resourceUrl, logo)
+          : logo`,
+                                'customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl'
+                            ]
                         ] as const) {
                             const sourceCode_before = modifiedSourceCode;
 
@@ -205,26 +208,26 @@ import { z } from "zod";
                             modifiedSourceCode = sourceCode_after;
                         }
                         break;
+                    case pathJoin("realm-settings", "themes", "ThemesTab.tsx"):
+                        for (const [search, replace] of [
+                            [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
+                            [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]
+                        ] as const) {
+                            const sourceCode_before = modifiedSourceCode;
+
+                            const sourceCode_after: string =
+                                search === undefined
+                                    ? [replace, modifiedSourceCode].join("\n")
+                                    : modifiedSourceCode.replace(search, replace);
+
+                            assert(sourceCode_before !== sourceCode_after);
+
+                            modifiedSourceCode = sourceCode_after;
+                        }
+                        break;
                 }
 
                 assert(!modifiedSourceCode.includes("environment.resourceUrl"));
-            }
-
-            if (fileRelativePath === pathJoin("components", "roles-list", "RolesList.tsx")) {
-                for (const [search, replace] of [
-                    ["useTranslation(messageBundle)", `useTranslation()`]
-                ] as const) {
-                    const sourceCode_before = modifiedSourceCode;
-
-                    const sourceCode_after: string =
-                        search === undefined
-                            ? [replace, modifiedSourceCode].join("\n")
-                            : modifiedSourceCode.replace(search, replace);
-
-                    assert(sourceCode_before !== sourceCode_after);
-
-                    modifiedSourceCode = sourceCode_after;
-                }
             }
 
             await writeFile({

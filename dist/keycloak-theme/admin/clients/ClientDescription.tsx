@@ -23,7 +23,7 @@ export const ClientDescription = ({
         name="clientId"
         label={t("clientId")}
         labelIcon={t("clientIdHelp")}
-        rules={{ required: { value: true, message: t("required") } }}
+        rules={{ required: t("required") }}
       />
       <TextControl
         name="name"

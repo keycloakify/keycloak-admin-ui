@@ -47,6 +47,7 @@ export const mapRoles = (
 ) => [
   ...(hide
     ? assignedRoles.map((row) => ({
+        id: row.role.id,
         ...row,
         role: {
           ...row.role,
@@ -54,6 +55,7 @@ export const mapRoles = (
         },
       }))
     : effectiveRoles.map((row) => ({
+        id: row.role.id,
         ...row,
         role: {
           ...row.role,
@@ -166,11 +168,11 @@ export const RoleMapping = ({
     onConfirm: async () => {
       try {
         await Promise.all(deleteMapping(adminClient, type, id, selected));
-        addAlert(t("clientScopeRemoveSuccess"), AlertVariant.success);
+        addAlert(t("roleMappingUpdatedSuccess"), AlertVariant.success);
         setSelected([]);
         refresh();
       } catch (error) {
-        addError("clientScopeRemoveError", error);
+        addError("roleMappingUpdatedError", error);
       }
     },
   });
@@ -194,7 +196,7 @@ export const RoleMapping = ({
         canSelectAll
         onSelect={(rows) => setSelected(rows)}
         searchPlaceholderKey="searchByName"
-        ariaLabelKey="clientScopeList"
+        ariaLabelKey="roleList"
         isRowDisabled={(value) =>
           (value.role as CompositeRole).isInherited || false
         }

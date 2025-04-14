@@ -50,6 +50,7 @@ export const AddClientProfileModal = (props: AddClientProfileModalProps) => {
     (allProfiles) => {
       const globalProfiles = allProfiles.globalProfiles?.map(
         (globalProfiles) => ({
+          id: globalProfiles.name,
           ...globalProfiles,
           global: true,
         }),

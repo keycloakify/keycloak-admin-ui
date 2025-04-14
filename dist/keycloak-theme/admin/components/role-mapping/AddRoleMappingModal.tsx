@@ -2,6 +2,11 @@
 
 // @ts-nocheck
 
+import RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
+import {
+  KeycloakDataTable,
+  ListEmptyState,
+} from "../../../shared/keycloak-ui-shared";
 import {
   Button,
   Dropdown,
@@ -13,17 +18,18 @@ import {
   ToolbarItem,
 } from "../../../shared/@patternfly/react-core";
 import { FilterIcon } from "../../../shared/@patternfly/react-icons";
+import { cellWidth, TableText } from "../../../shared/@patternfly/react-table";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";
 import { useAccess } from "../../context/access/Access";
 import { translationFormatter } from "../../utils/translationFormatter";
 import useLocaleSort from "../../utils/useLocaleSort";
-import { ListEmptyState } from "../../../shared/keycloak-ui-shared";
-import { KeycloakDataTable } from "../../../shared/keycloak-ui-shared";
 import { ResourcesKey, Row, ServiceRole } from "./RoleMapping";
 import { getAvailableRoles } from "./queries";
 import { getAvailableClientRoles } from "./resource";
+import { PermissionsConfigurationTabsParams } from "../../permissions-configuration/routes/PermissionsConfigurationTabs";
+import { useParams } from "react-router-dom";
 
 type AddRoleMappingModalProps = {
   id: string;
@@ -37,11 +43,19 @@ type AddRoleMappingModalProps = {
 
 type FilterType = "roles" | "clients";
 
+const RoleDescription = ({ role }: { role: RoleRepresentation }) => {
+  const { t } = useTranslation();
+  return (
+    <TableText wrapModifier="truncate">
+      {translationFormatter(t)(role.description) as string}
+    </TableText>
+  );
+};
+
 export const AddRoleMappingModal = ({
   id,
   name,
   type,
-  isRadio = false,
   isLDAPmapper,
   onAssign,
   onClose,
@@ -61,6 +75,7 @@ export const AddRoleMappingModal = ({
 
   const localeSort = useLocaleSort();
   const compareRow = ({ role: { name } }: Row) => name?.toUpperCase();
+  const { tab } = useParams<PermissionsConfigurationTabsParams>();
 
   const loader = async (
     first?: number,
@@ -113,7 +128,11 @@ export const AddRoleMappingModal = ({
     <Modal
       variant={ModalVariant.large}
       title={
-        isLDAPmapper ? t("assignRole") : t("assignRolesTo", { client: name })
+        tab !== "evaluation"
+          ? isLDAPmapper
+            ? t("assignRole")
+            : t("assignRolesTo", { client: name })
+          : t("selectRole")
       }
       isOpen
       onClose={onClose}
@@ -128,7 +147,7 @@ export const AddRoleMappingModal = ({
             onClose();
           }}
         >
-          {t("assign")}
+          {tab !== "evaluation" ? t("assign") : t("select")}
         </Button>,
         <Button
           data-testid="cancel"
@@ -142,7 +161,13 @@ export const AddRoleMappingModal = ({
     >
       <KeycloakDataTable
         key={key}
-        onSelect={(rows) => setSelectedRows([...rows])}
+        onSelect={(rows) => {
+          if (tab === "evaluation") {
+            setSelectedRows(rows.length > 0 ? [rows[0]] : []);
+          } else {
+            setSelectedRows([...rows]);
+          }
+        }}
         searchPlaceholderKey="searchByRoleName"
         isPaginated={!(filterType === "roles" && type !== "roles")}
         searchTypeComponent={
@@ -181,18 +206,19 @@ export const AddRoleMappingModal = ({
           )
         }
         canSelectAll
-        isRadio={isRadio}
+        isRadio={tab === "evaluation"}
         loader={filterType === "roles" ? loader : clientRolesLoader}
-        ariaLabelKey="roles"
+        ariaLabelKey="associatedRolesText"
         columns={[
           {
             name: "name",
             cellRenderer: ServiceRole,
+            transforms: [cellWidth(30)],
           },
           {
             name: "role.description",
             displayKey: "description",
-            cellFormatters: [translationFormatter(t)],
+            cellRenderer: RoleDescription,
           },
         ]}
         emptyState={
@@ -201,9 +227,9 @@ export const AddRoleMappingModal = ({
             instructions={t("noRealmRolesToAssign")}
             secondaryActions={[
               {
-                text: t("filterByClients"),
+                text: t("filterByRoles"),
                 onClick: () => {
-                  setFilterType("clients");
+                  setFilterType("roles");
                   refresh();
                 },
               },

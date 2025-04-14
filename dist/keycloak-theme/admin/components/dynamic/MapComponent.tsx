@@ -19,9 +19,7 @@ import { MinusCircleIcon, PlusCircleIcon } from "../../../shared/@patternfly/rea
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-
 import { KeyValueType } from "../key-value-form/key-value-convert";
-import { convertToName } from "./DynamicComponents";
 import type { ComponentProps } from "./components";
 
 type IdKeyValueType = KeyValueType & {
@@ -34,6 +32,8 @@ export const MapComponent = ({
   helpText,
   required,
   isDisabled,
+  defaultValue,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
 
@@ -43,7 +43,9 @@ export const MapComponent = ({
 
   useEffect(() => {
     register(fieldName);
-    const values: KeyValueType[] = JSON.parse(getValues(fieldName) || "[]");
+    const values: KeyValueType[] = JSON.parse(
+      getValues(fieldName) || defaultValue || "[]",
+    );
     setMap(values.map((value) => ({ ...value, id: generateId() })));
   }, []);
 

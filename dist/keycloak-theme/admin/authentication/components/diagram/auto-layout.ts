@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import { graphlib, layout } from "dagre";
+import { graphlib, layout } from "@dagrejs/dagre";
 import { Edge, Node, Position } from "reactflow";
 
 const dagreGraph = new graphlib.Graph();

@@ -2,8 +2,6 @@
 
 // @ts-nocheck
 
-import { Language } from "@patternfly/react-code-editor";
-
 import { FileUploadForm, FileUploadFormProps } from "./FileUploadForm";
 
 export type JsonFileUploadProps = Omit<
@@ -26,7 +24,7 @@ export const JsonFileUpload = ({ onChange, ...props }: JsonFileUploadProps) => {
   return (
     <FileUploadForm
       {...props}
-      language={Language.json}
+      language="json"
       extension=".json"
       onChange={handleChange}
     />

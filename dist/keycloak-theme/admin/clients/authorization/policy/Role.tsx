@@ -2,11 +2,7 @@
 
 // @ts-nocheck
 
-import {
-  FormErrorText,
-  HelpItem,
-  useFetch,
-} from "../../../../shared/keycloak-ui-shared";
+import { HelpItem, useFetch } from "../../../../shared/keycloak-ui-shared";
 import { Button, Checkbox, FormGroup } from "../../../../shared/@patternfly/react-core";
 import { MinusCircleIcon } from "../../../../shared/@patternfly/react-icons";
 import { Table, Tbody, Td, Th, Thead, Tr } from "../../../../shared/@patternfly/react-table";
@@ -23,12 +19,7 @@ export const Role = () => {
   const { adminClient } = useAdminClient();
 
   const { t } = useTranslation();
-  const {
-    control,
-    getValues,
-    setValue,
-    formState: { errors },
-  } = useFormContext<{
+  const { control, getValues, setValue } = useFormContext<{
     roles?: RequiredIdValue[];
     fetchRoles?: boolean;
   }>();
@@ -68,16 +59,11 @@ export const Role = () => {
           <HelpItem helpText={t("policyRolesHelp")} fieldLabelId="roles" />
         }
         fieldId="roles"
-        isRequired
       >
         <Controller
           name="roles"
           control={control}
           defaultValue={[]}
-          rules={{
-            validate: (value?: RequiredIdValue[]) =>
-              value && value.filter((c) => c.id).length > 0,
-          }}
           render={({ field }) => (
             <>
               {open && (
@@ -163,7 +149,6 @@ export const Role = () => {
             </Tbody>
           </Table>
         )}
-        {errors.roles && <FormErrorText message={t("requiredRoles")} />}
       </FormGroup>
       <DefaultSwitchControl
         name="fetchRoles"

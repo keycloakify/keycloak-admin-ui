@@ -80,7 +80,7 @@ export const LinkIdentityProviderModal = ({
         ...foundIdentityProvider.config,
         ...config,
       };
-      foundIdentityProvider.hideOnLogin = data.hideOnLogin;
+      foundIdentityProvider.hideOnLogin = data.hideOnLogin ?? true;
       await adminClient.identityProviders.update(
         { alias: data.alias[0] },
         foundIdentityProvider,
@@ -144,6 +144,7 @@ export const LinkIdentityProviderModal = ({
             controller={{ defaultValue: "" }}
             options={[
               { key: "", value: t("none") },
+              { key: "ANY", value: t("any") },
               ...getValues("domains")!.map((d) => ({ key: d, value: d })),
             ]}
             menuAppendTo="parent"

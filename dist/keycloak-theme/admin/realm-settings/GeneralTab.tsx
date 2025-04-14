@@ -40,6 +40,7 @@ import {
 } from "../util";
 import useIsFeatureEnabled, { Feature } from "../utils/useIsFeatureEnabled";
 import { UIRealmRepresentation } from "./RealmSettingsTabs";
+import { SIGNATURE_ALGORITHMS } from "../clients/add/SamlSignature";
 
 type RealmSettingsGeneralTabProps = {
   realm: UIRealmRepresentation;
@@ -114,6 +115,9 @@ function RealmSettingsGeneralTabForm({
   } = form;
   const isFeatureEnabled = useIsFeatureEnabled();
   const isOrganizationsEnabled = isFeatureEnabled(Feature.Organizations);
+  const isAdminPermissionsV2Enabled = isFeatureEnabled(
+    Feature.AdminFineGrainedAuthzV2,
+  );
   const isOpenid4vciEnabled = isFeatureEnabled(Feature.OpenId4VCI);
 
   const setupForm = () => {
@@ -231,6 +235,20 @@ function RealmSettingsGeneralTabForm({
               labelIcon={t("organizationsEnabledHelp")}
             />
           )}
+          {isAdminPermissionsV2Enabled && (
+            <DefaultSwitchControl
+              name="adminPermissionsEnabled"
+              label={t("adminPermissionsEnabled")}
+              labelIcon={t("adminPermissionsEnabledHelp")}
+            />
+          )}
+          {isOpenid4vciEnabled && (
+            <DefaultSwitchControl
+              name="verifiableCredentialsEnabled"
+              label={t("verifiableCredentialsEnabled")}
+              labelIcon={t("verifiableCredentialsEnabledHelp")}
+            />
+          )}
           <SelectControl
             name="unmanagedAttributePolicy"
             label={t("unmanagedAttributes")}
@@ -242,6 +260,20 @@ function RealmSettingsGeneralTabForm({
               key: policy,
               value: t(`unmanagedAttributePolicy.${policy}`),
             }))}
+          />
+          <SelectControl
+            name={convertAttributeNameToForm<FormFields>(
+              "attributes.saml.signature.algorithm",
+            )}
+            label={t("signatureAlgorithmIdentityProviderMetadata")}
+            labelIcon={t("signatureAlgorithmIdentityProviderMetadataHelp")}
+            controller={{
+              defaultValue: "",
+            }}
+            options={[
+              { key: "", value: t("choose") },
+              ...SIGNATURE_ALGORITHMS.map((v) => ({ key: v, value: v })),
+            ]}
           />
           <FormGroup
             label={t("endpoints")}
@@ -270,7 +302,7 @@ function RealmSettingsGeneralTabForm({
                   title={t("samlIdentityProviderMetadata")}
                 />
               </StackItem>
-              {isOpenid4vciEnabled && (
+              {isOpenid4vciEnabled && realm.verifiableCredentialsEnabled && (
                 <StackItem>
                   <FormattedLink
                     href={`${addTrailingSlash(

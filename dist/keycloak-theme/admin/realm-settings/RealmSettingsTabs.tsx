@@ -5,7 +5,7 @@
 import { fetchWithError } from "@keycloak/keycloak-admin-client";
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import { UserProfileConfig } from "@keycloak/keycloak-admin-client/lib/defs/userProfileMetadata";
-import { useEnvironment } from "../../shared/keycloak-ui-shared";
+import { useAlerts, useEnvironment } from "../../shared/keycloak-ui-shared";
 import {
   AlertVariant,
   ButtonVariant,
@@ -17,12 +17,10 @@ import {
   Tooltip,
 } from "../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
 import { useAdminClient } from "../admin-client";
-import { useAlerts } from "../../shared/keycloak-ui-shared";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
 import type { KeyValueType } from "../components/key-value-form/key-value-convert";
 import {
@@ -48,7 +46,7 @@ import { PartialImportDialog } from "./PartialImport";
 import { PoliciesTab } from "./PoliciesTab";
 import ProfilesTab from "./ProfilesTab";
 import { RealmSettingsSessionsTab } from "./SessionsTab";
-import { RealmSettingsThemesTab } from "./ThemesTab";
+import ThemesTab from "./themes/ThemesTab";
 import { RealmSettingsTokensTab } from "./TokensTab";
 import { UserRegistration } from "./UserRegistration";
 import { EventsTab } from "./event-config/EventsTab";
@@ -186,9 +184,10 @@ export const RealmSettingsTabs = () => {
   const [tableData, setTableData] = useState<
     Record<string, string>[] | undefined
   >(undefined);
-  const { control, setValue, getValues } = useForm({
+  const form = useForm({
     mode: "onChange",
   });
+  const { control, setValue, getValues } = form;
   const [key, setKey] = useState(0);
   const refreshHeader = () => {
     setKey(key + 1);
@@ -310,7 +309,7 @@ export const RealmSettingsTabs = () => {
   const clientPoliciesPoliciesTab = useClientPoliciesTab("policies");
 
   return (
-    <>
+    <FormProvider {...form}>
       <Controller
         name="enabled"
         defaultValue={true}
@@ -361,7 +360,7 @@ export const RealmSettingsTabs = () => {
             data-testid="rs-themes-tab"
             {...themesTab}
           >
-            <RealmSettingsThemesTab realm={realm!} save={save} />
+            <ThemesTab realm={realm!} save={save} />
           </Tab>
           <Tab
             title={<TabTitleText>{t("keys")}</TabTitleText>}
@@ -470,6 +469,6 @@ export const RealmSettingsTabs = () => {
           )}
         </RoutableTabs>
       </PageSection>
-    </>
+    </FormProvider>
   );
 };

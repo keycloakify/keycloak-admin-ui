@@ -2,12 +2,11 @@
 
 // @ts-nocheck
 
-import { useTranslation } from "react-i18next";
-import { Controller, useFormContext } from "react-hook-form";
-import { FormGroup } from "../../../../shared/@patternfly/react-core";
-import { CodeEditor, Language } from "@patternfly/react-code-editor";
-
 import { HelpItem } from "../../../../shared/keycloak-ui-shared";
+import { FormGroup } from "../../../../shared/@patternfly/react-core";
+import { Controller, useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import CodeEditor from "../../../components/form/CodeEditor";
 
 export const JavaScript = () => {
   const { t } = useTranslation();
@@ -30,11 +29,10 @@ export const JavaScript = () => {
           <CodeEditor
             id="code"
             data-testid="code"
-            onChange={field.onChange}
-            code={field.value}
-            height="600px"
-            language={Language.javascript}
-            isReadOnly={true}
+            readOnly
+            value={field.value}
+            language="js"
+            height={600}
           />
         )}
       />
