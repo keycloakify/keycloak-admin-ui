@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import type { ComponentProps } from "./components";
-import { convertToName } from "./DynamicComponents";
 
 export const FileComponent = ({
   name,
@@ -17,6 +16,7 @@ export const FileComponent = ({
   defaultValue,
   required,
   isDisabled = false,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
   const { control } = useFormContext();
@@ -51,6 +51,9 @@ export const FileComponent = ({
             isLoading={isLoading}
             allowEditingUploadedText={false}
             onTextChange={(value) => {
+              field.onChange(value);
+            }}
+            onDataChange={(_, value) => {
               field.onChange(value);
             }}
           />

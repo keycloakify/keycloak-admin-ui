@@ -29,7 +29,6 @@ type RoleDetailLinkProps = RoleRepresentation & {
 const RoleDetailLink = ({
   defaultRoleName,
   toDetail,
-  messageBundle,
   ...role
 }: RoleDetailLinkProps) => {
   const { t } = useTranslation();
@@ -49,10 +48,7 @@ const RoleDetailLink = ({
       ) : (
         <span>{role.name}</span>
       )}
-      <HelpItem
-        helpText={t(`${messageBundle}:defaultRole`)}
-        fieldLabelId="defaultRole"
-      />
+      <HelpItem helpText={t("defaultRole")} fieldLabelId="defaultRole" />
     </>
   );
 };

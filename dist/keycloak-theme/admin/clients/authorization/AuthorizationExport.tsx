@@ -4,7 +4,7 @@
 
 import type ResourceServerRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceServerRepresentation";
 import {
-  TextAreaControl,
+  KeycloakSpinner,
   useAlerts,
   useFetch,
 } from "../../../shared/keycloak-ui-shared";
@@ -14,12 +14,12 @@ import {
   Button,
   PageSection,
 } from "../../../shared/@patternfly/react-core";
+import CodeEditor from "@uiw/react-textarea-code-editor";
 import { saveAs } from "file-saver";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";
 import { FormAccess } from "../../components/form/FormAccess";
-import { KeycloakSpinner } from "../../../shared/keycloak-ui-shared";
 import { prettyPrintJSON } from "../../util";
 import { useParams } from "../../utils/useParams";
 import type { ClientParams } from "../routes/Client";
@@ -73,14 +73,13 @@ export const AuthorizationExport = () => {
         role="manage-authorization"
         className="pf-v5-u-mt-lg"
       >
-        <TextAreaControl
-          name="authDetails"
-          label={t("authDetails")}
-          labelIcon={t("authDetailsHelp")}
-          resizeOrientation="vertical"
-          defaultValue={code!}
+        <CodeEditor
+          data-testid="authorization-export-code-editor"
+          value={code!}
+          language="json"
           readOnly
           rows={10}
+          style={{ height: "30rem", overflow: "scroll" }}
         />
         <ActionGroup>
           <Button

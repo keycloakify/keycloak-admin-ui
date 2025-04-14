@@ -11,7 +11,6 @@ import { FormGroup, SelectOption } from "../../../shared/@patternfly/react-core"
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { convertToName } from "./DynamicComponents";
 import type { ComponentProps } from "./components";
 
 export const ListComponent = ({
@@ -22,6 +21,7 @@ export const ListComponent = ({
   options,
   required,
   isDisabled = false,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
   const { control } = useFormContext();

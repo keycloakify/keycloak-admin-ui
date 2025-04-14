@@ -75,7 +75,12 @@ export const TimeSelectorControl = <
           />
         )}
       />
-      {error && <FormErrorText message={error.message as string} />}
+      {error && (
+        <FormErrorText
+          data-testid={`${name}-helper`}
+          message={error.message as string}
+        />
+      )}
     </FormGroup>
   );
 };

@@ -41,6 +41,7 @@ export const PageHeaderClearCachesModal = ({
   const clearRealmCache = clearCache(adminClient.cache.clearRealmCache);
   const clearUserCache = clearCache(adminClient.cache.clearUserCache);
   const clearKeysCache = clearCache(adminClient.cache.clearKeysCache);
+  const clearCrlCache = clearCache(adminClient.cache.clearCrlCache);
 
   return (
     <Modal
@@ -94,6 +95,22 @@ export const PageHeaderClearCachesModal = ({
             </FlexItem>
             <FlexItem>
               <Button onClick={() => clearKeysCache(realmName)}>
+                {t("clearButtonTitle")}
+              </Button>
+            </FlexItem>
+          </Flex>
+        </ListItem>
+        <ListItem>
+          <Flex justifyContent={{ default: "justifyContentSpaceBetween" }}>
+            <FlexItem>
+              {t("crlCache")}{" "}
+              <HelpItem
+                helpText={t("clearCrlCacheHelp")}
+                fieldLabelId="clearCrlCacheHelp"
+              />
+            </FlexItem>
+            <FlexItem>
+              <Button onClick={() => clearCrlCache(realmName)}>
                 {t("clearButtonTitle")}
               </Button>
             </FlexItem>

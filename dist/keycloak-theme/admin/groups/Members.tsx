@@ -210,6 +210,7 @@ export const Members = () => {
                   onOpenChange={(isOpen) => setIsKebabOpen(isOpen)}
                   toggle={(ref) => (
                     <MenuToggle
+                      data-testid="kebab"
                       ref={ref}
                       variant="plain"
                       onClick={() => setIsKebabOpen(!isKebabOpen)}

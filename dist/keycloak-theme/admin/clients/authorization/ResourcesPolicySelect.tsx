@@ -38,6 +38,7 @@ import { toCreatePolicy } from "../routes/NewPolicy";
 import { toPolicyDetails } from "../routes/PolicyDetails";
 import { toResourceDetails } from "../routes/Resource";
 import { NewPolicyDialog } from "./NewPolicyDialog";
+import { useIsAdminPermissionsClient } from "../../utils/useIsAdminPermissionsClient";
 
 type Type = "resources" | "policies";
 
@@ -103,6 +104,7 @@ export const ResourcesPolicySelect = ({
     useState<PolicyProviderRepresentation[]>();
   const [onUnsavedChangesConfirm, setOnUnsavedChangesConfirm] =
     useState<() => void>();
+  const isAdminPermissionsClient = useIsAdminPermissionsClient(clientId);
 
   const functions = typeMapping[name];
 
@@ -258,7 +260,11 @@ export const ResourcesPolicySelect = ({
               field.onChange([]);
               setSearch("");
             }}
-            selections={field.value}
+            selections={
+              variant === SelectVariant.typeaheadMulti
+                ? field.value
+                : items.find((i) => i.id === field.value?.[0])?.name
+            }
             onSelect={(selectedValue) => {
               const option = selectedValue.toString();
               if (variant === SelectVariant.typeaheadMulti) {
@@ -280,7 +286,7 @@ export const ResourcesPolicySelect = ({
             typeAheadAriaLabel={t(name)}
             chipGroupComponent={toChipGroupItems(field)}
             footer={
-              name === "policies" ? (
+              name === "policies" && !isAdminPermissionsClient ? (
                 <Button
                   variant="link"
                   isInline

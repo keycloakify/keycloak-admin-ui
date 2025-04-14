@@ -4,41 +4,33 @@
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 import { useAlerts, useFetch } from "../../shared/keycloak-ui-shared";
-import { useState } from "react";
-import { useAdminClient } from "../admin-client";
-import { ViewHeader } from "../components/view-header/ViewHeader";
-import {
-  RoutableTabs,
-  useRoutableTab,
-} from "../components/routable-tabs/RoutableTabs";
-import {
-  PermissionsTabs,
-  toPermissionsTabs,
-} from "../permissions/routes/PermissionsTabs";
 import {
   AlertVariant,
   PageSection,
   Tab,
   TabTitleText,
 } from "../../shared/@patternfly/react-core";
-import { AuthorizationResources } from "../clients/authorization/Resources";
-import { AuthorizationPolicies } from "../clients/authorization/Policies";
-import { AuthorizationEvaluate } from "../clients/authorization/AuthorizationEvaluate";
-import { useRealm } from "../context/realm-context/RealmContext";
-import { useAccess } from "../context/access/Access";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { useAdminClient } from "../admin-client";
+import { AuthorizationPolicies } from "../clients/authorization/Policies";
 import { FormFields, SaveOptions } from "../clients/ClientDetails";
-import {
-  convertAttributeNameToForm,
-  convertFormValuesToObject,
-  convertToFormValues,
-} from "../util";
 import { ConfirmDialogModal } from "../components/confirm-dialog/ConfirmDialog";
-import { KeyValueType } from "../components/key-value-form/key-value-convert";
+import {
+  RoutableTabs,
+  useRoutableTab,
+} from "../components/routable-tabs/RoutableTabs";
+import { ViewHeader } from "../components/view-header/ViewHeader";
+import { useAccess } from "../context/access/Access";
+import { useRealm } from "../context/realm-context/RealmContext";
+import { toPermissionsConfigurationTabs } from "../permissions-configuration/routes/PermissionsConfigurationTabs";
+import { convertFormValuesToObject, convertToFormValues } from "../util";
 import useToggle from "../utils/useToggle";
+import { PermissionsConfigurationTab } from "./permission-configuration/PermissionsConfigurationTab";
+import { PermissionsEvaluationTab } from "./permission-evaluation/PermissionsEvaluationTab";
 
-export default function PermissionsSection() {
+export default function PermissionsConfigurationSection() {
   const { adminClient } = useAdminClient();
   const { t } = useTranslation();
   const { realm } = useRealm();
@@ -49,14 +41,7 @@ export default function PermissionsSection() {
   >();
   const [changeAuthenticatorOpen, toggleChangeAuthenticatorOpen] = useToggle();
   const form = useForm<FormFields>();
-
-  const usePermissionsTabs = (tab: PermissionsTabs) =>
-    useRoutableTab(
-      toPermissionsTabs({
-        realm,
-        tab,
-      }),
-    );
+  const { realmRepresentation } = useRealm();
 
   const clientAuthenticatorType = useWatch({
     control: form.control,
@@ -66,19 +51,36 @@ export default function PermissionsSection() {
 
   const hasManageAuthorization = hasAccess("manage-authorization");
   const hasViewUsers = hasAccess("view-users");
-  const permissionsResourcesTab = usePermissionsTabs("resources");
-  const permissionsPoliciesTab = usePermissionsTabs("policies");
-  const permissionsEvaluateTab = usePermissionsTabs("evaluate");
+  const permissionsResourcesTab = useRoutableTab(
+    toPermissionsConfigurationTabs({
+      realm,
+      permissionClientId: realmRepresentation?.adminPermissionsClient?.id!,
+      tab: "permissions",
+    }),
+  );
+  const permissionsPoliciesTab = useRoutableTab(
+    toPermissionsConfigurationTabs({
+      realm,
+      permissionClientId: realmRepresentation?.adminPermissionsClient?.id!,
+      tab: "policies",
+    }),
+  );
+  const permissionsEvaluateTab = useRoutableTab(
+    toPermissionsConfigurationTabs({
+      realm,
+      permissionClientId: realmRepresentation?.adminPermissionsClient?.id!,
+      tab: "evaluation",
+    }),
+  );
 
   useFetch(
     async () => {
-      const clients = await adminClient.clients.find();
-      return clients;
+      const clients = await adminClient.clients.find({
+        clientId: "admin-permissions",
+      });
+      return clients[0];
     },
-    (clients) => {
-      const adminPermissionsClient = clients.find(
-        (client) => client.clientId === "admin-permissions",
-      );
+    (adminPermissionsClient) => {
       setAdminPermissionsClient(adminPermissionsClient!);
     },
     [],
@@ -87,15 +89,6 @@ export default function PermissionsSection() {
   const setupForm = (client: ClientRepresentation) => {
     form.reset({ ...client });
     convertToFormValues(client, form.setValue);
-    if (client.attributes?.["acr.loa.map"]) {
-      form.setValue(
-        convertAttributeNameToForm("attributes.acr.loa.map"),
-        // @ts-ignore
-        Object.entries(JSON.parse(client.attributes["acr.loa.map"])).flatMap(
-          ([key, value]) => ({ key, value }),
-        ),
-      );
-    }
   };
 
   const save = async (
@@ -122,16 +115,6 @@ export default function PermissionsSection() {
 
     const submittedClient =
       convertFormValuesToObject<ClientRepresentation>(values);
-
-    if (submittedClient.attributes?.["acr.loa.map"]) {
-      submittedClient.attributes["acr.loa.map"] = JSON.stringify(
-        Object.fromEntries(
-          (submittedClient.attributes["acr.loa.map"] as KeyValueType[])
-            .filter(({ key }) => key !== "")
-            .map(({ key, value }) => [key, value]),
-        ),
-      );
-    }
 
     try {
       const newClient: ClientRepresentation = {
@@ -181,18 +164,21 @@ export default function PermissionsSection() {
             <RoutableTabs
               mountOnEnter
               unmountOnExit
-              defaultLocation={toPermissionsTabs({
+              defaultLocation={toPermissionsConfigurationTabs({
                 realm,
-                tab: "resources",
+                permissionClientId: adminPermissionsClient.id!,
+                tab: "permissions",
               })}
             >
               <Tab
                 id="resources"
                 data-testid="permissionsResources"
-                title={<TabTitleText>{t("resources")}</TabTitleText>}
+                title={<TabTitleText>{t("permissions")}</TabTitleText>}
                 {...permissionsResourcesTab}
               >
-                <AuthorizationResources clientId={adminPermissionsClient.id!} />
+                <PermissionsConfigurationTab
+                  clientId={adminPermissionsClient.id!}
+                />
               </Tab>
               <Tab
                 id="policies"
@@ -207,12 +193,12 @@ export default function PermissionsSection() {
               </Tab>
               {hasViewUsers && (
                 <Tab
-                  id="evaluate"
-                  data-testid="permissionsEvaluate"
-                  title={<TabTitleText>{t("evaluate")}</TabTitleText>}
+                  id="evaluation"
+                  data-testid="permissionsEvaluation"
+                  title={<TabTitleText>{t("evaluation")}</TabTitleText>}
                   {...permissionsEvaluateTab}
                 >
-                  <AuthorizationEvaluate
+                  <PermissionsEvaluationTab
                     client={adminPermissionsClient}
                     save={save}
                   />

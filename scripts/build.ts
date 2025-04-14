@@ -169,15 +169,11 @@ import { z } from "zod";
                             [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
                             [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
                             [
-                                `src={
-              logo.startsWith("/")
-                ? joinPath(environment.resourceUrl, logo)
-                : logo
-            }`,
-                                'src={customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl}'
-                            ],
-                            [undefined, `import imgAvatarSvgUrl from "./assets/img_avatar.svg";`],
-                            ['environment.resourceUrl + "/img_avatar.svg"', "imgAvatarSvgUrl"]
+                                `logo.startsWith("/")
+          ? joinPath(environment.resourceUrl, logo)
+          : logo`,
+                                'customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl'
+                            ]
                         ] as const) {
                             const sourceCode_before = modifiedSourceCode;
 
@@ -232,23 +228,6 @@ import { z } from "zod";
                 }
 
                 assert(!modifiedSourceCode.includes("environment.resourceUrl"));
-            }
-
-            if (fileRelativePath === pathJoin("components", "roles-list", "RolesList.tsx")) {
-                for (const [search, replace] of [
-                    ["useTranslation(messageBundle)", `useTranslation()`]
-                ] as const) {
-                    const sourceCode_before = modifiedSourceCode;
-
-                    const sourceCode_after: string =
-                        search === undefined
-                            ? [replace, modifiedSourceCode].join("\n")
-                            : modifiedSourceCode.replace(search, replace);
-
-                    assert(sourceCode_before !== sourceCode_after);
-
-                    modifiedSourceCode = sourceCode_after;
-                }
             }
 
             await writeFile({

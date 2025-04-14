@@ -215,6 +215,7 @@ export default function ExecutorForm() {
                 >
                   {executorTypes?.map((option) => (
                     <SelectOption
+                      data-testid={option.id}
                       selected={option.id === field.value}
                       key={option.id}
                       value={option.id}

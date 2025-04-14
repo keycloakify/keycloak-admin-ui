@@ -14,7 +14,6 @@ export const User = () => {
       helpText={t("policyUsers")}
       defaultValue={[]}
       variant="typeaheadMulti"
-      isRequired
     />
   );
 };

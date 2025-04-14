@@ -2,13 +2,11 @@
 
 // @ts-nocheck
 
-import { useTranslation } from "react-i18next";
-import { FormGroup } from "../../../shared/@patternfly/react-core";
-
-import type { ComponentProps } from "./components";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";
+import { FormGroup } from "../../../shared/@patternfly/react-core";
+import { useTranslation } from "react-i18next";
 import { MultiLineInput } from "../multi-line-input/MultiLineInput";
-import { convertToName } from "./DynamicComponents";
+import type { ComponentProps } from "./components";
 
 function convertDefaultValue(formValue?: any): string[] {
   return formValue && Array.isArray(formValue) ? formValue : [formValue];
@@ -22,6 +20,7 @@ export const MultiValuedStringComponent = ({
   stringify,
   required,
   isDisabled = false,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
   const fieldName = convertToName(name!);

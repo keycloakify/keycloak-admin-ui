@@ -7,7 +7,7 @@ import {
   mainPageContentId,
   useEnvironment,
 } from "../shared/keycloak-ui-shared";
-import { Page } from "../shared/@patternfly/react-core";
+import { Flex, FlexItem, Page } from "../shared/@patternfly/react-core";
 import { PropsWithChildren, Suspense, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -29,6 +29,7 @@ import { WhoAmIContextProvider } from "./context/whoami/WhoAmI";
 import type { Environment } from "./environment";
 import { SubGroups } from "./groups/SubGroupsContext";
 import { AuthWall } from "./root/AuthWall";
+import { Banners } from "./Banners";
 
 export const AppContexts = ({ children }: PropsWithChildren) => (
   <ErrorBoundaryProvider>
@@ -62,21 +63,33 @@ export const App = () => {
   return (
     <AdminClientContext.Provider value={{ keycloak, adminClient }}>
       <AppContexts>
-        <Page
-          header={<Header />}
-          isManagedSidebar
-          sidebar={<PageNav />}
-          breadcrumb={<PageBreadCrumbs />}
-          mainContainerId={mainPageContentId}
+        <Flex
+          direction={{ default: "column" }}
+          flexWrap={{ default: "nowrap" }}
+          spaceItems={{ default: "spaceItemsNone" }}
+          style={{ height: "100%" }}
         >
-          <ErrorBoundaryFallback fallback={ErrorRenderer}>
-            <Suspense fallback={<KeycloakSpinner />}>
-              <AuthWall>
-                <Outlet />
-              </AuthWall>
-            </Suspense>
-          </ErrorBoundaryFallback>
-        </Page>
+          <FlexItem>
+            <Banners />
+          </FlexItem>
+          <FlexItem grow={{ default: "grow" }} style={{ minHeight: 0 }}>
+            <Page
+              header={<Header />}
+              isManagedSidebar
+              sidebar={<PageNav />}
+              breadcrumb={<PageBreadCrumbs />}
+              mainContainerId={mainPageContentId}
+            >
+              <ErrorBoundaryFallback fallback={ErrorRenderer}>
+                <Suspense fallback={<KeycloakSpinner />}>
+                  <AuthWall>
+                    <Outlet />
+                  </AuthWall>
+                </Suspense>
+              </ErrorBoundaryFallback>
+            </Page>
+          </FlexItem>
+        </Flex>
       </AppContexts>
     </AdminClientContext.Provider>
   );

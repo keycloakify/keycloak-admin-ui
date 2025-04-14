@@ -3,8 +3,8 @@
 // @ts-nocheck
 
 import type { AppRouteObject } from "../routes";
-import { AddRealmRoute } from "./routes/AddRealm";
+import { RealmRoute } from "./RealmRoutes";
 
-const routes: AppRouteObject[] = [AddRealmRoute];
+const routes: AppRouteObject[] = [RealmRoute];
 
 export default routes;

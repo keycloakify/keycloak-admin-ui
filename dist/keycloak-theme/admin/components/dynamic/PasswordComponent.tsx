@@ -4,7 +4,6 @@
 
 import { useTranslation } from "react-i18next";
 import { PasswordControl } from "../../../shared/keycloak-ui-shared";
-import { convertToName } from "./DynamicComponents";
 import type { ComponentProps } from "./components";
 
 export const PasswordComponent = ({
@@ -14,6 +13,7 @@ export const PasswordComponent = ({
   defaultValue,
   required,
   isDisabled = false,
+  convertToName,
 }: ComponentProps) => {
   const { t } = useTranslation();
 

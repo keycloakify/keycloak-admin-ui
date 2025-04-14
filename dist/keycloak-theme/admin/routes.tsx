@@ -17,13 +17,13 @@ import groupsRoutes from "./groups/routes";
 import identityProviders from "./identity-providers/routes";
 import organizationRoutes from "./organizations/routes";
 import pageRoutes from "./page/routes";
+import permissionsConfigurationRoute from "./permissions-configuration/routes";
 import realmRoleRoutes from "./realm-roles/routes";
 import realmSettingRoutes from "./realm-settings/routes";
 import realmRoutes from "./realm/routes";
 import sessionRoutes from "./sessions/routes";
 import userFederationRoutes from "./user-federation/routes";
 import userRoutes from "./user/routes";
-import permissionsRoute from "./permissions/routes";
 
 export type AppRouteObjectHandle = {
   access: AccessType | AccessType[];
@@ -55,7 +55,7 @@ export const routes: AppRouteObject[] = [
   ...realmSettingRoutes,
   ...sessionRoutes,
   ...userFederationRoutes,
-  ...permissionsRoute,
+  ...permissionsConfigurationRoute,
   ...userRoutes,
   ...groupsRoutes,
   ...dashboardRoutes,

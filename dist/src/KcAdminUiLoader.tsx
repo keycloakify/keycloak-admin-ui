@@ -38,6 +38,7 @@ export type KcAdminUiLoaderProps = {
     kcContext: KcContextLike;
     KcAdminUi: LazyExoticComponentLike;
     loadingFallback?: ReactElement<any, any>;
+    enableDarkModeIfPreferred?: boolean;
 };
 
 export function KcAdminUiLoader(props: KcAdminUiLoaderProps) {
@@ -64,7 +65,7 @@ export function KcAdminUiLoader(props: KcAdminUiLoaderProps) {
 
 let previousRunParamsFingerprint: string | undefined = undefined;
 
-function init(params: { kcContext: KcContextLike }) {
+function init(params: { kcContext: KcContextLike; enableDarkModeIfPreferred?: boolean }) {
     exit_condition: {
         const paramsFingerprint = JSON.stringify(params);
 
@@ -81,7 +82,25 @@ function init(params: { kcContext: KcContextLike }) {
         return;
     }
 
-    const { kcContext } = params;
+    const { kcContext, enableDarkModeIfPreferred = true } = params;
+
+    if (enableDarkModeIfPreferred) {
+        const DARK_MODE_CLASS = "pf-v5-theme-dark";
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+        updateDarkMode(mediaQuery.matches);
+        mediaQuery.addEventListener("change", event => updateDarkMode(event.matches));
+
+        function updateDarkMode(isEnabled: boolean) {
+            const { classList } = document.documentElement;
+
+            if (isEnabled) {
+                classList.add(DARK_MODE_CLASS);
+            } else {
+                classList.remove(DARK_MODE_CLASS);
+            }
+        }
+    }
 
     const environment = {
         serverBaseUrl: kcContext.serverBaseUrl ?? kcContext.authServerUrl,

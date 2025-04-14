@@ -62,7 +62,7 @@ export const AddSubFlowModal = ({
   return (
     <Modal
       variant={ModalVariant.medium}
-      title={t("addStepTo", { name })}
+      title={t("addSubFlowTo", { name })}
       onClose={onCancel}
       actions={[
         <Button

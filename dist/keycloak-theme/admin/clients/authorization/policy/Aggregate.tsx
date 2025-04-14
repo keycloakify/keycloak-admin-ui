@@ -4,16 +4,17 @@
 
 import { FormGroup } from "../../../../shared/@patternfly/react-core";
 import { useTranslation } from "react-i18next";
-
 import { HelpItem } from "../../../../shared/keycloak-ui-shared";
 import { useParams } from "../../../utils/useParams";
 import type { PolicyDetailsParams } from "../../routes/PolicyDetails";
 import { DecisionStrategySelect } from "../DecisionStrategySelect";
 import { ResourcesPolicySelect } from "../ResourcesPolicySelect";
+import { NewPermissionPolicyDetailsParams } from "../../../permissions-configuration/routes/NewPermissionPolicy";
 
 export const Aggregate = () => {
   const { t } = useTranslation();
   const { id } = useParams<PolicyDetailsParams>();
+  const { permissionClientId } = useParams<NewPermissionPolicyDetailsParams>();
 
   return (
     <>
@@ -24,7 +25,10 @@ export const Aggregate = () => {
           <HelpItem helpText={t("applyPolicyHelp")} fieldLabelId="policies" />
         }
       >
-        <ResourcesPolicySelect name="policies" clientId={id} />
+        <ResourcesPolicySelect
+          name="policies"
+          clientId={permissionClientId || id}
+        />
       </FormGroup>
       <DecisionStrategySelect helpLabel="policyDecisionStagey" />
     </>

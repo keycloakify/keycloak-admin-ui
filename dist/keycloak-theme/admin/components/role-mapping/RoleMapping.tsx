@@ -147,14 +147,6 @@ export const RoleMapping = ({
       )
       .flat();
 
-    const test = [
-      ...mapRoles(
-        [...clientMapping, ...realmRolesMapping],
-        [...effectiveClientRoles, ...effectiveRoles],
-        hide,
-      ),
-    ];
-    console.log(test);
     return [
       ...mapRoles(
         [...clientMapping, ...realmRolesMapping],
@@ -204,7 +196,7 @@ export const RoleMapping = ({
         canSelectAll
         onSelect={(rows) => setSelected(rows)}
         searchPlaceholderKey="searchByName"
-        ariaLabelKey="clientScopeList"
+        ariaLabelKey="roleList"
         isRowDisabled={(value) =>
           (value.role as CompositeRole).isInherited || false
         }

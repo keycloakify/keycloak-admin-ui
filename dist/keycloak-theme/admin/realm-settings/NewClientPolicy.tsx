@@ -636,6 +636,7 @@ export default function NewClientPolicy() {
                   <>
                     <Divider />
                     <Text
+                      data-testid="no-conditions"
                       className="kc-emptyConditions"
                       component={TextVariants.h2}
                     >

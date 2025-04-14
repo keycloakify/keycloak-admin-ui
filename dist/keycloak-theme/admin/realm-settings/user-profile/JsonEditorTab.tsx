@@ -4,7 +4,7 @@
 
 import { useAlerts } from "../../../shared/keycloak-ui-shared";
 import { ActionGroup, Button, Form, PageSection } from "../../../shared/@patternfly/react-core";
-import CodeEditor from "@uiw/react-textarea-code-editor";
+import CodeEditor from "../../components/form/CodeEditor";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { prettyPrintJSON } from "../../util";
@@ -37,13 +37,12 @@ export const JsonEditorTab = () => {
 
   return (
     <PageSection variant="light">
-      <div style={{ height: "30rem", overflow: "scroll" }}>
-        <CodeEditor
-          language="json"
-          value={code}
-          onChange={(event) => setCode(event.target.value ?? "")}
-        />
-      </div>
+      <CodeEditor
+        language="json"
+        value={code}
+        onChange={(value) => setCode(value ?? "")}
+        height={480}
+      />
       <Form>
         <ActionGroup>
           <Button

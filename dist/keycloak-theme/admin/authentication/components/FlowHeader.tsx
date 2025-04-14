@@ -2,37 +2,29 @@
 
 // @ts-nocheck
 
+import { DataListDragButton } from "../../../shared/@patternfly/react-core";
+import { Th, Tr } from "../../../shared/@patternfly/react-table";
 import { useTranslation } from "react-i18next";
-import {
-  DataListItem,
-  DataListItemRow,
-  DataListDragButton,
-  DataListItemCells,
-  DataListCell,
-} from "../../../shared/@patternfly/react-core";
 
 import "./flow-header.css";
 
 export const FlowHeader = () => {
   const { t } = useTranslation();
   return (
-    <DataListItem aria-labelledby="headerName" id="header">
-      <DataListItemRow>
+    <Tr aria-labelledby="headerName" id="header">
+      <Th>
         <DataListDragButton
           className="keycloak__authentication__header-drag-button"
           aria-label={t("disabled")}
         />
-        <DataListItemCells
-          className="keycloak__authentication__header"
-          dataListCells={[
-            <DataListCell key="step" id="headerName">
-              {t("steps")}
-            </DataListCell>,
-            <DataListCell key="requirement">{t("requirement")}</DataListCell>,
-            <DataListCell key="config"></DataListCell>,
-          ]}
-        />
-      </DataListItemRow>
-    </DataListItem>
+        <Th screenReaderText={t("expandRow")} />
+      </Th>
+      <Th>{t("steps")}</Th>
+      <Th>{t("requirement")}</Th>
+      <Th screenReaderText={t("config")}></Th>
+      <Th screenReaderText={t("config")}></Th>
+      <Th screenReaderText={t("config")}></Th>
+      <Th screenReaderText={t("config")}></Th>
+    </Tr>
   );
 };

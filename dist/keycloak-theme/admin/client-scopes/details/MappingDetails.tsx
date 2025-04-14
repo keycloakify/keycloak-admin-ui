@@ -228,10 +228,11 @@ export default function MappingDetails() {
               stringify
             />
             <ActionGroup>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" data-testid="save">
                 {t("save")}
               </Button>
               <Button
+                data-testid="cancel"
                 variant="link"
                 component={(props) => <Link {...props} to={toDetails()} />}
               >

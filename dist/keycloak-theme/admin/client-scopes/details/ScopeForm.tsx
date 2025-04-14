@@ -190,6 +190,7 @@ export const ScopeForm = ({ clientScope, save }: ScopeFormProps) => {
         />
         <ActionGroup>
           <FormSubmitButton
+            data-testid="save"
             formState={formState}
             disabled={!isDirty || !isValid}
           >
