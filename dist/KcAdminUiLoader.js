@@ -2,9 +2,9 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { Suspense, useMemo } from "react";
 import { assert, is } from "tsafe/assert";
 export function KcAdminUiLoader(props) {
-    const { kcContext, KcAdminUi, loadingFallback } = props;
+    const { kcContext, KcAdminUi, loadingFallback, enableDarkModeIfPreferred = true } = props;
     assert(is(KcAdminUi));
-    useMemo(() => init({ kcContext }), []);
+    useMemo(() => init({ kcContext, enableDarkModeIfPreferred }), []);
     return (_jsx(Suspense, { fallback: loadingFallback, children: (() => {
             const node = _jsx(KcAdminUi, {});
             if (node === null) {
@@ -28,7 +28,7 @@ function init(params) {
         }
         return;
     }
-    const { kcContext, enableDarkModeIfPreferred = true } = params;
+    const { kcContext, enableDarkModeIfPreferred } = params;
     if (enableDarkModeIfPreferred) {
         const DARK_MODE_CLASS = "pf-v5-theme-dark";
         const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
