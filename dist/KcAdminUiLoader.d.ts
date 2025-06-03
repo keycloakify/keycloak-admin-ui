@@ -10,6 +10,7 @@ export type KcContextLike = {
     consoleBaseUrl: string;
     masterRealm: string;
     resourceVersion: string;
+    properties: Record<string, string | undefined>;
 };
 type LazyExoticComponentLike = {
     _result: unknown;
