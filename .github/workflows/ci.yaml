@@ -3,9 +3,13 @@ on:
   push:
     branches:
       - main
+      - "26.0.7"
+      - "26.2.0"
   pull_request:
     branches:
       - main
+      - "26.0.7"
+      - "26.2.0"
 
 jobs:
 
