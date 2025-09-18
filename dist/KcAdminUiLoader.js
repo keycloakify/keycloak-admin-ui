@@ -2,9 +2,24 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { Suspense, useMemo } from "react";
 import { assert, is } from "tsafe/assert";
 export function KcAdminUiLoader(props) {
-    const { kcContext, KcAdminUi, loadingFallback, enableDarkModeIfPreferred = true } = props;
+    const { kcContext, KcAdminUi, loadingFallback, enableDarkModeIfPreferred, darkModePolicy } = props;
     assert(is(KcAdminUi));
-    useMemo(() => init({ kcContext, enableDarkModeIfPreferred }), []);
+    if (enableDarkModeIfPreferred !== undefined) {
+        kcContext.darkMode = enableDarkModeIfPreferred;
+    }
+    useMemo(() => init({
+        kcContext,
+        darkModePolicy: (() => {
+            if (darkModePolicy !== undefined) {
+                assert(enableDarkModeIfPreferred === undefined, `Can't use both enableDarkModeIfPreferred and darkModePolicy, enableDarkModeIfPreferred is deprecated.`);
+                return darkModePolicy;
+            }
+            if (enableDarkModeIfPreferred !== undefined) {
+                return enableDarkModeIfPreferred ? "auto" : "never dark mode";
+            }
+            return "auto";
+        })()
+    }), []);
     return (_jsx(Suspense, { fallback: loadingFallback, children: (() => {
             const node = _jsx(KcAdminUi, {});
             if (node === null) {
@@ -28,21 +43,31 @@ function init(params) {
         }
         return;
     }
-    const { kcContext, enableDarkModeIfPreferred } = params;
-    if (enableDarkModeIfPreferred) {
-        const DARK_MODE_CLASS = "pf-v5-theme-dark";
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        updateDarkMode(mediaQuery.matches);
-        mediaQuery.addEventListener("change", event => updateDarkMode(event.matches));
-        function updateDarkMode(isEnabled) {
+    const { kcContext, darkModePolicy } = params;
+    light_dark_mode_management: {
+        if (darkModePolicy === "never dark mode") {
+            break light_dark_mode_management;
+        }
+        assert;
+        if (kcContext.darkMode === false) {
+            break light_dark_mode_management;
+        }
+        const setIsDarkModeEnabled = (params) => {
+            const { isDarkModeEnabled } = params;
             const { classList } = document.documentElement;
-            if (isEnabled) {
+            const DARK_MODE_CLASS = "pf-v5-theme-dark";
+            if (isDarkModeEnabled) {
                 classList.add(DARK_MODE_CLASS);
             }
             else {
                 classList.remove(DARK_MODE_CLASS);
             }
+        };
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        if (mediaQuery.matches) {
+            setIsDarkModeEnabled({ isDarkModeEnabled: true });
         }
+        mediaQuery.addEventListener("change", event => setIsDarkModeEnabled({ isDarkModeEnabled: event.matches }));
     }
     const environment = {
         serverBaseUrl: (_a = kcContext.serverBaseUrl) !== null && _a !== void 0 ? _a : kcContext.authServerUrl,
