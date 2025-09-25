@@ -16,18 +16,23 @@ type SamlImportKeyDialogProps = {
   id: string;
   attr: KeyTypes;
   onClose: () => void;
+  onImported: () => void;
 };
 
 export const SamlImportKeyDialog = ({
   id,
   attr,
   onClose,
+  onImported,
 }: SamlImportKeyDialogProps) => {
   const { adminClient } = useAdminClient();
 
   const { t } = useTranslation();
   const form = useForm<SamlKeysDialogForm>();
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    formState: { isValid },
+  } = form;
 
   const { addAlert, addError } = useAlerts();
 
@@ -37,6 +42,7 @@ export const SamlImportKeyDialog = ({
         addError("importError", error);
       } else {
         addAlert(t("importSuccess"), AlertVariant.success);
+        onImported();
       }
     });
   };
@@ -47,9 +53,9 @@ export const SamlImportKeyDialog = ({
       toggleDialog={onClose}
       continueButtonLabel="import"
       titleKey="importKey"
+      confirmButtonDisabled={!isValid}
       onConfirm={() => {
         handleSubmit(submit)();
-        onClose();
       }}
     >
       <FormProvider {...form}>

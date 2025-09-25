@@ -3,6 +3,12 @@
 // @ts-nocheck
 
 import PolicyRepresentation from "@keycloak/keycloak-admin-client/lib/defs/policyRepresentation";
+import { PolicyQuery } from "@keycloak/keycloak-admin-client/lib/resources/clients";
+import {
+  KeycloakDataTable,
+  ListEmptyState,
+  useFetch,
+} from "../../../shared/keycloak-ui-shared";
 import {
   Button,
   ButtonVariant,
@@ -14,12 +20,11 @@ import {
   ModalVariant,
 } from "../../../shared/@patternfly/react-core";
 import { CaretDownIcon, FilterIcon } from "../../../shared/@patternfly/react-icons";
+import { sortBy } from "lodash-es";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ListEmptyState, useFetch } from "../../../shared/keycloak-ui-shared";
-import { KeycloakDataTable } from "../../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../../admin-client";
-import { capitalize, sortBy } from "lodash-es";
+import { capitalizeFirstLetterFormatter } from "../../util";
 import useToggle from "../../utils/useToggle";
 
 export type ExistingPoliciesDialogProps = {
@@ -41,34 +46,41 @@ export const ExistingPoliciesDialog = ({
   const [filterType, setFilterType] = useState<string | undefined>(undefined);
   const [isFilterTypeDropdownOpen, toggleIsFilterTypeDropdownOpen] =
     useToggle();
-  const [policies, setPolicies] = useState<PolicyRepresentation[]>([]);
   const [providers, setProviders] = useState<string[]>([]);
 
   useFetch(
     () =>
-      Promise.all([
-        adminClient.clients.listPolicyProviders({
-          id: permissionClientId!,
-        }),
-        adminClient.clients.listPolicies({
-          id: permissionClientId!,
-          permission: "false",
-        }),
-      ]),
-    ([providers, policies]) => {
+      adminClient.clients.listPolicyProviders({
+        id: permissionClientId!,
+      }),
+    (providers) => {
       const formattedProviders = providers
         .filter((p) => p.type !== "resource" && p.type !== "scope")
         .map((provider) => provider.name)
         .filter((name) => name !== undefined);
       setProviders(sortBy(formattedProviders));
-      setPolicies(policies || []);
     },
     [permissionClientId],
   );
 
-  const filteredPolicies = filterType
-    ? policies.filter((policy) => capitalize(policy.type) === filterType)
-    : policies;
+  const loader = async (first?: number, max?: number, search?: string) => {
+    const params: PolicyQuery = {
+      id: permissionClientId!,
+      permission: "false",
+      first,
+      max,
+    };
+
+    if (search) {
+      params.name = search;
+    }
+
+    if (filterType) {
+      params.type = filterType;
+    }
+
+    return (await adminClient.clients.listPolicies(params)) || [];
+  };
 
   return (
     <Modal
@@ -108,13 +120,14 @@ export const ExistingPoliciesDialog = ({
       ]}
     >
       <KeycloakDataTable
-        loader={filteredPolicies}
+        key={filterType}
+        loader={loader}
         ariaLabelKey={t("chooseAPolicyType")}
         searchPlaceholderKey={t("searchClientAuthorizationPolicy")}
         isSearching={true}
         searchTypeComponent={
           <Dropdown
-            onSelect={(event, value) => {
+            onSelect={(_, value) => {
               setFilterType(value as string | undefined);
               toggleIsFilterTypeDropdownOpen();
             }}
@@ -156,13 +169,12 @@ export const ExistingPoliciesDialog = ({
         canSelectAll
         onSelect={(selectedRows) => setRows(selectedRows)}
         columns={[
-          { name: "name", displayKey: t("name") },
+          { name: "name" },
           {
             name: "type",
-            displayKey: t("type"),
-            cellFormatters: [(value) => capitalize(String(value || ""))],
+            cellFormatters: [capitalizeFirstLetterFormatter()],
           },
-          { name: "description", displayKey: t("description") },
+          { name: "description" },
         ]}
         emptyState={
           <ListEmptyState

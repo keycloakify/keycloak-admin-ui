@@ -174,9 +174,7 @@ export function UserDataTable() {
       params.search = searchParam;
     }
 
-    if (activeFilters.exact) {
-      params.exact = true;
-    }
+    if (activeFilters.exact) params.exact = true;
 
     if (!listUsers && !(params.search || params.q)) {
       return [];
@@ -388,20 +386,16 @@ export function UserDataTable() {
         }
         toolbarItem={toolbar()}
         subToolbar={subtoolbar()}
-        actionResolver={(rowData: IRowData) => {
-          const user: UserRepresentation = rowData.data;
-          if (!user.access?.manage) return [];
-
-          return [
-            {
-              title: t("delete"),
-              onClick: () => {
-                setSelectedRows([user]);
-                toggleDeleteDialog();
-              },
+        actionResolver={(rowData: IRowData) => [
+          {
+            title: t("delete"),
+            onClick: () => {
+              setSelectedRows([rowData.data]);
+              toggleDeleteDialog();
             },
-          ];
-        }}
+          },
+        ]}
+        isRowDisabled={(user: UserRepresentation) => !user.access?.manage}
         columns={[
           {
             name: "username",

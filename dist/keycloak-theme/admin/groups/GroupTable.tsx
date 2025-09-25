@@ -140,6 +140,9 @@ export const GroupTable = ({ refresh: viewRefresh }: GroupTableProps) => {
                 value={search}
                 onChange={(_, value) => {
                   setSearch(value);
+                  if (value === "") {
+                    refresh();
+                  }
                 }}
                 onSearch={refresh}
                 onClear={() => {
@@ -160,7 +163,7 @@ export const GroupTable = ({ refresh: viewRefresh }: GroupTableProps) => {
             ? []
             : [
                 {
-                  title: t("rename"),
+                  title: t("edit"),
                   onRowClick: async (group) => {
                     setRename(group);
                     return false;

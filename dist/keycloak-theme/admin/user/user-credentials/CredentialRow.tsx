@@ -61,6 +61,7 @@ export const CredentialRow = ({
     <>
       {showData && Object.keys(credential).length !== 0 && (
         <CredentialDataDialog
+          title={credential.userLabel || t("passwordDataTitle")}
           credentialData={rows}
           onClose={() => {
             toggleShow();

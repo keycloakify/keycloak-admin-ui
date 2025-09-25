@@ -102,8 +102,15 @@ export const LocalizationTab = ({
                   name="supportedLocales"
                   isScrollable
                   label={t("supportedLocales")}
+                  labelIcon={t("supportedLocalesHelp")}
                   controller={{
                     defaultValue: defaultSupportedLocales,
+                    rules: {
+                      required: t("required"),
+                      validate: (value: string[]) =>
+                        value.every((v) => allLocales.includes(v)) ||
+                        t("invalidLocale"),
+                    },
                   }}
                   variant="typeaheadMulti"
                   placeholderText={t("selectLocales")}
@@ -115,8 +122,14 @@ export const LocalizationTab = ({
                 <SelectControl
                   name="defaultLocale"
                   label={t("defaultLocale")}
+                  labelIcon={t("defaultLocaleHelp")}
                   controller={{
                     defaultValue: DEFAULT_LOCALE,
+                    rules: {
+                      required: t("required"),
+                      validate: (value: string) =>
+                        watchSupportedLocales?.includes(value) || t("required"),
+                    },
                   }}
                   data-testid="select-default-locale"
                   options={watchSupportedLocales!.map((l) => ({

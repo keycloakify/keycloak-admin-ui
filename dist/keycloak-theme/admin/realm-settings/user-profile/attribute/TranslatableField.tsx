@@ -71,6 +71,7 @@ type TranslatableFieldProps = {
   attributeName: string;
   prefix: string;
   fieldName: string;
+  predefinedAttributes?: string[];
 };
 
 function hasTranslation(value: string, t: TFunction) {
@@ -89,6 +90,7 @@ export const TranslatableField = ({
   attributeName,
   prefix,
   fieldName,
+  predefinedAttributes,
 }: TranslatableFieldProps) => {
   const { t } = useTranslation();
   const { realmRepresentation: realm } = useRealm();
@@ -102,7 +104,10 @@ export const TranslatableField = ({
   const requiredTranslationName = `${translationPrefix}.0.value`;
 
   useEffect(() => {
-    if (isTranslationRequired(value, t, realm)) {
+    if (predefinedAttributes?.includes(value)) {
+      return;
+    }
+    if (realm?.internationalizationEnabled && value) {
       setValue(fieldName, `\${${prefix}.${value}}`);
     }
   }, [value]);
@@ -121,6 +126,7 @@ export const TranslatableField = ({
           orgKey={value}
           translationKey={`${prefix}.${value}`}
           fieldName={fieldName}
+          predefinedAttributes={predefinedAttributes}
           toggleDialog={toggle}
         />
       )}

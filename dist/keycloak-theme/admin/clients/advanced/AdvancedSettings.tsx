@@ -3,16 +3,7 @@
 // @ts-nocheck
 
 import { HelpItem, TextControl } from "../../../shared/keycloak-ui-shared";
-import {
-  ActionGroup,
-  Button,
-  FormGroup,
-  MenuToggle,
-  Select,
-  SelectList,
-  SelectOption,
-} from "../../../shared/@patternfly/react-core";
-import { useState } from "react";
+import { ActionGroup, Button, FormGroup } from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { DefaultSwitchControl } from "../../components/SwitchControl";
@@ -40,7 +31,6 @@ export const AdvancedSettings = ({
   hasConfigureAccess,
 }: AdvancedSettingsProps) => {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
 
   const { realmRepresentation: realm } = useRealm();
 
@@ -148,54 +138,6 @@ export const AdvancedSettings = ({
               stringify
             />
           )}
-          <FormGroup
-            label={t("keyForCodeExchange")}
-            fieldId="keyForCodeExchange"
-            hasNoPaddingTop
-            labelIcon={
-              <HelpItem
-                helpText={t("keyForCodeExchangeHelp")}
-                fieldLabelId="keyForCodeExchange"
-              />
-            }
-          >
-            <Controller
-              name={convertAttributeNameToForm<FormFields>(
-                "attributes.pkce.code.challenge.method",
-              )}
-              defaultValue=""
-              control={control}
-              render={({ field }) => (
-                <Select
-                  toggle={(ref) => (
-                    <MenuToggle
-                      id="keyForCodeExchange"
-                      ref={ref}
-                      onClick={() => setOpen(!open)}
-                      isExpanded={open}
-                    >
-                      {[field.value || t("choose")]}
-                    </MenuToggle>
-                  )}
-                  isOpen={open}
-                  onOpenChange={(isOpen) => setOpen(isOpen)}
-                  onSelect={(_, value) => {
-                    field.onChange(value);
-                    setOpen(false);
-                  }}
-                  selected={field.value}
-                >
-                  <SelectList>
-                    {["", "S256", "plain"].map((v) => (
-                      <SelectOption key={v} value={v}>
-                        {v || t("choose")}
-                      </SelectOption>
-                    ))}
-                  </SelectList>
-                </Select>
-              )}
-            />
-          </FormGroup>
           <DefaultSwitchControl
             name={convertAttributeNameToForm<FormFields>(
               "attributes.require.pushed.authorization.requests",

@@ -29,6 +29,7 @@ export const HelpHeader = () => {
   const dropdownItems = [
     <DropdownItem key="link" id="link">
       <FormattedLink
+        data-testId="documentation-link"
         href={helpUrls.documentationUrl}
         title={t("documentation")}
       />
@@ -64,6 +65,7 @@ export const HelpHeader = () => {
           onClick={() => setOpen(!open)}
           aria-label="Help"
           id="help"
+          data-testid="help-toggle"
         >
           <HelpIcon />
         </MenuToggle>

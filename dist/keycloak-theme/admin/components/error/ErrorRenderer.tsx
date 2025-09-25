@@ -36,8 +36,8 @@ export const ErrorRenderer = ({ error }: FallbackProps) => {
           <AlertActionCloseButton title={error.message} onClose={reset} />
         }
         actionLinks={
-          <AlertActionLink onClick={() => (location.href = "/")}>
-            {t("home")}
+          <AlertActionLink onClick={() => location.reload()}>
+            {t("reload")}
           </AlertActionLink>
         }
       ></Alert>

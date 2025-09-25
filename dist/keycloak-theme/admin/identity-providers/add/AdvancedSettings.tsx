@@ -99,9 +99,17 @@ const LoginFlow = ({
 };
 
 const SYNC_MODES = ["IMPORT", "LEGACY", "FORCE"];
-type AdvancedSettingsProps = { isOIDC: boolean; isSAML: boolean };
+type AdvancedSettingsProps = {
+  isOIDC: boolean;
+  isSAML: boolean;
+  isOAuth2: boolean;
+};
 
-export const AdvancedSettings = ({ isOIDC, isSAML }: AdvancedSettingsProps) => {
+export const AdvancedSettings = ({
+  isOIDC,
+  isSAML,
+  isOAuth2,
+}: AdvancedSettingsProps) => {
   const { t } = useTranslation();
   const {
     control,
@@ -125,18 +133,18 @@ export const AdvancedSettings = ({ isOIDC, isSAML }: AdvancedSettingsProps) => {
   const syncModeAvailable = transientUsers === "false";
   return (
     <>
-      {!isOIDC && !isSAML && (
+      {!isOIDC && !isSAML && !isOAuth2 && (
         <TextField field="config.defaultScope" label="scopes" />
       )}
       <SwitchField field="storeToken" label="storeTokens" fieldType="boolean" />
-      {(isSAML || isOIDC) && (
+      {(isSAML || isOIDC || isOAuth2) && (
         <SwitchField
           field="addReadTokenRoleOnCreate"
           label="storedTokensReadable"
           fieldType="boolean"
         />
       )}
-      {!isOIDC && !isSAML && (
+      {!isOIDC && !isSAML && !isOAuth2 && (
         <>
           <SwitchField
             field="config.acceptsPromptNoneForwardFromClient"
@@ -160,7 +168,7 @@ export const AdvancedSettings = ({ isOIDC, isSAML }: AdvancedSettingsProps) => {
         fieldType="boolean"
       />
 
-      {(!isSAML || isOIDC) && (
+      {((!isSAML && !isOAuth2) || isOIDC) && (
         <FormGroupField label="filteredByClaim">
           <Controller
             name="config.filteredByClaim"

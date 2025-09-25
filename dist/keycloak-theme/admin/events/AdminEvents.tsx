@@ -348,7 +348,9 @@ export const AdminEvents = ({ resourcePath }: AdminEventsProps) => {
                             onSelect={(selectedValue) => {
                               const option = selectedValue.toString();
                               const changedValue = field.value.includes(option)
-                                ? field.value.filter((item) => item !== option)
+                                ? field.value.filter(
+                                    (item: string) => item !== option,
+                                  )
                                 : [...field.value, option];
 
                               field.onChange(changedValue);
@@ -360,14 +362,14 @@ export const AdminEvents = ({ resourcePath }: AdminEventsProps) => {
                             aria-labelledby={"resourceTypes"}
                             chipGroupComponent={
                               <ChipGroup>
-                                {field.value.map((chip) => (
+                                {field.value.map((chip: string) => (
                                   <Chip
                                     key={chip}
                                     onClick={(resource) => {
                                       resource.stopPropagation();
                                       field.onChange(
                                         field.value.filter(
-                                          (val) => val !== chip,
+                                          (val: string) => val !== chip,
                                         ),
                                       );
                                     }}
@@ -413,7 +415,9 @@ export const AdminEvents = ({ resourcePath }: AdminEventsProps) => {
                             onSelect={(selectedValue) => {
                               const option = selectedValue.toString();
                               const changedValue = field.value.includes(option)
-                                ? field.value.filter((item) => item !== option)
+                                ? field.value.filter(
+                                    (item: string) => item !== option,
+                                  )
                                 : [...field.value, option];
 
                               field.onChange(changedValue);
@@ -425,14 +429,14 @@ export const AdminEvents = ({ resourcePath }: AdminEventsProps) => {
                             aria-labelledby={"operationTypes"}
                             chipGroupComponent={
                               <ChipGroup>
-                                {field.value.map((chip) => (
+                                {field.value.map((chip: string) => (
                                   <Chip
                                     key={chip}
                                     onClick={(operation) => {
                                       operation.stopPropagation();
                                       field.onChange(
                                         field.value.filter(
-                                          (val) => val !== chip,
+                                          (val: string) => val !== chip,
                                         ),
                                       );
                                     }}

@@ -6,7 +6,6 @@ import GroupRepresentation from "@keycloak/keycloak-admin-client/lib/defs/groupR
 import {
   FormErrorText,
   HelpItem,
-  SelectVariant,
   useFetch,
 } from "../../../shared/keycloak-ui-shared";
 import { Button, FormGroup } from "../../../shared/@patternfly/react-core";
@@ -20,7 +19,7 @@ import type { ComponentProps } from "../../components/dynamic/components";
 import { GroupPickerDialog } from "../../components/group/GroupPickerDialog";
 
 type GroupSelectProps = Omit<ComponentProps, "convertToName"> & {
-  variant?: `${SelectVariant}`;
+  variant?: "typeahead" | "typeaheadMulti";
   isRequired?: boolean;
 };
 
@@ -34,6 +33,7 @@ export const GroupSelect = ({
   defaultValue,
   isDisabled = false,
   isRequired,
+  variant = "typeaheadMulti",
 }: GroupSelectProps) => {
   const { adminClient } = useAdminClient();
   const { t } = useTranslation();
@@ -62,6 +62,8 @@ export const GroupSelect = ({
     [],
   );
 
+  const selectOne = variant === "typeahead";
+
   return (
     <FormGroup
       label={t(label!)}
@@ -73,29 +75,30 @@ export const GroupSelect = ({
         name={name!}
         control={control}
         defaultValue={defaultValue}
-        rules={
-          isRequired
-            ? {
-                validate: (value?: GroupRepresentation[]) =>
-                  value && value.length > 0,
-              }
-            : undefined
-        }
+        rules={{
+          validate: (value?: string[]) =>
+            !isRequired || (value && value.length > 0),
+        }}
         render={({ field }) => (
           <>
             {open && (
               <GroupPickerDialog
-                type="selectMany"
+                type={selectOne ? "selectOne" : "selectMany"}
                 text={{
                   title: "addGroupsToGroupPolicy",
                   ok: "add",
                 }}
                 onConfirm={(selectGroup) => {
-                  field.onChange([
-                    ...(field.value || []),
-                    ...convertGroups(selectGroup || []),
-                  ]);
-                  setGroups([...groups, ...(selectGroup || [])]);
+                  if (selectOne) {
+                    field.onChange(convertGroups(selectGroup || []));
+                    setGroups(selectGroup || []);
+                  } else {
+                    field.onChange([
+                      ...(field.value || []),
+                      ...convertGroups(selectGroup || []),
+                    ]);
+                    setGroups([...groups, ...(selectGroup || [])]);
+                  }
                   setOpen(false);
                 }}
                 onClose={() => {
@@ -151,7 +154,7 @@ export const GroupSelect = ({
           </Tbody>
         </Table>
       )}
-      {errors.groups && <FormErrorText message={t("requiredGroups")} />}
+      {errors[name!] && <FormErrorText message={t("requiredGroups")} />}
     </FormGroup>
   );
 };

@@ -128,7 +128,7 @@ export const ViewHeader = ({
             <Toolbar className="pf-v5-u-p-0">
               <ToolbarContent>
                 {onToggle && (
-                  <ToolbarItem>
+                  <ToolbarItem alignSelf="center">
                     <Switch
                       id={`${toKey(titleKey)}-switch`}
                       data-testid={`${titleKey}-switch`}

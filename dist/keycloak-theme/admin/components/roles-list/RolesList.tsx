@@ -47,7 +47,7 @@ const RoleDetailLink = ({
         </Link>
       ) : (
         <span>{role.name}</span>
-      )}
+      )}{" "}
       <HelpItem helpText={t("defaultRole")} fieldLabelId="defaultRole" />
     </>
   );

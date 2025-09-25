@@ -3,18 +3,18 @@
 // @ts-nocheck
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
+import { HelpItem, SelectControl } from "../../../shared/keycloak-ui-shared";
 import {
   Checkbox,
   FormGroup,
   Grid,
   GridItem,
   InputGroup,
-  Switch,
   InputGroupItem,
+  Switch,
 } from "../../../shared/@patternfly/react-core";
 import { Controller, useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { HelpItem } from "../../../shared/keycloak-ui-shared";
 import { DefaultSwitchControl } from "../../components/SwitchControl";
 import { FormAccess } from "../../components/form/FormAccess";
 import { convertAttributeNameToForm } from "../../util";
@@ -342,6 +342,20 @@ export const CapabilityConfig = ({
               </GridItem>
             </Grid>
           </FormGroup>
+          <SelectControl
+            id="keyForCodeExchange"
+            label={t("keyForCodeExchange")}
+            labelIcon={t("keyForCodeExchangeHelp")}
+            controller={{ defaultValue: "" }}
+            name={convertAttributeNameToForm<FormFields>(
+              "attributes.pkce.code.challenge.method",
+            )}
+            options={[
+              { key: "", value: t("choose") },
+              { key: "S256", value: "S256" },
+              { key: "plain", value: "plain" },
+            ]}
+          />
         </>
       )}
       {protocol === "saml" && (

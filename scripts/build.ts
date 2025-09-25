@@ -155,10 +155,20 @@ import { z } from "zod";
                 `"${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/") || ".."}/shared/keycloak-ui-shared"`
             );
 
-            if (fileRelativePath === pathJoin("components", "users", "UserDataTable.tsx")) {
+            if (fileRelativePath === pathJoin("i18n", "i18n.ts")) {
                 modifiedSourceCode = modifiedSourceCode.replace(
-                    `["is_temporary_admin"][0]`,
-                    `["is_temporary_admin"]?.[0]`
+                    `// @ts-ignore imported by rollup plugin
+import code from "message-bundle";`,
+                    ""
+                );
+                modifiedSourceCode = modifiedSourceCode.replace(
+                    `if (
+        process.env.NODE_ENV === "development" &&
+        import.meta.env.VITE_REALM_OVERRIDES === undefined
+      ) {
+        return code;
+      }`,
+                    ""
                 );
             }
 

@@ -58,7 +58,10 @@ export const GroupsModal = ({
     useState<GroupRepresentation | null>(null);
 
   const form = useForm({
-    defaultValues: { name: "" },
+    defaultValues: {
+      name: rename?.name || "",
+      description: rename?.description || "",
+    },
   });
   const { handleSubmit, formState } = form;
 
@@ -239,13 +242,13 @@ export const GroupsModal = ({
       } else if (rename) {
         await adminClient.groups.update(
           { id },
-          { ...rename, name: group.name },
+          { ...rename, name: group.name, description: group.description },
         );
       } else {
         await adminClient.groups.updateChildGroup({ id }, group);
       }
 
-      refresh(rename ? { ...rename, name: group.name } : undefined);
+      refresh(rename ? { ...rename, ...group } : undefined);
       handleModalToggle();
       addAlert(
         t(
@@ -267,12 +270,12 @@ export const GroupsModal = ({
       variant={ModalVariant.small}
       title={
         rename
-          ? t("renameAGroup")
+          ? t("editGroup")
           : duplicateId
             ? t("duplicateAGroup")
             : t("createAGroup")
       }
-      isOpen={true}
+      isOpen
       onClose={handleModalToggle}
       actions={[
         <FormSubmitButton
@@ -283,7 +286,7 @@ export const GroupsModal = ({
           allowInvalid
           allowNonDirty
         >
-          {t(rename ? "rename" : duplicateId ? "duplicate" : "create")}
+          {t(rename ? "edit" : duplicateId ? "duplicate" : "create")}
         </FormSubmitButton>,
         <Button
           id="modal-cancel"
@@ -312,6 +315,7 @@ export const GroupsModal = ({
             rules={{ required: t("required") }}
             autoFocus
           />
+          <TextControl name="description" label={t("description")} />
         </Form>
       </FormProvider>
     </Modal>
