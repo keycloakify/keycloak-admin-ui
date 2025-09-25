@@ -155,6 +155,13 @@ import { z } from "zod";
                 `"${new Array(fileRelativePath.split(pathSep).length).fill("..").join("/") || ".."}/shared/keycloak-ui-shared"`
             );
 
+            if (fileRelativePath === pathJoin("components", "users", "UserDataTable.tsx")) {
+                modifiedSourceCode = modifiedSourceCode.replace(
+                    `["is_temporary_admin"][0]`,
+                    `["is_temporary_admin"]?.[0]`
+                );
+            }
+
             for (const name of ["react-core", "react-icons", "react-styles", "react-table"]) {
                 modifiedSourceCode = modifiedSourceCode.replaceAll(
                     `"@patternfly/${name}"`,
