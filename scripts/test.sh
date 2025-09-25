@@ -15,7 +15,6 @@ npx keycloakify initialize-admin-theme
 rm -r node_modules/@keycloakify/keycloak-admin-ui
 cp -r ../dist node_modules/@keycloakify/keycloak-admin-ui
 rm -r node_modules/.cache
-cd keycloakify-starter
 node -e "\
     const fs = require('fs');\
     const pj_path= './node_modules/@keycloakify/keycloak-admin-ui/package.json';
