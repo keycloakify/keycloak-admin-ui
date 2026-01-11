@@ -276,9 +276,9 @@ export const PoliciesTab = () => {
                   clientPolicy={clientPolicy}
                   form={form}
                   saveStatus={saveStatus}
-                  onConfirm={() => {
+                  onConfirm={async () => {
                     form.setValue(clientPolicy.name!, false);
-                    saveStatus();
+                    await saveStatus();
                   }}
                 />
               ),

@@ -78,14 +78,6 @@ function hasTranslation(value: string, t: TFunction) {
   return t(value) === value && value !== "";
 }
 
-function isTranslationRequired(
-  value: string,
-  t: TFunction,
-  realm?: RealmRepresentation,
-) {
-  return realm?.internationalizationEnabled && hasTranslation(value, t);
-}
-
 export const TranslatableField = ({
   attributeName,
   prefix,
@@ -111,6 +103,16 @@ export const TranslatableField = ({
       setValue(fieldName, `\${${prefix}.${value}}`);
     }
   }, [value]);
+
+  function isTranslationRequired(
+    value: string,
+    t: TFunction,
+    realm?: RealmRepresentation,
+  ) {
+    return (
+      realm?.internationalizationEnabled && open && hasTranslation(value, t)
+    );
+  }
 
   return (
     <>

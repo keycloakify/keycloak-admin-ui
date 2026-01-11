@@ -20,6 +20,8 @@ import { StoreSettings } from "./StoreSettings";
 type ImportKeyDialogProps = {
   toggleDialog: () => void;
   save: (importFile: ImportFile) => void;
+  title?: string;
+  description?: string;
 };
 
 export type ImportFile = {
@@ -32,6 +34,8 @@ export type ImportFile = {
 export const ImportKeyDialog = ({
   save,
   toggleDialog,
+  title = "generateKeys",
+  description = "generateKeysDescription",
 }: ImportKeyDialogProps) => {
   const { t } = useTranslation();
   const form = useForm<ImportFile>();
@@ -54,7 +58,7 @@ export const ImportKeyDialog = ({
   return (
     <Modal
       variant={ModalVariant.medium}
-      title={t("generateKeys")}
+      title={t(title)}
       isOpen
       onClose={toggleDialog}
       actions={[
@@ -62,8 +66,8 @@ export const ImportKeyDialog = ({
           id="modal-confirm"
           data-testid="confirm"
           key="confirm"
-          onClick={() => {
-            handleSubmit((importFile) => {
+          onClick={async () => {
+            await handleSubmit((importFile) => {
               save(importFile);
               toggleDialog();
             })();
@@ -83,7 +87,7 @@ export const ImportKeyDialog = ({
       ]}
     >
       <TextContent>
-        <Text>{t("generateKeysDescription")}</Text>
+        <Text>{t(description)}</Text>
       </TextContent>
       <Form className="pf-v5-u-pt-lg">
         <FormProvider {...form}>

@@ -4,6 +4,7 @@
 
 import type FederatedIdentityRepresentation from "@keycloak/keycloak-admin-client/lib/defs/federatedIdentityRepresentation";
 import type IdentityProviderRepresentation from "@keycloak/keycloak-admin-client/lib/defs/identityProviderRepresentation";
+import type { IdentityProvidersQuery } from "@keycloak/keycloak-admin-client/lib/resources/identityProviders";
 import {
   AlertVariant,
   Button,
@@ -12,6 +13,7 @@ import {
   PageSection,
   Text,
   TextContent,
+  Spinner,
 } from "../../shared/@patternfly/react-core";
 import { cellWidth } from "../../shared/@patternfly/react-table";
 import { capitalize } from "lodash-es";
@@ -20,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { FormPanel } from "../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../admin-client";
-import { useAlerts } from "../../shared/keycloak-ui-shared";
+import { useAlerts, useFetch } from "../../shared/keycloak-ui-shared";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
 import { KeycloakDataTable } from "../../shared/keycloak-ui-shared";
 import { useRealm } from "../context/realm-context/RealmContext";
@@ -38,11 +40,11 @@ export const UserIdentityProviderLinks = ({
   userId,
 }: UserIdentityProviderLinksProps) => {
   const { adminClient } = useAdminClient();
-
   const [key, setKey] = useState(0);
+  const [linkedNames, setLinkedNames] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [federatedId, setFederatedId] = useState("");
   const [isLinkIdPModalOpen, setIsLinkIdPModalOpen] = useState(false);
-
   const { realm } = useRealm();
   const { addAlert, addError } = useAlerts();
   const { t } = useTranslation();
@@ -53,7 +55,21 @@ export const UserIdentityProviderLinks = ({
     "view-identity-providers",
   );
 
-  const refresh = () => setKey(new Date().getTime());
+  useFetch(
+    () => adminClient.users.listFederatedIdentities({ id: userId }),
+    (linkedIdentities) => {
+      setLinkedNames(
+        linkedIdentities.map((identity) => identity.identityProvider!),
+      );
+      setIsLoading(false);
+    },
+    [userId, key],
+  );
+
+  const refresh = () => {
+    setKey(new Date().getTime());
+    setIsLoading(true);
+  };
 
   type WithProviderId = FederatedIdentityRepresentation & {
     providerId: string;
@@ -78,22 +94,25 @@ export const UserIdentityProviderLinks = ({
     return allFedIds;
   };
 
-  const getAvailableIdPs = async () => {
-    return adminClient.identityProviders.find();
-  };
-
   const linkedIdPsLoader = async () => {
     return getFederatedIdentities();
   };
 
-  const availableIdPsLoader = async () => {
-    const linkedNames = (await getFederatedIdentities()).map(
-      (x) => x.identityProvider,
-    );
-
-    return (await getAvailableIdPs())?.filter(
-      (item) => !linkedNames.includes(item.alias),
-    )!;
+  const availableIdPsLoader = async (
+    first?: number,
+    max?: number,
+    search?: string,
+  ) => {
+    const params: IdentityProvidersQuery = {
+      first: first!,
+      max: max!,
+      realmOnly: false,
+      capability: "USER_LINKING",
+    };
+    if (search) {
+      params.search = search;
+    }
+    return await adminClient.identityProviders.find(params);
   };
 
   const [toggleUnlinkDialog, UnlinkConfirm] = useConfirmDialog({
@@ -180,6 +199,8 @@ export const UserIdentityProviderLinks = ({
   };
 
   const linkRenderer = (idp: IdentityProviderRepresentation) => {
+    if (linkedNames.includes(idp.alias!)) return <span />;
+
     return (
       <Button
         variant="link"
@@ -201,7 +222,6 @@ export const UserIdentityProviderLinks = ({
         cellRenderer: idpLinkRenderer,
         transforms: [cellWidth(20)],
       },
-
       {
         name: "userId",
         displayKey: "userID",
@@ -271,36 +291,41 @@ export const UserIdentityProviderLinks = ({
                 {t("availableIdPsText")}
               </Text>
             </TextContent>
-            <KeycloakDataTable
-              loader={availableIdPsLoader}
-              key={key}
-              isPaginated={false}
-              ariaLabelKey="LinkedIdPs"
-              className="kc-linked-IdPs-table"
-              columns={[
-                {
-                  name: "alias",
-                  displayKey: "name",
-                  cellFormatters: [emptyFormatter(), upperCaseFormatter()],
-                  transforms: [cellWidth(20)],
-                },
-                {
-                  name: "type",
-                  displayKey: "type",
-                  cellRenderer: badgeRenderer2,
-                  transforms: [cellWidth(60)],
-                },
-                {
-                  name: "",
-                  cellRenderer: linkRenderer,
-                },
-              ]}
-              emptyState={
-                <TextContent className="kc-no-providers-text">
-                  <Text>{t("noAvailableIdentityProviders")}</Text>
-                </TextContent>
-              }
-            />
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <KeycloakDataTable
+                loader={availableIdPsLoader}
+                key={key}
+                isPaginated
+                searchPlaceholderKey="searchForProvider"
+                ariaLabelKey="LinkedIdPs"
+                className="kc-linked-IdPs-table"
+                columns={[
+                  {
+                    name: "alias",
+                    displayKey: "name",
+                    cellFormatters: [emptyFormatter(), upperCaseFormatter()],
+                    transforms: [cellWidth(20)],
+                  },
+                  {
+                    name: "type",
+                    displayKey: "type",
+                    cellRenderer: badgeRenderer2,
+                    transforms: [cellWidth(60)],
+                  },
+                  {
+                    name: "",
+                    cellRenderer: linkRenderer,
+                  },
+                ]}
+                emptyState={
+                  <TextContent className="kc-no-providers-text">
+                    <Text>{t("noAvailableIdentityProviders")}</Text>
+                  </TextContent>
+                }
+              />
+            )}
           </FormPanel>
         )}
       </PageSection>

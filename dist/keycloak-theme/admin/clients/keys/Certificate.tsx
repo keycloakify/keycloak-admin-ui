@@ -14,6 +14,7 @@ type CertificateProps = Omit<CertificateDisplayProps, "id"> & {
 
 type CertificateDisplayProps = {
   id: string;
+  helpTextKey?: string;
   keyInfo?: CertificateRepresentation;
 };
 
@@ -31,7 +32,11 @@ const CertificateDisplay = ({ id, keyInfo }: CertificateDisplayProps) => {
   );
 };
 
-export const Certificate = ({ keyInfo, plain = false }: CertificateProps) => {
+export const Certificate = ({
+  helpTextKey = "certificateHelp",
+  keyInfo,
+  plain = false,
+}: CertificateProps) => {
   const { t } = useTranslation();
   const id = useId();
 
@@ -41,7 +46,7 @@ export const Certificate = ({ keyInfo, plain = false }: CertificateProps) => {
     <FormGroup
       label={t("certificate")}
       fieldId={id}
-      labelIcon={<HelpItem helpText={t("certificateHelp")} fieldLabelId={id} />}
+      labelIcon={<HelpItem helpText={t(helpTextKey)} fieldLabelId={id} />}
     >
       <CertificateDisplay id={id} keyInfo={keyInfo} />
     </FormGroup>

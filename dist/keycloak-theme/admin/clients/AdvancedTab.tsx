@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { ScrollForm } from "../../shared/keycloak-ui-shared";
 import type { AddAlertFunction } from "../../shared/keycloak-ui-shared";
 import { convertAttributeNameToForm, toUpperCase } from "../util";
+import useIsFeatureEnabled, { Feature } from "../utils/useIsFeatureEnabled";
 import type { FormFields, SaveOptions } from "./ClientDetails";
 import { AdvancedSettings } from "./advanced/AdvancedSettings";
 import { AuthenticationOverrides } from "./advanced/AuthenticationOverrides";
@@ -18,6 +19,8 @@ import { ClusteringPanel } from "./advanced/ClusteringPanel";
 import { FineGrainOpenIdConnect } from "./advanced/FineGrainOpenIdConnect";
 import { FineGrainSamlEndpointConfig } from "./advanced/FineGrainSamlEndpointConfig";
 import { OpenIdConnectCompatibilityModes } from "./advanced/OpenIdConnectCompatibilityModes";
+import { OpenIdVerifiableCredentials } from "./advanced/OpenIdVerifiableCredentials";
+import { PROTOCOL_OIDC, PROTOCOL_OID4VC } from "./constants";
 
 export const parseResult = (
   result: GlobalRequestResult,
@@ -54,7 +57,7 @@ export type AdvancedProps = {
 
 export const AdvancedTab = ({ save, client }: AdvancedProps) => {
   const { t } = useTranslation();
-  const openIdConnect = "openid-connect";
+  const isFeatureEnabled = useIsFeatureEnabled();
 
   const { setValue } = useFormContext();
   const {
@@ -85,7 +88,7 @@ export const AdvancedTab = ({ save, client }: AdvancedProps) => {
           },
           {
             title: t("fineGrainOpenIdConnectConfiguration"),
-            isHidden: protocol !== openIdConnect,
+            isHidden: protocol !== PROTOCOL_OIDC,
             panel: (
               <>
                 <Text className="pf-v5-u-pb-lg">
@@ -123,7 +126,7 @@ export const AdvancedTab = ({ save, client }: AdvancedProps) => {
           },
           {
             title: t("openIdConnectCompatibilityModes"),
-            isHidden: protocol !== openIdConnect,
+            isHidden: protocol !== PROTOCOL_OIDC,
             panel: (
               <>
                 <Text className="pf-v5-u-pb-lg">
@@ -145,7 +148,7 @@ export const AdvancedTab = ({ save, client }: AdvancedProps) => {
           },
           {
             title: t("fineGrainSamlEndpointConfig"),
-            isHidden: protocol === openIdConnect,
+            isHidden: protocol === PROTOCOL_OIDC,
             panel: (
               <>
                 <Text className="pf-v5-u-pb-lg">
@@ -200,6 +203,24 @@ export const AdvancedTab = ({ save, client }: AdvancedProps) => {
                       "minimum.acr.value",
                     ]);
                   }}
+                />
+              </>
+            ),
+          },
+          {
+            title: t("openIdVerifiableCredentials"),
+            isHidden:
+              (protocol !== PROTOCOL_OIDC && protocol !== PROTOCOL_OID4VC) ||
+              !isFeatureEnabled(Feature.OpenId4VCI),
+            panel: (
+              <>
+                <Text className="pf-v5-u-pb-lg">
+                  {t("openIdVerifiableCredentialsHelp")}
+                </Text>
+                <OpenIdVerifiableCredentials
+                  client={client}
+                  save={save}
+                  reset={() => resetFields(["oid4vci.enabled"])}
                 />
               </>
             ),

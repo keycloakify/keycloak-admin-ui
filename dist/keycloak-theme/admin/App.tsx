@@ -33,17 +33,19 @@ import { Banners } from "./Banners";
 
 export const AppContexts = ({ children }: PropsWithChildren) => (
   <ErrorBoundaryProvider>
-    <ServerInfoProvider>
-      <RealmContextProvider>
-        <WhoAmIContextProvider>
-          <RecentRealmsProvider>
-            <AccessContextProvider>
-              <SubGroups>{children}</SubGroups>
-            </AccessContextProvider>
-          </RecentRealmsProvider>
-        </WhoAmIContextProvider>
-      </RealmContextProvider>
-    </ServerInfoProvider>
+    <ErrorBoundaryFallback fallback={ErrorRenderer}>
+      <ServerInfoProvider>
+        <RealmContextProvider>
+          <WhoAmIContextProvider>
+            <RecentRealmsProvider>
+              <AccessContextProvider>
+                <SubGroups>{children}</SubGroups>
+              </AccessContextProvider>
+            </RecentRealmsProvider>
+          </WhoAmIContextProvider>
+        </RealmContextProvider>
+      </ServerInfoProvider>
+    </ErrorBoundaryFallback>
   </ErrorBoundaryProvider>
 );
 

@@ -291,8 +291,8 @@ export const PartialImportDialog = (props: PartialImportProps) => {
             data-testid="confirm"
             key="import"
             isDisabled={!isAnyResourceChecked}
-            onClick={() => {
-              doImport();
+            onClick={async () => {
+              await doImport();
             }}
           >
             {t("import")}

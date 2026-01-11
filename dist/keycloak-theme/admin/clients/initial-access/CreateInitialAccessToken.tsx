@@ -7,6 +7,7 @@ import {
   ActionGroup,
   AlertVariant,
   Button,
+  FormGroup,
   PageSection,
 } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
@@ -22,6 +23,8 @@ import { ViewHeader } from "../../components/view-header/ViewHeader";
 import { useRealm } from "../../context/realm-context/RealmContext";
 import { toClients } from "../routes/Clients";
 import { AccessTokenDialog } from "./AccessTokenDialog";
+import { MultiLineInput } from "../../components/multi-line-input/MultiLineInput";
+import { HelpItem } from "../../../shared/keycloak-ui-shared";
 
 export default function CreateInitialAccessToken() {
   const { adminClient } = useAdminClient();
@@ -95,6 +98,23 @@ export default function CreateInitialAccessToken() {
               defaultValue: 1,
             }}
           />
+          <FormGroup
+            label={t("webOrigins")}
+            fieldId="kc-web-origins"
+            labelIcon={
+              <HelpItem
+                helpText={t("webOriginsHelp")}
+                fieldLabelId="webOrigins"
+              />
+            }
+          >
+            <MultiLineInput
+              id="kc-web-origins"
+              name="webOrigins"
+              aria-label={t("webOrigins")}
+              addButtonLabel="addWebOrigins"
+            />
+          </FormGroup>
           <ActionGroup>
             <Button
               variant="primary"

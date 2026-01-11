@@ -234,7 +234,7 @@ export function UserDataTable() {
 
   const goToCreate = () => navigate(toAddUser({ realm: realmName }));
 
-  if (!uiRealmInfo || !realm) {
+  if (uiRealmInfo.userProfileProvidersEnabled === undefined || !realm) {
     return <KeycloakSpinner />;
   }
 

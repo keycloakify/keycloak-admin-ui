@@ -212,8 +212,8 @@ export default function LdapMapperDetails() {
                   ? [
                       <DropdownItem
                         key="ldapSync"
-                        onClick={() => {
-                          sync("keycloakToFed");
+                        onClick={async () => {
+                          await sync("keycloakToFed");
                         }}
                       >
                         {t(mapper.metadata.keycloakToFedSyncMessage)}

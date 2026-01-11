@@ -37,6 +37,7 @@ type UserDataTableAttributeSearchFormProps = {
   profile: UserProfileConfig;
   createAttributeSearchChips: () => ReactNode;
   searchUserWithAttributes: () => void;
+  clearAllFilters: () => void;
 };
 
 type UserFilterForm = UserAttribute & { exact: boolean };
@@ -47,6 +48,7 @@ export function UserDataTableAttributeSearchForm({
   profile,
   createAttributeSearchChips,
   searchUserWithAttributes,
+  clearAllFilters,
 }: UserDataTableAttributeSearchFormProps) {
   const { t } = useTranslation();
   const { addAlert } = useAlerts();
@@ -138,6 +140,7 @@ export function UserDataTableAttributeSearchForm({
       (chip) => chip.name !== chip.name,
     );
     setActiveFilters({ ...activeFilters, userAttribute: filtered });
+    clearAllFilters();
   };
 
   const createAttributeKeyInputField = () => {

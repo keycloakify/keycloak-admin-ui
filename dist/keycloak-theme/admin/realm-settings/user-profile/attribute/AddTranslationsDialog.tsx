@@ -83,7 +83,7 @@ export const AddTranslationsDialog = ({
     async () => {
       const selectedLocales = combinedLocales
         .filter((l) =>
-          localeToDisplayName(l, whoAmI.getLocale())
+          localeToDisplayName(l, whoAmI.locale)
             ?.toLocaleLowerCase(realm?.defaultLocale)
             ?.includes(filter.toLocaleLowerCase(realm?.defaultLocale)),
         )
@@ -225,7 +225,7 @@ export const AddTranslationsDialog = ({
                           <Td dataLabel={t("supportedLanguage")}>
                             {localeToDisplayName(
                               translation.locale,
-                              whoAmI.getLocale(),
+                              whoAmI.locale,
                             )}
                             {translation.locale === realm?.defaultLocale && (
                               <Label className="pf-v5-u-ml-xs" color="blue">

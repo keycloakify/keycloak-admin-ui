@@ -99,6 +99,7 @@ const LoginFlow = ({
 };
 
 const SYNC_MODES = ["IMPORT", "LEGACY", "FORCE"];
+const SHOW_IN_ACCOUNT_CONSOLE_VALUES = ["ALWAYS", "WHEN_LINKED", "NEVER"];
 type AdvancedSettingsProps = {
   isOIDC: boolean;
   isSAML: boolean;
@@ -125,6 +126,9 @@ export const AdvancedSettings = ({
   const claimFilterRequired = filteredByClaim === "true";
   const isFeatureEnabled = useIsFeatureEnabled();
   const isTransientUsersEnabled = isFeatureEnabled(Feature.TransientUsers);
+  const isClientAuthFederatedEnabled = isFeatureEnabled(
+    Feature.ClientAuthFederated,
+  );
   const transientUsers = useWatch({
     control,
     name: "config.doNotStoreUsers",
@@ -166,6 +170,21 @@ export const AdvancedSettings = ({
         field="hideOnLogin"
         label="hideOnLoginPage"
         fieldType="boolean"
+      />
+      <SelectControl
+        name="config.showInAccountConsole"
+        label={t("showInAccountConsole")}
+        labelIcon={t("showInAccountConsoleHelp")}
+        options={SHOW_IN_ACCOUNT_CONSOLE_VALUES.map((showInAccountConsole) => ({
+          key: showInAccountConsole,
+          value: t(
+            `showInAccountConsole.${showInAccountConsole.toLocaleLowerCase()}`,
+          ),
+        }))}
+        controller={{
+          defaultValue: SHOW_IN_ACCOUNT_CONSOLE_VALUES[0],
+          rules: { required: t("required") },
+        }}
       />
 
       {((!isSAML && !isOAuth2) || isOIDC) && (
@@ -299,6 +318,18 @@ export const AdvancedSettings = ({
         field="config.caseSensitiveOriginalUsername"
         label="caseSensitiveOriginalUsername"
       />
+      {isClientAuthFederatedEnabled && isOIDC && (
+        <>
+          <SwitchField
+            field="config.supportsClientAssertions"
+            label="supportsClientAssertions"
+          />
+          <SwitchField
+            field="config.supportsClientAssertionReuse"
+            label="supportsClientAssertionReuse"
+          />
+        </>
+      )}
     </>
   );
 };

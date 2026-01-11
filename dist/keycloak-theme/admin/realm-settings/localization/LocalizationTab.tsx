@@ -116,7 +116,7 @@ export const LocalizationTab = ({
                   placeholderText={t("selectLocales")}
                   options={allLocales.map((l) => ({
                     key: l,
-                    value: localeToDisplayName(l, whoAmI.getLocale()) || l,
+                    value: localeToDisplayName(l, whoAmI.locale) || l,
                   }))}
                 />
                 <SelectControl
@@ -134,7 +134,7 @@ export const LocalizationTab = ({
                   data-testid="select-default-locale"
                   options={watchSupportedLocales!.map((l) => ({
                     key: l,
-                    value: localeToDisplayName(l, whoAmI.getLocale()) || l,
+                    value: localeToDisplayName(l, whoAmI.locale) || l,
                   }))}
                 />
               </>

@@ -29,7 +29,7 @@ import { useRealm } from "../context/realm-context/RealmContext";
 import { useParams } from "../utils/useParams";
 import { DetailOrganizationHeader } from "./DetailOraganzationHeader";
 import { IdentityProviders } from "./IdentityProviders";
-import { Members } from "./Members";
+import { MembersSection } from "./MembersSection";
 import {
   OrganizationForm,
   OrganizationFormType,
@@ -163,7 +163,7 @@ export default function DetailOrganization() {
             title={<TabTitleText>{t("members")}</TabTitleText>}
             {...membersTab}
           >
-            <Members />
+            <MembersSection />
           </Tab>
           <Tab
             id="identityProviders"

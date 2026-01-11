@@ -72,7 +72,7 @@ export const AssignedPolicies = ({
       if (values && values.length > 0)
         return Promise.all(
           values.map((p) =>
-            adminClient.clients.findOnePolicy({
+            adminClient.clients.findOnePolicyWithType({
               id: permissionClientId,
               type: p.type!,
               policyId: p.id,
@@ -96,7 +96,7 @@ export const AssignedPolicies = ({
       : [],
   );
 
-  const assign = (policies: { policy: PolicyRepresentation }[]) => {
+  const assign = async (policies: { policy: PolicyRepresentation }[]) => {
     const assignedPolicies = policies.map(({ policy }) => ({
       id: policy.id!,
     }));
@@ -105,7 +105,7 @@ export const AssignedPolicies = ({
       ...(getValues("policies") || []),
       ...assignedPolicies,
     ]);
-    trigger("policies");
+    await trigger("policies");
     setSelectedPolicies([
       ...selectedPolicies,
       ...policies.map(({ policy }) => policy),
@@ -175,8 +175,8 @@ export const AssignedPolicies = ({
                 providers={providers!}
                 policies={policies!}
                 resourceType={resourceType}
-                onAssign={(newPolicy) => {
-                  assign([{ policy: newPolicy }]);
+                onAssign={async (newPolicy) => {
+                  await assign([{ policy: newPolicy }]);
                 }}
               />
             )}

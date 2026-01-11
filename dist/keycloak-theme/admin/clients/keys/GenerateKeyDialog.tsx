@@ -152,8 +152,8 @@ export const GenerateKeyDialog = ({
           key="confirm"
           data-testid="confirm"
           isDisabled={!isValid}
-          onClick={() => {
-            handleSubmit((config) => {
+          onClick={async () => {
+            await handleSubmit((config) => {
               save(config);
               toggleDialog();
             })();

@@ -7,8 +7,6 @@ import { useMatches } from "react-router-dom";
 
 import { ForbiddenSection } from "../ForbiddenSection";
 import { useAccess } from "../context/access/Access";
-import { useWhoAmI } from "../context/whoami/WhoAmI";
-import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";
 
 function hasProp<K extends PropertyKey>(
   data: object,
@@ -20,7 +18,6 @@ function hasProp<K extends PropertyKey>(
 export const AuthWall = ({ children }: any) => {
   const matches = useMatches();
   const { hasAccess } = useAccess();
-  const { whoAmI } = useWhoAmI();
 
   const permissionNeeded = matches.flatMap(({ handle }) => {
     if (
@@ -37,10 +34,6 @@ export const AuthWall = ({ children }: any) => {
 
     return [handle.access] as AccessType[];
   });
-
-  if (whoAmI.isEmpty()) {
-    return <KeycloakSpinner />;
-  }
 
   if (!hasAccess(...permissionNeeded)) {
     return <ForbiddenSection permissionNeeded={permissionNeeded} />;

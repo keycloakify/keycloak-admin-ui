@@ -153,6 +153,7 @@ export default function NewAttributeSettings() {
         selector,
         required,
         multivalued,
+        defaultValue,
         ...values
       } = config.attributes!.find(
         (attribute) => attribute.name === attributeName,
@@ -184,6 +185,7 @@ export default function NewAttributeSettings() {
       );
       form.setValue("isRequired", required !== undefined);
       form.setValue("multivalued", multivalued === true);
+      form.setValue("defaultValue", defaultValue);
     },
     [],
   );
@@ -233,6 +235,9 @@ export default function NewAttributeSettings() {
             annotations,
             validations,
           },
+          formFields.defaultValue
+            ? { defaultValue: formFields.defaultValue }
+            : { defaultValue: null },
           formFields.isRequired ? { required: formFields.required } : undefined,
           formFields.group ? { group: formFields.group } : { group: null },
         );
@@ -251,6 +256,9 @@ export default function NewAttributeSettings() {
             annotations,
             validations,
           },
+          formFields.defaultValue
+            ? { defaultValue: formFields.defaultValue }
+            : { defaultValue: null },
           formFields.isRequired ? { required: formFields.required } : undefined,
           formFields.group ? { group: formFields.group } : undefined,
         ),
