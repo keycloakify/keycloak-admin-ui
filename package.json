@@ -44,7 +44,8 @@
         "yauzl": "^3.2.0",
         "evt": "^2.5.8",
         "react": "^18.3.1",
-        "@types/react": "^18.3.12"
+        "@types/react": "^18.3.12",
+        "oidc-spa": "^10.0.1-rc.6"
     },
     "dependencies": {
         "tsafe": "^1.8.5"

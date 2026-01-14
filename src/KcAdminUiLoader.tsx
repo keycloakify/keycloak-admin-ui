@@ -1,5 +1,6 @@
 import { Suspense, useMemo, type LazyExoticComponent, type ReactElement } from "react";
 import { assert, is, type Equals } from "tsafe/assert";
+import { oidcEarlyInit } from "oidc-spa/entrypoint";
 //import type { AccountEnvironment as Environment_target } from "@keycloak/keycloak-admin-ui";
 
 type Environment = {
