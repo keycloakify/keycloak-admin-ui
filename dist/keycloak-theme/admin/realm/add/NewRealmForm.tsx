@@ -95,7 +95,7 @@ export default function NewRealmForm({ onClose }: NewRealmFormProps) {
           id="realm-form"
           isHorizontal
           onSubmit={handleSubmit(save)}
-          role="view-realm"
+          role="query-realms"
           isReadOnly={!whoAmI.createRealm}
         >
           <JsonFileUpload

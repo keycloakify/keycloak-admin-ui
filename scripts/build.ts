@@ -104,13 +104,16 @@ import { z } from "zod";
             }
 
             if (fileRelativePath === "package.json") {
-                const version = JSON.parse((await readFile()).toString("utf8")).version as unknown;
+                const version = JSON.parse((await readFile()).toString("utf8"))["version"];
 
-                assert(typeof version === "string");
+                const pkgStr = await fetch(
+                    `https://unpkg.com/@keycloak/keycloak-admin-ui@${version}/package.json`,
+                    fetchOptions
+                ).then(response => response.text());
 
                 await writeFile({
                     fileRelativePath: "package.json",
-                    modifiedData: Buffer.from(JSON.stringify({ version }), "utf8")
+                    modifiedData: Buffer.from(pkgStr, "utf8")
                 });
 
                 return;
@@ -247,6 +250,17 @@ import code from "message-bundle";`,
                 assert(!modifiedSourceCode.includes("environment.resourceUrl"));
             }
 
+            if (fileRelativePath === "admin-client.ts") {
+                let before = modifiedSourceCode;
+                modifiedSourceCode = modifiedSourceCode.replace(
+                    `import type Keycloak from "keycloak-js";`,
+                    `import type { Keycloak } from "oidc-spa/keycloak-js";`
+                );
+                assert(modifiedSourceCode !== before);
+            }
+
+            assert(!modifiedSourceCode.includes(`"keycloak-js"`));
+
             await writeFile({
                 fileRelativePath,
                 modifiedData: Buffer.from(
@@ -268,19 +282,14 @@ import code from "message-bundle";`,
     const keycloakThemeDirPath = pathJoin(distDirPath, "keycloak-theme");
     const adminDirPath = pathJoin(keycloakThemeDirPath, "admin");
 
-    let keycloakAdminUiVersion: string | undefined = undefined;
+    let packageJson_keycloakAdminUi: string | undefined = undefined;
 
     transformCodebase({
         srcDirPath: extractedDirPath,
         destDirPath: adminDirPath,
         transformSourceCode: ({ fileRelativePath, sourceCode }) => {
             if (fileRelativePath === "package.json") {
-                const version = JSON.parse(sourceCode.toString("utf8")).version as unknown;
-
-                assert(typeof version === "string");
-
-                keycloakAdminUiVersion = version;
-
+                packageJson_keycloakAdminUi = sourceCode.toString("utf8");
                 return;
             }
 
@@ -288,7 +297,43 @@ import code from "message-bundle";`,
         }
     });
 
-    assert(keycloakAdminUiVersion !== undefined);
+    assert(packageJson_keycloakAdminUi !== undefined);
+
+    const parsedPackageJson_keycloakAdminUi = await (async () => {
+        type ParsedPackageJson = {
+            version: string;
+            dependencies?: Record<string, string>;
+            peerDependencies?: Record<string, string>;
+            devDependencies?: Record<string, string>;
+        };
+
+        const zParsedPackageJson = (() => {
+            type TargetType = ParsedPackageJson;
+
+            const zTargetType = z.object({
+                version: z.string(),
+                dependencies: z.record(z.string()).optional(),
+                peerDependencies: z.record(z.string()).optional(),
+                devDependencies: z.record(z.string()).optional()
+            });
+
+            type InferredType = z.infer<typeof zTargetType>;
+
+            assert<Equals<ParsedPackageJson, InferredType>>;
+
+            return id<z.ZodType<TargetType>>(zTargetType);
+        })();
+
+        assert<Equals<z.TypeOf<typeof zParsedPackageJson>, ParsedPackageJson>>;
+
+        const parsedPackageJson: unknown = JSON.parse(packageJson_keycloakAdminUi);
+
+        zParsedPackageJson.parse(parsedPackageJson);
+
+        assert(is<ParsedPackageJson>(parsedPackageJson));
+
+        return parsedPackageJson;
+    })();
 
     transformCodebase({
         srcDirPath: pathJoin(getThisCodebaseRootDirPath(), "keycloak-theme"),
@@ -300,7 +345,7 @@ import code from "message-bundle";`,
         const publicDirBasename = "public";
 
         const { extractedDirPath } = await downloadAndExtractArchive({
-            url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${keycloakAdminUiVersion}.jar`,
+            url: `https://repo1.maven.org/maven2/org/keycloak/keycloak-admin-ui/${keycloakVersion}/keycloak-admin-ui-${parsedPackageJson_keycloakAdminUi.version}.jar`,
             cacheDirPath,
             fetchOptions,
             uniqueIdOfOnArchiveFile: "i18n_messages_and_public_assets",
@@ -410,43 +455,6 @@ import code from "message-bundle";`,
         });
     }
 
-    const parsedPackageJson_keycloakAdminUi = await (async () => {
-        type ParsedPackageJson = {
-            dependencies?: Record<string, string>;
-            peerDependencies?: Record<string, string>;
-            devDependencies?: Record<string, string>;
-        };
-
-        const zParsedPackageJson = (() => {
-            type TargetType = ParsedPackageJson;
-
-            const zTargetType = z.object({
-                dependencies: z.record(z.string()).optional(),
-                peerDependencies: z.record(z.string()).optional(),
-                devDependencies: z.record(z.string()).optional()
-            });
-
-            type InferredType = z.infer<typeof zTargetType>;
-
-            assert<Equals<ParsedPackageJson, InferredType>>;
-
-            return id<z.ZodType<TargetType>>(zTargetType);
-        })();
-
-        assert<Equals<z.TypeOf<typeof zParsedPackageJson>, ParsedPackageJson>>;
-
-        const parsedPackageJson = await fetch(
-            `https://unpkg.com/@keycloak/keycloak-admin-ui@${keycloakAdminUiVersion}/package.json`,
-            fetchOptions
-        ).then(response => response.json());
-
-        zParsedPackageJson.parse(parsedPackageJson);
-
-        assert(is<ParsedPackageJson>(parsedPackageJson));
-
-        return parsedPackageJson;
-    })();
-
     fs.writeFileSync(
         pathJoin(distDirPath, "package.json"),
         Buffer.from(
@@ -474,7 +482,9 @@ import code from "message-bundle";`,
                                 if (name === "react-dom") {
                                     return false;
                                 }
-
+                                if (name === "keycloak-js") {
+                                    return false;
+                                }
                                 return true;
                             })
                         );
@@ -549,7 +559,7 @@ import code from "message-bundle";`,
 
     console.log(
         chalk.green(
-            `\n\nPulled @keycloak/keycloak-admin-ui@${keycloakAdminUiVersion} from keycloak version ${keycloakVersion}`
+            `\n\nPulled @keycloak/keycloak-admin-ui@${parsedPackageJson_keycloakAdminUi.version} from keycloak version ${keycloakVersion}`
         )
     );
 })();

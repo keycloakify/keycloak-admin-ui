@@ -1,4 +1,4 @@
-import type { KcContextLike } from "@keycloakify/keycloak-admin-ui";
+import { type KcContextLike, createGetKcContext } from "@keycloakify/keycloak-admin-ui";
 import type { KcEnvName } from "../kc.gen";
 
 export type KcContext = KcContextLike & {
@@ -6,3 +6,6 @@ export type KcContext = KcContextLike & {
     themeName: string;
     properties: Record<KcEnvName, string>;
 };
+
+export const { getKcContext } = createGetKcContext<KcContext>();
+

@@ -1,25 +1,34 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Suspense, useMemo } from "react";
 import { assert, is } from "tsafe/assert";
-export function KcAdminUiLoader(props) {
-    const { kcContext, KcAdminUi, loadingFallback, enableDarkModeIfPreferred, darkModePolicy } = props;
-    assert(is(KcAdminUi));
-    if (enableDarkModeIfPreferred !== undefined) {
-        kcContext.darkMode = enableDarkModeIfPreferred;
+let kcContext_global = undefined;
+export function createGetKcContext() {
+    function getKcContext() {
+        if (kcContext_global === undefined) {
+            throw new Error("getKcContext can only be called once KcAdminUi has been loaded");
+        }
+        assert;
+        assert(is(kcContext_global));
+        return { kcContext: kcContext_global };
     }
-    useMemo(() => init({
-        kcContext,
-        darkModePolicy: (() => {
-            if (darkModePolicy !== undefined) {
-                assert(enableDarkModeIfPreferred === undefined, `Can't use both enableDarkModeIfPreferred and darkModePolicy, enableDarkModeIfPreferred is deprecated.`);
-                return darkModePolicy;
-            }
-            if (enableDarkModeIfPreferred !== undefined) {
-                return enableDarkModeIfPreferred ? "auto" : "never dark mode";
-            }
-            return "auto";
-        })()
-    }), []);
+    return { getKcContext };
+}
+export function KcAdminUiLoader(props) {
+    const { kcContext, KcAdminUi, loadingFallback } = props;
+    assert(is(KcAdminUi));
+    useMemo(() => {
+        try {
+            init({
+                kcContext
+            });
+        }
+        catch (error) {
+            // NOTE: The error can be "swallowed" by React
+            setTimeout(() => {
+                throw error;
+            }, 0);
+        }
+    }, []);
     return (_jsx(Suspense, { fallback: loadingFallback, children: (() => {
             const node = _jsx(KcAdminUi, {});
             if (node === null) {
@@ -43,32 +52,8 @@ function init(params) {
         }
         return;
     }
-    const { kcContext, darkModePolicy } = params;
-    light_dark_mode_management: {
-        if (darkModePolicy === "never dark mode") {
-            break light_dark_mode_management;
-        }
-        assert;
-        if (kcContext.darkMode === false) {
-            break light_dark_mode_management;
-        }
-        const setIsDarkModeEnabled = (params) => {
-            const { isDarkModeEnabled } = params;
-            const { classList } = document.documentElement;
-            const DARK_MODE_CLASS = "pf-v5-theme-dark";
-            if (isDarkModeEnabled) {
-                classList.add(DARK_MODE_CLASS);
-            }
-            else {
-                classList.remove(DARK_MODE_CLASS);
-            }
-        };
-        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-        if (mediaQuery.matches) {
-            setIsDarkModeEnabled({ isDarkModeEnabled: true });
-        }
-        mediaQuery.addEventListener("change", event => setIsDarkModeEnabled({ isDarkModeEnabled: event.matches }));
-    }
+    const { kcContext } = params;
+    kcContext_global = kcContext;
     const environment = {
         serverBaseUrl: (_a = kcContext.serverBaseUrl) !== null && _a !== void 0 ? _a : kcContext.authServerUrl,
         adminBaseUrl: (_b = kcContext.adminBaseUrl) !== null && _b !== void 0 ? _b : kcContext.authServerUrl,
@@ -132,14 +117,14 @@ function init(params) {
         }
         return realFetch(...args);
     };
-    custom_styles: {
+    inject_kc_context_properties_styles_if_any: {
         const { styles } = kcContext.properties;
         if (!styles) {
-            break custom_styles;
+            break inject_kc_context_properties_styles_if_any;
         }
         const relativeUrls = styles.split(" ").map(s => s.trim());
         if (relativeUrls.length === 0) {
-            break custom_styles;
+            break inject_kc_context_properties_styles_if_any;
         }
         const { appendLinksToHead, removeLinksFromHead } = (() => {
             const CUSTOM_ATTRIBUTE_NAME = "data-properties-styles";
