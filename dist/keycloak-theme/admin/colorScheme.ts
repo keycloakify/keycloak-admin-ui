@@ -6,10 +6,9 @@
 
 import { getKcContext } from "./KcContext";
 
-const DARK_THEME_CLASS= "pf-v5-theme-dark";
+const DARK_THEME_CLASS = "pf-v5-theme-dark";
 
 function setIsDarkModeEnabled(isDarkModeEnabled: boolean) {
-
     {
         const elementId = "root-color-scheme-style";
 
@@ -38,7 +37,6 @@ function setIsDarkModeEnabled(isDarkModeEnabled: boolean) {
             classList.remove(DARK_THEME_CLASS);
         }
     }
-
 }
 
 export function startColorSchemeManagement() {
@@ -47,7 +45,7 @@ export function startColorSchemeManagement() {
     // The "Dark Mode" realm configuration has been set to false
     // (Admin Console -> Realm Setting -> Themes -> Dark Mode)
     // This means that the admin don't want the UI to be render in dark mode
-    // even when it's the user preference.  
+    // even when it's the user preference.
     if (kcContext.darkMode === false) {
         setIsDarkModeEnabled(false);
         return;

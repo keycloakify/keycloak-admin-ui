@@ -8,4 +8,3 @@ export type KcContext = KcContextLike & {
 };
 
 export const { getKcContext } = createGetKcContext<KcContext>();
-

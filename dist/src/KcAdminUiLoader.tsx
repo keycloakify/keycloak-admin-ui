@@ -45,8 +45,7 @@ let kcContext_global: KcContextLike | undefined = undefined;
 
 export function createGetKcContext<KcContext extends KcContextLike>() {
     function getKcContext(): { kcContext: KcContext } {
-
-        if( kcContext_global === undefined ){
+        if (kcContext_global === undefined) {
             throw new Error("getKcContext can only be called once KcAdminUi has been loaded");
         }
 

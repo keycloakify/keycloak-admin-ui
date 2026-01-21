@@ -19,7 +19,7 @@ const KcAdminUi = lazy(() => import("./KcAdminUi"));
 export default function KcPage(props: { kcContext: KcContext }) {
     const { kcContext } = props;
 
-    if( !shouldLoadApp ){
+    if (!shouldLoadApp) {
         return null;
     }
 
