@@ -1,6 +1,6 @@
 {
     "name": "@keycloakify/keycloak-admin-ui",
-    "version": "260501.0.0",
+    "version": "260502.0.0",
     "description": "Repackaged Keycloak Admin UI",
     "repository": {
         "type": "git",
@@ -45,7 +45,7 @@
         "evt": "^2.5.8",
         "react": "^18.3.1",
         "@types/react": "^18.3.12",
-        "oidc-spa": "^10.0.2"
+        "oidc-spa": "~10.0.4"
     },
     "dependencies": {
         "tsafe": "^1.8.5"

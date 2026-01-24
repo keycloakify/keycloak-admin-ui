@@ -2,6 +2,7 @@
 
 // @ts-nocheck
 
+import { SessionExpirationWarningOverlay } from "../shared/keycloak-ui-shared/SessionExpirationWarningOverlay";
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import {
   mainPageContentId,
@@ -97,6 +98,7 @@ export const App = () => {
             </Page>
           </FlexItem>
         </Flex>
+        <SessionExpirationWarningOverlay />
       </AppContexts>
     </AdminClientContext.Provider>
   );

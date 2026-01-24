@@ -8,6 +8,8 @@ import { RootRoute } from "./routes";
 
 import "./index.css";
 
+document.title = "Keycloak Administration Console";
+
 const router = createHashRouter([RootRoute]);
 const prI18nInitialized = i18n.init();
 startColorSchemeManagement();

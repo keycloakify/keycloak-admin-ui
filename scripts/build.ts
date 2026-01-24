@@ -250,6 +250,22 @@ import code from "message-bundle";`,
                 assert(!modifiedSourceCode.includes("environment.resourceUrl"));
             }
 
+            if (fileRelativePath === "App.tsx") {
+                modifiedSourceCode = [
+                    'import { SessionExpirationWarningOverlay } from "../shared/keycloak-ui-shared/SessionExpirationWarningOverlay";',
+                    modifiedSourceCode
+                ].join("\n");
+                const before = modifiedSourceCode;
+                modifiedSourceCode = modifiedSourceCode.replace(
+                    `</Flex>
+      </AppContexts>`,
+                    `</Flex>
+        <SessionExpirationWarningOverlay />
+      </AppContexts>`
+                );
+                assert(modifiedSourceCode !== before);
+            }
+
             if (fileRelativePath === "admin-client.ts") {
                 let before = modifiedSourceCode;
                 modifiedSourceCode = modifiedSourceCode.replace(
