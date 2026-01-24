@@ -53,9 +53,7 @@ export function startColorSchemeManagement() {
 
     const mediaQuery_isDarkThePreferredColorScheme = window.matchMedia("(prefers-color-scheme: dark)");
 
-    if (mediaQuery_isDarkThePreferredColorScheme.matches) {
-        setIsDarkModeEnabled(true);
-    }
+    setIsDarkModeEnabled(mediaQuery_isDarkThePreferredColorScheme.matches);
 
     mediaQuery_isDarkThePreferredColorScheme.addEventListener("change", event =>
         setIsDarkModeEnabled(event.matches)
