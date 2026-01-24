@@ -26,4 +26,5 @@ yarn install
 
 yarn postinstall
 
+#NO_DEV_SERVER=true npx keycloakify start-keycloak
 npx keycloakify start-keycloak
