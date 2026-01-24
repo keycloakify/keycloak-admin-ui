@@ -252,7 +252,7 @@ import code from "message-bundle";`,
 
             if (fileRelativePath === "App.tsx") {
                 modifiedSourceCode = [
-                    'import { SessionExpirationWarningOverlay } from "../shared/keycloak-ui-shared/SessionExpirationWarningOverlay";',
+                    'import { SessionExpirationWarningOverlay } from "../shared/SessionExpirationWarningOverlay";',
                     modifiedSourceCode
                 ].join("\n");
                 const before = modifiedSourceCode;
@@ -260,7 +260,7 @@ import code from "message-bundle";`,
                     `</Flex>
       </AppContexts>`,
                     `</Flex>
-        <SessionExpirationWarningOverlay />
+        <SessionExpirationWarningOverlay warnUserSecondsBeforeAutoLogout={45} />
       </AppContexts>`
                 );
                 assert(modifiedSourceCode !== before);
