@@ -6,6 +6,8 @@ import type GroupRepresentation from "@keycloak/keycloak-admin-client/lib/defs/g
 import {
   Action,
   KeycloakDataTable,
+  KeycloakSpinner,
+  ListEmptyState,
   useAlerts,
   useFetch,
   useHelp,
@@ -30,12 +32,11 @@ import { Link } from "react-router-dom";
 import { useAdminClient } from "../admin-client";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
 import { GroupPickerDialog } from "../components/group/GroupPickerDialog";
-import { KeycloakSpinner } from "../../shared/keycloak-ui-shared";
-import { ListEmptyState } from "../../shared/keycloak-ui-shared";
+import { useAccess } from "../context/access/Access";
+import { GroupResourceContext } from "../context/group-resource/GroupResourceContext";
 import { useRealm } from "../context/realm-context/RealmContext";
 import { toUserFederation } from "../user-federation/routes/UserFederation";
 import useToggle from "../utils/useToggle";
-import { useAccess } from "../context/access/Access";
 
 export const DefaultsGroupsTab = () => {
   const { adminClient } = useAdminClient();
@@ -123,7 +124,7 @@ export const DefaultsGroupsTab = () => {
   }
 
   return (
-    <>
+    <GroupResourceContext value={adminClient.groups}>
       <RemoveDialog />
       {isGroupPickerOpen && (
         <GroupPickerDialog
@@ -258,6 +259,6 @@ export const DefaultsGroupsTab = () => {
           />
         }
       />
-    </>
+    </GroupResourceContext>
   );
 };

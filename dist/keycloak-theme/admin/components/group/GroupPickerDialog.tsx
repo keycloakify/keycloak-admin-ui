@@ -31,6 +31,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../../admin-client";
 import { GroupPath } from "./GroupPath";
+import { useGroupResource } from "../../context/group-resource/GroupResourceContext";
 
 import "./group-picker-dialog.css";
 
@@ -60,6 +61,7 @@ export const GroupPickerDialog = ({
   onConfirm,
 }: GroupPickerDialogProps) => {
   const { adminClient } = useAdminClient();
+  const groupResource = useGroupResource();
 
   const { t } = useTranslation();
   const [selectedRows, setSelectedRows] = useState<SelectableGroup[]>([]);
@@ -91,10 +93,10 @@ export const GroupPickerDialog = ({
         if (filter !== "") {
           args.search = filter;
         }
-        groups = await adminClient.groups.find(args);
+        groups = await groupResource.find(args);
       } else {
         if (!navigation.map(({ id }) => id).includes(groupId)) {
-          group = await adminClient.groups.findOne({ id: groupId });
+          group = await groupResource.findOne({ id: groupId });
           if (!group) {
             throw new Error(t("notFound"));
           }
@@ -105,7 +107,7 @@ export const GroupPickerDialog = ({
           max,
           parentId: groupId,
         };
-        groups = await adminClient.groups.listSubGroups(args);
+        groups = await groupResource.listSubGroups(args);
       }
 
       if (id) {
@@ -253,6 +255,11 @@ export const GroupPickerDialog = ({
                     key={g.id}
                     group={g}
                     isRowDisabled={isRowDisabled}
+                    onSelect={(group) => {
+                      setGroupId(group.id);
+                      setFilter("");
+                      setFirst(0);
+                    }}
                     type={type}
                     isSearching
                     selectedRows={selectedRows}

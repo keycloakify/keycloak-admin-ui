@@ -187,12 +187,12 @@ import code from "message-bundle";`,
                     case "PageHeader.tsx":
                         for (const [search, replace] of [
                             [undefined, `import logoSvgUrl from "./assets/logo.svg";`],
-                            [`const logo = customLogo || environment.logo || "/logo.svg";`, ""],
+                            [`const logo = environment.logo || "/logo.svg";`, ""],
                             [
-                                `logo.startsWith("/")
-          ? joinPath(environment.resourceUrl, logo)
-          : logo`,
-                                'customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl'
+                                `customLogo?.trim()
+          ? customLogo
+          : joinPath(environment.resourceUrl, logo)`,
+                                "customLogo?.trim() ? customLogo : logoSvgUrl"
                             ]
                         ] as const) {
                             const sourceCode_before = modifiedSourceCode;
@@ -229,6 +229,23 @@ import code from "message-bundle";`,
                         }
                         break;
                     case pathJoin("realm-settings", "themes", "ThemesTab.tsx"):
+                        for (const [search, replace] of [
+                            [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
+                            [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]
+                        ] as const) {
+                            const sourceCode_before = modifiedSourceCode;
+
+                            const sourceCode_after: string =
+                                search === undefined
+                                    ? [replace, modifiedSourceCode].join("\n")
+                                    : modifiedSourceCode.replace(search, replace);
+
+                            assert(sourceCode_before !== sourceCode_after);
+
+                            modifiedSourceCode = sourceCode_after;
+                        }
+                        break;
+                    case pathJoin("realm-settings", "themes", "QuickTheme.tsx"):
                         for (const [search, replace] of [
                             [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
                             [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]

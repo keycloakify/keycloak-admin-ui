@@ -36,6 +36,7 @@ export const MultiValuedStringComponent = ({
         aria-label={t(label!)}
         name={fieldName}
         isDisabled={isDisabled}
+        isRequired={required}
         defaultValue={convertDefaultValue(defaultValue)}
         addButtonLabel={t("addMultivaluedLabel", {
           fieldLabel: t(label!).toLowerCase(),

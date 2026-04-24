@@ -38,10 +38,18 @@ export const CapabilityConfig = ({
   const protocol = type || watch("protocol");
   const clientAuthentication = watch("publicClient");
   const authorization = watch("authorizationServicesEnabled");
+  const pkceCodeChallengeMethodField = convertAttributeNameToForm<FormFields>(
+    "attributes.pkce.code.challenge.method",
+  );
+  const pkceEnabled = watch(pkceCodeChallengeMethodField);
   const jwtAuthorizationGrantEnabled = watch(
     convertAttributeNameToForm<FormFields>(
       "attributes.oauth2.jwt.authorization.grant.enabled",
     ),
+    false,
+  );
+  const externalTokenEnabled = watch(
+    convertAttributeNameToForm<FormFields>("attributes.external.token.enabled"),
     false,
   );
   const isFeatureEnabled = useIsFeatureEnabled();
@@ -393,20 +401,52 @@ export const CapabilityConfig = ({
               </GridItem>
             </Grid>
           </FormGroup>
-          <SelectControl
-            id="keyForCodeExchange"
-            label={t("keyForCodeExchange")}
-            labelIcon={t("keyForCodeExchangeHelp")}
-            controller={{ defaultValue: "" }}
-            name={convertAttributeNameToForm<FormFields>(
-              "attributes.pkce.code.challenge.method",
-            )}
-            options={[
-              { key: "", value: t("choose") },
-              { key: "S256", value: "S256" },
-              { key: "plain", value: "plain" },
-            ]}
-          />
+          <FormGroup
+            hasNoPaddingTop
+            label={t("pkceRequired")}
+            fieldId="kc-pkce-enabled"
+            labelIcon={
+              <HelpItem
+                helpText={t("clientPkceRequiredHelp")}
+                fieldLabelId="pkceRequired"
+                isRecommendation={
+                  clientAuthentication && (!pkceEnabled || pkceEnabled === "")
+                }
+              />
+            }
+          >
+            <Controller
+              name={pkceCodeChallengeMethodField}
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  data-testid="pkce-required"
+                  id="kc-pkce-required-switch"
+                  label={t("on")}
+                  labelOff={t("off")}
+                  isChecked={field.value !== "" && field.value !== undefined}
+                  onChange={(_event, checked) =>
+                    field.onChange(checked ? "S256" : "")
+                  }
+                  aria-label={t("pkceRequired")}
+                />
+              )}
+            />
+          </FormGroup>
+          {pkceEnabled && pkceEnabled !== "" && (
+            <SelectControl
+              id="keyForCodeExchange"
+              label={t("keyForCodeExchange")}
+              labelIcon={t("keyForCodeExchangeHelp")}
+              controller={{ control }}
+              name={pkceCodeChallengeMethodField}
+              options={[
+                { key: "S256", value: "S256" },
+                { key: "plain", value: "plain" },
+              ]}
+              isFullWidth={false}
+            />
+          )}
           {isFeatureEnabled(Feature.JWTAuthorizationGrant) &&
             showIdentityProviders &&
             jwtAuthorizationGrantEnabled.toString() === "true" && (
@@ -435,6 +475,33 @@ export const CapabilityConfig = ({
               stringify
             />
           )}
+          {isFeatureEnabled(Feature.IdentityBrokeringAPIV2) &&
+            !clientAuthentication && (
+              <>
+                <DefaultSwitchControl
+                  name={convertAttributeNameToForm<FormFields>(
+                    "attributes.external.token.enabled",
+                  )}
+                  label={t("externalTokenEnabled")}
+                  labelIcon={t("externalTokenEnabledHelp")}
+                  stringify
+                />
+                {showIdentityProviders &&
+                  externalTokenEnabled?.toString() === "true" && (
+                    <IdentityProviderSelect
+                      name={convertAttributeNameToForm<FormFields>(
+                        "attributes.external.token.idp",
+                      )}
+                      label={t("externalTokenIdp")}
+                      helpText={t("externalTokenIdpHelp")}
+                      convertToName={convertAttributeNameToForm}
+                      identityProviderType={IdentityProviderType.ANY}
+                      realmOnly
+                      stringify
+                    />
+                  )}
+              </>
+            )}
         </>
       )}
       {protocol === "saml" && (

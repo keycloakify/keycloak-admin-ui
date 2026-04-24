@@ -48,6 +48,7 @@ export type ViewHeaderProps = {
   divider?: boolean;
   helpTextKey?: string;
   isReadOnly?: boolean;
+  actionDropdownTitle?: string;
 };
 
 export type ViewHeaderBadge = {
@@ -73,6 +74,7 @@ export const ViewHeader = ({
   divider = true,
   helpTextKey,
   isReadOnly = false,
+  actionDropdownTitle = "action",
 }: ViewHeaderProps) => {
   const { t, i18n } = useTranslation();
   const { enabled } = useHelp();
@@ -165,7 +167,7 @@ export const ViewHeader = ({
                           onClick={onDropdownToggle}
                           data-testid="action-dropdown"
                         >
-                          {t("action")}
+                          {t(actionDropdownTitle)}
                         </MenuToggle>
                       )}
                       isOpen={isDropdownOpen}

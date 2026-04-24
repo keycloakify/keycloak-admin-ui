@@ -30,6 +30,7 @@ import { useParams } from "../utils/useParams";
 import { DetailOrganizationHeader } from "./DetailOraganzationHeader";
 import { IdentityProviders } from "./IdentityProviders";
 import { MembersSection } from "./MembersSection";
+import GroupsSection from "../groups/GroupsSection";
 import {
   OrganizationForm,
   OrganizationFormType,
@@ -91,6 +92,7 @@ export default function DetailOrganization() {
   const settingsTab = useTab("settings");
   const attributesTab = useTab("attributes");
   const membersTab = useTab("members");
+  const groupsTab = useTab("groups");
   const identityProvidersTab = useTab("identityProviders");
   const eventsTab = useTab("events");
 
@@ -164,6 +166,14 @@ export default function DetailOrganization() {
             {...membersTab}
           >
             <MembersSection />
+          </Tab>
+          <Tab
+            id="groups"
+            data-testid="groupsTab"
+            title={<TabTitleText>{t("groups")}</TabTitleText>}
+            {...groupsTab}
+          >
+            <GroupsSection orgId={id} />
           </Tab>
           <Tab
             id="identityProviders"

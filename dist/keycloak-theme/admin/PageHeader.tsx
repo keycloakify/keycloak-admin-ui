@@ -118,7 +118,7 @@ export const Header = () => {
       features={{ hasManageAccount: false }}
       brand={{
         href: logoUrl,
-        src: customLogo ? (customLogo.startsWith("/") ? joinPath(environment["resourceUrl"], customLogo) : customLogo) : logoSvgUrl,
+        src: customLogo?.trim() ? customLogo : logoSvgUrl,
         alt: t("logo"),
         className: "keycloak__pageheader_brand",
       }}

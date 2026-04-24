@@ -4,7 +4,15 @@
 
 import type { OrganizationInvitationRepresentation } from "@keycloak/keycloak-admin-client";
 import { OrganizationInvitationStatus } from "@keycloak/keycloak-admin-client";
-import { Button, Chip, ToolbarItem } from "../../shared/@patternfly/react-core";
+import {
+  Button,
+  Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownList,
+  MenuToggle,
+  ToolbarItem,
+} from "../../shared/@patternfly/react-core";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAdminClient } from "../admin-client";
@@ -15,6 +23,7 @@ import { KeycloakDataTable } from "../../shared/keycloak-ui-shared";
 import { useParams } from "../utils/useParams";
 import useToggle from "../utils/useToggle";
 import { InviteMemberModal } from "./InviteMemberModal";
+import { MemberModal } from "../groups/MembersModal";
 import { EditOrganizationParams } from "./routes/EditOrganization";
 import { SearchInputComponent } from "../components/dynamic/SearchInputComponent";
 import { useConfirmDialog } from "../components/confirm-dialog/ConfirmDialog";
@@ -56,6 +65,8 @@ export const Invitations = () => {
   const [key, setKey] = useState(0);
   const refresh = () => setKey(key + 1);
   const [openInviteMembers, toggleInviteMembers] = useToggle();
+  const [openInviteRealmUser, toggleInviteRealmUser] = useToggle();
+  const [isInviteMenuOpen, setIsInviteMenuOpen] = useState(false);
   const [selectedInvitations, setSelectedInvitations] = useState<
     OrganizationInvitationRepresentation[]
   >([]);
@@ -171,6 +182,39 @@ export const Invitations = () => {
           }}
         />
       )}
+      {openInviteRealmUser && (
+        <MemberModal
+          titleKey="inviteRealmUser"
+          confirmLabelKey="send"
+          filterEmptyEmail
+          membersQuery={() => adminClient.organizations.listMembers({ orgId })}
+          onAdd={async (selectedRows) => {
+            try {
+              await Promise.all(
+                selectedRows.map((user) => {
+                  const form = new FormData();
+                  form.append("id", user.id!);
+                  return adminClient.organizations.inviteExistingUser(
+                    { orgId },
+                    form,
+                  );
+                }),
+              );
+              addAlert(
+                t("organizationInvitationsSent", {
+                  count: selectedRows.length,
+                }),
+              );
+            } catch (error) {
+              addError("organizationInvitationsSentError", error);
+            }
+          }}
+          onClose={() => {
+            toggleInviteRealmUser();
+            refresh();
+          }}
+        />
+      )}
       <KeycloakDataTable
         key={key}
         loader={loader}
@@ -191,9 +235,42 @@ export const Invitations = () => {
               />
             </ToolbarItem>
             <ToolbarItem>
-              <Button variant="primary" onClick={toggleInviteMembers}>
-                {t("inviteMember")}
-              </Button>
+              <Dropdown
+                onOpenChange={setIsInviteMenuOpen}
+                toggle={(ref) => (
+                  <MenuToggle
+                    ref={ref}
+                    id="invite-member-toggle"
+                    variant="primary"
+                    onClick={() => setIsInviteMenuOpen(!isInviteMenuOpen)}
+                    isExpanded={isInviteMenuOpen}
+                  >
+                    {t("inviteMember")}
+                  </MenuToggle>
+                )}
+                isOpen={isInviteMenuOpen}
+              >
+                <DropdownList>
+                  <DropdownItem
+                    key="invite-new-user"
+                    onClick={() => {
+                      setIsInviteMenuOpen(false);
+                      toggleInviteMembers();
+                    }}
+                  >
+                    {t("inviteNewUser")}
+                  </DropdownItem>
+                  <DropdownItem
+                    key="invite-realm-user"
+                    onClick={() => {
+                      setIsInviteMenuOpen(false);
+                      toggleInviteRealmUser();
+                    }}
+                  >
+                    {t("inviteRealmUser")}
+                  </DropdownItem>
+                </DropdownList>
+              </Dropdown>
             </ToolbarItem>
             <ToolbarItem>
               <Button
@@ -293,8 +370,12 @@ export const Invitations = () => {
             instructions={t("emptyInvitationsInstructions")}
             secondaryActions={[
               {
-                text: t("inviteMember"),
+                text: t("inviteNewUser"),
                 onClick: toggleInviteMembers,
+              },
+              {
+                text: t("inviteRealmUser"),
+                onClick: toggleInviteRealmUser,
               },
             ]}
           />

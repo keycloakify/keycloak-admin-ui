@@ -288,7 +288,7 @@ export const ResourcesPolicySelect = ({
             selections={
               variant === SelectVariant.typeaheadMulti
                 ? field.value
-                : items.find((i) => i.id === field.value?.[0])?.name
+                : selected.find((i) => i.id === field.value?.[0])?.name
             }
             onSelect={(selectedValue) => {
               const option = selectedValue.toString();
@@ -301,6 +301,10 @@ export const ResourcesPolicySelect = ({
                 field.onChange(changedValue);
               } else {
                 field.onChange([option]);
+                const selectedItem = items.find((i) => i.id === option);
+                if (selectedItem) {
+                  setSelected([selectedItem]);
+                }
               }
 
               setSearch("");

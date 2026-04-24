@@ -12,8 +12,8 @@ import {
 } from "../../../shared/keycloak-ui-shared";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { useAdminClient } from "../../admin-client";
-import { i18n } from "../../i18n/i18n";
 import { useHash } from "./useHash";
+import { useTranslation } from "react-i18next";
 
 type RealmContextType = {
   realm: string;
@@ -29,6 +29,7 @@ export const RealmContext = createNamedContext<RealmContextType | undefined>(
 export const RealmContextProvider = ({ children }: PropsWithChildren) => {
   const { adminClient } = useAdminClient();
   const { environment } = useEnvironment();
+  const { i18n } = useTranslation();
   const [key, setKey] = useState(0);
   const refresh = () => setKey(key + 1);
   const [realmRepresentation, setRealmRepresentation] =
@@ -45,7 +46,7 @@ export const RealmContextProvider = ({ children }: PropsWithChildren) => {
       await i18n.loadNamespaces(namespace);
       i18n.setDefaultNamespace(namespace);
     })();
-  }, [realm]);
+  }, [realm, i18n, adminClient]);
   useFetch(
     () => adminClient.realms.findOne({ realm }),
     setRealmRepresentation,

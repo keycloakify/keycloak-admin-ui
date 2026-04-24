@@ -4,6 +4,7 @@
 
 import UserRepresentation from "@keycloak/keycloak-admin-client/lib/defs/userRepresentation";
 import {
+  Action,
   KeycloakDataTable,
   ListEmptyState,
   useAlerts,
@@ -22,6 +23,8 @@ import { translationFormatter } from "../utils/translationFormatter";
 import { useParams } from "../utils/useParams";
 import useToggle from "../utils/useToggle";
 import { EditOrganizationParams } from "./routes/EditOrganization";
+import { MembershipsModal } from "../groups/MembershipsModal";
+import { GroupResourceContext } from "../context/group-resource/GroupResourceContext";
 
 type MembershipTypeRepresentation = UserRepresentation & {
   membershipType?: string;
@@ -53,6 +56,8 @@ export const Members = () => {
     string[]
   >([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [showMemberships, toggleShowMemberships] = useToggle();
+  const [selectedMember, setSelectedMember] = useState<UserRepresentation>();
 
   const membershipOptions = [
     { value: "Managed", label: "Managed" },
@@ -159,6 +164,17 @@ export const Members = () => {
           }}
         />
       )}
+      {showMemberships && (
+        <GroupResourceContext value={adminClient.organizations.groups(orgId)}>
+          <MembershipsModal
+            onClose={() => {
+              toggleShowMemberships();
+            }}
+            user={selectedMember!}
+            orgId={orgId}
+          />
+        </GroupResourceContext>
+      )}
       <KeycloakDataTable
         key={key}
         loader={loader}
@@ -213,6 +229,13 @@ export const Members = () => {
               await removeMember([member]);
             },
           },
+          {
+            title: t("showGroupMemberships"),
+            onRowClick: (member) => {
+              setSelectedMember(member);
+              toggleShowMemberships();
+            },
+          } as Action<UserRepresentation>,
         ]}
         columns={[
           {

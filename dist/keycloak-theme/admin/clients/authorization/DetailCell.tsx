@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import type ResourceServerRepresentation from "@keycloak/keycloak-admin-client/lib/defs/resourceServerRepresentation";
+import type PolicyRepresentation from "@keycloak/keycloak-admin-client/lib/defs/policyRepresentation";
 import { useFetch } from "../../../shared/keycloak-ui-shared";
 import { DescriptionList } from "../../../shared/@patternfly/react-core";
 import { useState } from "react";
@@ -28,8 +28,7 @@ export const DetailCell = ({ id, clientId, uris }: DetailCellProps) => {
 
   const { realm } = useRealm();
   const [scope, setScope] = useState<Scope>();
-  const [permissions, setPermissions] =
-    useState<ResourceServerRepresentation[]>();
+  const [permissions, setPermissions] = useState<PolicyRepresentation[]>();
 
   useFetch(
     () =>
@@ -74,7 +73,7 @@ export const DetailCell = ({ id, clientId, uris }: DetailCellProps) => {
             id: clientId,
             realm,
             permissionId: permission.id!,
-            permissionType: "resource",
+            permissionType: permission.type!,
           })
         }
       />

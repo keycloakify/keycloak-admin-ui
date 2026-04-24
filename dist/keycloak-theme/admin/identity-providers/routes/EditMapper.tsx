@@ -21,7 +21,7 @@ export const IdentityProviderEditMapperRoute: AppRouteObject = {
   element: <AddMapper />,
   breadcrumb: (t) => t("editIdPMapper"),
   handle: {
-    access: "manage-identity-providers",
+    access: "view-identity-providers",
   },
 };
 

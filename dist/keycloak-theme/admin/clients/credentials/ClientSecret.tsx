@@ -13,9 +13,9 @@ import {
   SplitItem,
 } from "../../../shared/@patternfly/react-core";
 import { useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { PasswordInput } from "../../../shared/keycloak-ui-shared";
+import { PasswordInput, HelpItem } from "../../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../../admin-client";
 import { useAlerts } from "../../../shared/keycloak-ui-shared";
 import { useConfirmDialog } from "../../components/confirm-dialog/ConfirmDialog";
@@ -51,7 +51,13 @@ const SecretInput = ({
       <SplitItem isFilled>
         <InputGroup>
           <InputGroupItem isFill>
-            <PasswordInput id={id} value={secret} readOnly />
+            <Controller
+              name="secret"
+              control={form.control}
+              render={({ field }) => (
+                <PasswordInput id={id} {...field} isDisabled={!isManager} />
+              )}
+            />
           </InputGroupItem>
           <InputGroupItem>
             <CopyToClipboardButton
@@ -138,6 +144,12 @@ export const ClientSecret = ({ client, secret, toggle }: ClientSecretProps) => {
         label={t("clientSecret")}
         fieldId="kc-client-secret"
         className="pf-v5-u-my-md"
+        labelIcon={
+          <HelpItem
+            helpText={t("oidcClientSecretHelp")}
+            fieldLabelId="kc-client-secret"
+          />
+        }
       >
         <SecretInput
           id="kc-client-secret"

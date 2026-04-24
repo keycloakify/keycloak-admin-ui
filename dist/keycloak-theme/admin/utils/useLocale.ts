@@ -4,7 +4,7 @@
 
 import { useMemo } from "react";
 import { useRealm } from "../context/realm-context/RealmContext";
-import { DEFAULT_LOCALE } from "../i18n/i18n";
+import { DEFAULT_LOCALE } from "../i18n/constants";
 
 export default function useLocale() {
   const { realmRepresentation: realm } = useRealm();
