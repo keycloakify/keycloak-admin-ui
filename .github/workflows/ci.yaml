@@ -6,6 +6,7 @@ on:
       - "26.0.7"
       - "26.2.0"
       - "26.5.0"
+      - "26.5.2"
   pull_request:
     branches:
       - main
