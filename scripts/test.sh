@@ -22,6 +22,8 @@ node -e "\
     fs.writeFileSync(pjPath, Buffer.from(JSON.stringify(pj, null, 2), 'utf8'));\
 "
 
+rm -rf node_modules/.cache/keycloakify/
+
 yarn install
 
 yarn postinstall

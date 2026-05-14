@@ -2,7 +2,7 @@
 
 // @ts-nocheck
 
-import loginCssUrl from "../../assets/theme/login.css?url";
+import loginCss from "../../assets/theme/login.css?raw";
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import { useEnvironment } from "../../../shared/keycloak-ui-shared";
 import JSZip from "jszip";
@@ -113,9 +113,6 @@ styles=css/login.css css/theme-styles.css
         .map(([key, value]) => `--pf-v5-global--${key}: ${value};`)
         .join("\n");
 
-    const loginCss = (
-      await fetch(loginCssUrl)
-    ).text();
     zip.file("theme/quick-theme/common/resources/css/styles.css", loginCss);
 
     zip.file(

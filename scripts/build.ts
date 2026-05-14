@@ -3,7 +3,8 @@ import {
     join as pathJoin,
     relative as pathRelative,
     sep as pathSep,
-    basename as pathBasename
+    basename as pathBasename,
+    dirname as pathDirname
 } from "path";
 import { getThisCodebaseRootDirPath } from "./tools/getThisCodebaseRootDirPath";
 import { getProxyFetchOptions } from "./tools/fetchProxyOptions";
@@ -228,27 +229,16 @@ import code from "message-bundle";`,
                             modifiedSourceCode = sourceCode_after;
                         }
                         break;
-                    case pathJoin("realm-settings", "themes", "ThemesTab.tsx"):
-                        for (const [search, replace] of [
-                            [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
-                            [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]
-                        ] as const) {
-                            const sourceCode_before = modifiedSourceCode;
-
-                            const sourceCode_after: string =
-                                search === undefined
-                                    ? [replace, modifiedSourceCode].join("\n")
-                                    : modifiedSourceCode.replace(search, replace);
-
-                            assert(sourceCode_before !== sourceCode_after);
-
-                            modifiedSourceCode = sourceCode_after;
-                        }
-                        break;
                     case pathJoin("realm-settings", "themes", "QuickTheme.tsx"):
                         for (const [search, replace] of [
-                            [undefined, `import loginCssUrl from "../../assets/theme/login.css?url";`],
-                            [`joinPath(environment.resourceUrl, "/theme/login.css")`, `loginCssUrl`]
+                            [undefined, `import loginCss from "../../assets/theme/login.css?raw";`],
+                            [
+                                `    const loginCss = (
+      await fetch(joinPath(environment.resourceUrl, "/theme/login.css"))
+    ).text();
+    zip.file("theme/quick-theme/common/resources/css/styles.css", loginCss);`,
+                                `    zip.file("theme/quick-theme/common/resources/css/styles.css", loginCss);`
+                            ]
                         ] as const) {
                             const sourceCode_before = modifiedSourceCode;
 
@@ -486,6 +476,27 @@ import code from "message-bundle";`,
             srcDirPath: pathJoin(extractedDirPath, publicDirBasename),
             destDirPath: pathJoin(adminDirPath, "assets")
         });
+    }
+
+    {
+        const loginCssFilePath = pathJoin(adminDirPath, "assets", "theme", "login.css");
+
+        {
+            const dirPath = pathDirname(loginCssFilePath);
+
+            if (!fs.existsSync(dirPath)) {
+                fs.mkdirSync(dirPath, { recursive: true });
+            }
+        }
+
+        fs.writeFileSync(
+            pathJoin(adminDirPath, "assets", "theme", "login.css"),
+            Buffer.from(
+                ["/* Custom styles automatically added to the theme generated with QuickThemes */"].join(
+                    " "
+                )
+            )
+        );
     }
 
     fs.writeFileSync(
