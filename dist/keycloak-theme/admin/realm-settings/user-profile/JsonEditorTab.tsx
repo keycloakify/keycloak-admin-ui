@@ -40,7 +40,7 @@ export const JsonEditorTab = () => {
       <CodeEditor
         language="json"
         value={code}
-        onChange={(value) => setCode(value ?? "")}
+        onChange={(value) => setCode(value)}
         height={480}
       />
       <Form>

@@ -3,7 +3,11 @@
 // @ts-nocheck
 
 import IdentityProviderRepresentation from "@keycloak/keycloak-admin-client/lib/defs/identityProviderRepresentation";
-import { FormSubmitButton, SelectControl } from "../../shared/keycloak-ui-shared";
+import {
+  FormSubmitButton,
+  SelectControl,
+  TextControl,
+} from "../../shared/keycloak-ui-shared";
 import {
   Button,
   ButtonVariant,
@@ -36,6 +40,7 @@ type LinkRepresentation = {
   hideOnLogin: boolean;
   config: {
     "kc.org.domain": string;
+    "kc.org.excluded.domains": string;
   };
 };
 
@@ -80,7 +85,7 @@ export const LinkIdentityProviderModal = ({
         ...foundIdentityProvider.config,
         ...config,
       };
-      foundIdentityProvider.hideOnLogin = data.hideOnLogin ?? true;
+      foundIdentityProvider.hideOnLogin = data.hideOnLogin;
       await adminClient.identityProviders.update(
         { alias: data.alias[0] },
         foundIdentityProvider,
@@ -151,6 +156,11 @@ export const LinkIdentityProviderModal = ({
             ]}
             menuAppendTo="parent"
           />
+          <TextControl
+            label={t("excludedDomains")}
+            name={convertAttributeNameToForm("config.kc.org.excluded.domains")}
+            labelIcon={t("excludedDomainsHelp")}
+          />
           <DefaultSwitchControl
             name="hideOnLogin"
             label={t("hideOnLoginPage")}
@@ -163,6 +173,14 @@ export const LinkIdentityProviderModal = ({
             )}
             label={t("hideOnLoginWhenOrgNotResolved")}
             labelIcon={t("hideOnLoginWhenOrgNotResolvedHelp")}
+            stringify
+          />
+          <DefaultSwitchControl
+            name={convertAttributeNameToForm(
+              "config.kc.org.broker.login.show-when-linked-elsewhere",
+            )}
+            label={t("showOnLoginForUnlinkedMembers")}
+            labelIcon={t("showOnLoginForUnlinkedMembersHelp")}
             stringify
           />
           <DefaultSwitchControl

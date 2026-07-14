@@ -366,8 +366,8 @@ export const UserCredentials = ({ user, setUser }: UserCredentialsProps) => {
 
   const useFederatedCredentials = user.federationLink;
   const [credentialTypes, setCredentialTypes] = useState<
-    CredentialRepresentation[]
-  >([]);
+    CredentialRepresentation[] | undefined
+  >();
 
   useFetch(
     () => {

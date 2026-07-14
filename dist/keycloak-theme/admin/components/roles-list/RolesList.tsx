@@ -139,7 +139,7 @@ export const RolesList = ({
                   onRowClick: (role) => {
                     setSelectedRole(role);
                     if (
-                      realm?.defaultRole &&
+                      realm.defaultRole &&
                       role.name === realm!.defaultRole!.name
                     ) {
                       addAlert(
@@ -158,7 +158,7 @@ export const RolesList = ({
             cellRenderer: (row) => (
               <RoleDetailLink
                 {...row}
-                defaultRoleName={realm?.defaultRole?.name}
+                defaultRoleName={realm.defaultRole?.name}
                 toDetail={toDetail}
                 messageBundle={messageBundle}
               />

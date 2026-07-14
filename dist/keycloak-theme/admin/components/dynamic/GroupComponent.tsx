@@ -11,14 +11,14 @@ import {
   ChipGroup,
   FormGroup,
 } from "../../../shared/@patternfly/react-core";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { HelpItem } from "../../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../../admin-client";
 import {
-  useGroupResource,
+  GroupsResourceContext,
   GroupResourceContext,
 } from "../../context/group-resource/GroupResourceContext";
 import { useServerInfo } from "../../context/server-info/ServerInfoProvider";
@@ -39,7 +39,8 @@ export const GroupComponent = ({
   const { control, setValue } = useFormContext();
   const { adminClient } = useAdminClient();
   const serverInfo = useServerInfo();
-  const hasLinkedOrganization = useGroupResource().isOrgGroups();
+  const groupResource = useContext(GroupsResourceContext);
+  const hasLinkedOrganization = groupResource?.isOrgGroups() ?? false;
   const groupTypeFieldName = convertToName("groupType");
 
   // Get group type enum values from server
@@ -56,7 +57,7 @@ export const GroupComponent = ({
   });
 
   const shouldRenderOrgField =
-    hasLinkedOrganization || groupType == GROUP_TYPE_ORG;
+    groupResource && (hasLinkedOrganization || groupType == GROUP_TYPE_ORG);
   return (
     <Controller
       name={convertToName(name!)}

@@ -100,27 +100,6 @@ const mapping: ResourceMapping = {
   },
 };
 
-type queryType =
-  | DeleteFunctions
-  | ListAvailableFunction
-  | ListEffectiveFunction;
-
-const castAdminClient = (
-  adminClient: KeycloakAdminClient,
-  resource: ResourcesKey,
-) =>
-  adminClient[resource] as unknown as {
-    [index in queryType]: (...params: any) => Promise<RoleRepresentation[]>;
-  };
-
-const applyQuery = (
-  adminClient: KeycloakAdminClient,
-  type: ResourcesKey,
-  query: queryType,
-  ...params: object[]
-): Promise<RoleRepresentation[]> =>
-  castAdminClient(adminClient, type)[query](...params);
-
 export const deleteMapping = (
   adminClient: KeycloakAdminClient,
   type: ResourcesKey,
@@ -140,9 +119,12 @@ export const getMapping = async (
   adminClient: KeycloakAdminClient,
   type: ResourcesKey,
   id: string,
+  groupsResource?: any,
 ): Promise<MappingsRepresentation> => {
   const query = mapping[type]!.listEffective[0];
-  const result = applyQuery(adminClient, type, query, { id });
+  const resource =
+    type === "groups" && groupsResource ? groupsResource : adminClient[type];
+  const result = (resource as any)[query]({ id });
   if (type !== "roles") {
     return result as MappingsRepresentation;
   }
@@ -176,9 +158,14 @@ export const getAvailableRoles = async (
   adminClient: KeycloakAdminClient,
   type: ResourcesKey,
   params: Record<string, string | number>,
+  groupsResource?: any,
 ): Promise<Row[]> => {
   const query = mapping[type]!.listAvailable[1];
-  return (await applyQuery(adminClient, type, query, params)).map((role) => ({
-    role,
-  }));
+  const resource =
+    type === "groups" && groupsResource ? groupsResource : adminClient[type];
+  return (await (resource as any)[query](params)).map(
+    (role: RoleRepresentation) => ({
+      role,
+    }),
+  );
 };

@@ -171,7 +171,7 @@ export default function FlowDetails() {
       }
       refresh();
       addAlert(t("updateFlowSuccess"), AlertVariant.success);
-    } catch (error: any) {
+    } catch (error) {
       addError("updateFlowError", error);
     }
   };
@@ -186,7 +186,7 @@ export default function FlowDetails() {
       );
       refresh();
       addAlert(t("updateFlowSuccess"), AlertVariant.success);
-    } catch (error: any) {
+    } catch (error) {
       addError("updateFlowError", error);
     }
   };
@@ -429,6 +429,10 @@ export default function FlowDetails() {
                 }}
                 onDrop={(source, dest) => {
                   if (dest) {
+                    if (source.index === dest.index) {
+                      return false;
+                    }
+
                     const dragged = executionList.findExecution(source.index)!;
                     const order = executionList.order().map((ex) => ex.id!);
                     setLiveText(

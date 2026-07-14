@@ -14,9 +14,9 @@ const RealmSection = lazy(() => import("./RealmSection"));
 export const RealmRoute: AppRouteObject = {
   path: "/:realm/realms",
   element: <RealmSection />,
-  breadcrumb: (t) => t("realms"),
   handle: {
     access: "anyone",
+    breadcrumb: (t) => t("realms"),
   },
 };
 

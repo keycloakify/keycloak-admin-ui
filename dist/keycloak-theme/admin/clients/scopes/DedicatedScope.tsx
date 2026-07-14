@@ -11,7 +11,6 @@ import {
   PageSection,
   Switch,
 } from "../../../shared/@patternfly/react-core";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { HelpItem } from "../../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../../admin-client";
@@ -22,17 +21,14 @@ import { useAccess } from "../../context/access/Access";
 
 type DedicatedScopeProps = {
   client: ClientRepresentation;
+  onChange?: (client: ClientRepresentation) => void;
 };
 
-export const DedicatedScope = ({
-  client: initialClient,
-}: DedicatedScopeProps) => {
+export const DedicatedScope = ({ client, onChange }: DedicatedScopeProps) => {
   const { adminClient } = useAdminClient();
 
   const { t } = useTranslation();
   const { addAlert, addError } = useAlerts();
-
-  const [client, setClient] = useState<ClientRepresentation>(initialClient);
 
   const { hasAccess } = useAccess();
   const isManager = hasAccess("manage-clients") || client.access?.manage;
@@ -74,7 +70,7 @@ export const DedicatedScope = ({
     try {
       await adminClient.clients.update({ id: client.id! }, newClient);
       addAlert(t("clientScopeSuccess"), AlertVariant.success);
-      setClient(newClient);
+      onChange?.(newClient);
     } catch (error) {
       addError("clientScopeError", error);
     }

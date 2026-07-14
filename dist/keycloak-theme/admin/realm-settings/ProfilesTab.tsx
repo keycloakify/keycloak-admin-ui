@@ -258,7 +258,7 @@ export default function ProfilesTab() {
             <CodeEditor
               value={code}
               language="json"
-              onChange={(value) => setCode(value ?? "")}
+              onChange={(value) => setCode(value)}
               height={480}
             />
           </div>

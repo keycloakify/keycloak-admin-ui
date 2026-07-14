@@ -152,9 +152,9 @@ export const GroupsModal = ({
         !groups.isOrgGroups() &&
         isFeatureEnabled(Feature.AdminFineGrainedAuthz)
       ) {
-        const permissions = await groups.listPermissions({
+        const permissions = (await groups.listPermissions({
           id: sourceGroup.id!,
-        });
+        })) as Awaited<ReturnType<typeof groups.listPermissions>> | undefined;
 
         if (permissions) {
           await groups.updatePermission({ id: createdGroup.id }, permissions);
@@ -175,7 +175,7 @@ export const GroupsModal = ({
         );
 
         const clientRolesPayload: RoleMappingPayload[] =
-          clientRoleMappings?.flatMap((clientRoleMapping) =>
+          clientRoleMappings.flatMap((clientRoleMapping) =>
             clientRoleMapping.roles.map((role) => ({
               id: role.id!,
               name: role.name!,

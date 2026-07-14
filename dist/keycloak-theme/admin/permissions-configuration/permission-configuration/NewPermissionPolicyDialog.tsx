@@ -110,7 +110,7 @@ export const NewPermissionPolicyDialog = ({
   });
   const { addAlert, addError } = useAlerts();
   const { handleSubmit, reset } = form;
-  const isPermissionClient = realmRepresentation?.adminPermissionsEnabled;
+  const isPermissionClient = realmRepresentation.adminPermissionsEnabled;
 
   const policyTypeSelector = useWatch({
     control: form.control,
@@ -148,10 +148,12 @@ export const NewPermissionPolicyDialog = ({
       ...(groups && groups.length > 0 && { groups }),
       ...(roles && roles.length > 0 && { roles }),
       ...(policies && policies.length > 0 && { policies }),
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- clients may be undefined at runtime despite the type
       ...(clients && clients.length > 0 && { clients }),
       ...(rest.type === "group" &&
         (!groups || groups.length === 0) && { groups: [] }),
       ...(rest.type === "client" &&
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- clients may be undefined at runtime despite the type
         (!clients || clients.length === 0) && { clients: [] }),
     };
 
@@ -196,7 +198,7 @@ export const NewPermissionPolicyDialog = ({
             rules={{ required: t("required") }}
           />
           <TextControl name="description" label={t("description")} />
-          {providers && providers.length > 0 && (
+          {providers.length > 0 && (
             <SelectControl
               name="type"
               label={t("policyType")}
@@ -222,7 +224,7 @@ export const NewPermissionPolicyDialog = ({
               type="submit"
               data-testid="save"
               isDisabled={
-                policies?.length === 0 && policyTypeSelector === "aggregate"
+                policies.length === 0 && policyTypeSelector === "aggregate"
               }
             >
               {t("save")}

@@ -19,7 +19,8 @@ export type ClientTab =
   | "serviceAccount"
   | "permissions"
   | "sessions"
-  | "events";
+  | "events"
+  | "ssf";
 
 export type ClientParams = {
   realm: string;
@@ -32,9 +33,9 @@ const ClientDetails = lazy(() => import("../ClientDetails"));
 export const ClientRoute: AppRouteObject = {
   path: "/:realm/clients/:clientId/:tab",
   element: <ClientDetails />,
-  breadcrumb: (t) => t("clientSettings"),
   handle: {
     access: "query-clients",
+    breadcrumb: (t) => t("clientSettings"),
   },
 };
 

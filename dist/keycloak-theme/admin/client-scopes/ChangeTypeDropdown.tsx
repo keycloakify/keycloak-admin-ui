@@ -82,6 +82,7 @@ export const ChangeTypeDropdown = ({
         {clientScopeTypesSelectOptions(
           t,
           !clientId ? allClientScopeTypes : undefined,
+          selectedRows,
         )}
       </SelectList>
     </Select>

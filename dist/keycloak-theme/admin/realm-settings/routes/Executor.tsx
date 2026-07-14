@@ -18,9 +18,9 @@ const ExecutorForm = lazy(() => import("../ExecutorForm"));
 export const ExecutorRoute: AppRouteObject = {
   path: "/:realm/realm-settings/client-policies/:profileName/edit-profile/:executorName",
   element: <ExecutorForm />,
-  breadcrumb: (t) => t("executorDetails"),
   handle: {
     access: ["manage-realm"],
+    breadcrumb: (t) => t("executorDetails"),
   },
 };
 

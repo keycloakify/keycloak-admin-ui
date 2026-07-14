@@ -69,7 +69,7 @@ export const SearchDropdown = ({
   };
 
   useEffect(() => {
-    const type = types?.find((item) => item.type === selectedType);
+    const type = types.find((item) => item.type === selectedType);
     setResourceScopes(type?.scopes || []);
   }, [selectedType, types]);
 
@@ -134,7 +134,7 @@ export const SearchDropdown = ({
                   defaultValue: "",
                 }}
                 options={[
-                  ...(resourceScopes || []).map((resourceScope) => ({
+                  ...resourceScopes.map((resourceScope) => ({
                     key: resourceScope!,
                     value: resourceScope!,
                   })),

@@ -21,7 +21,6 @@ const PolicyDetails = lazy(
 export const PolicyDetailsRoute: AppRouteObject = {
   path: "/:realm/clients/:id/authorization/policy/:policyId/:policyType",
   element: <PolicyDetails />,
-  breadcrumb: (t) => t("policyDetails"),
   handle: {
     access: (accessChecker) =>
       accessChecker.hasAny(
@@ -29,6 +28,7 @@ export const PolicyDetailsRoute: AppRouteObject = {
         "view-authorization",
         "manage-authorization",
       ),
+    breadcrumb: (t) => t("policyDetails"),
   },
 };
 

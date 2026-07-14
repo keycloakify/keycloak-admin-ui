@@ -35,7 +35,9 @@ export const DiscoveryEndpointField = ({
     useState<Record<string, string>>();
 
   const setupForm = (result: Record<string, string>) => {
-    Object.keys(result).map((k) => setValue(`config.${k}`, result[k]));
+    Object.keys(result).map((k) =>
+      setValue(`config.${k}`, result[k], { shouldDirty: true }),
+    );
   };
 
   const discover = async (fromUrl: string) => {

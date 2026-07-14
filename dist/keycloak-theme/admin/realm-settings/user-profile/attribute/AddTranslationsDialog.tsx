@@ -84,8 +84,8 @@ export const AddTranslationsDialog = ({
       const selectedLocales = combinedLocales
         .filter((l) =>
           localeToDisplayName(l, whoAmI.locale)
-            ?.toLocaleLowerCase(realm?.defaultLocale)
-            ?.includes(filter.toLocaleLowerCase(realm?.defaultLocale)),
+            ?.toLocaleLowerCase(realm.defaultLocale)
+            .includes(filter.toLocaleLowerCase(realm.defaultLocale)),
         )
         .slice(first, first + max + 1);
 
@@ -227,7 +227,7 @@ export const AddTranslationsDialog = ({
                               translation.locale,
                               whoAmI.locale,
                             )}
-                            {translation.locale === realm?.defaultLocale && (
+                            {translation.locale === realm.defaultLocale && (
                               <Label className="pf-v5-u-ml-xs" color="blue">
                                 {t("defaultLanguage")}
                               </Label>
@@ -240,7 +240,7 @@ export const AddTranslationsDialog = ({
                               {...register(`${prefix}.${index}.value`, {
                                 required: {
                                   value:
-                                    translation.locale === realm?.defaultLocale,
+                                    translation.locale === realm.defaultLocale,
                                   message: t("required"),
                                 },
                               })}

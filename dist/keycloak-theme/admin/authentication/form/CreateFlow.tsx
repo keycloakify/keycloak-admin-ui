@@ -12,9 +12,12 @@ import {
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { FormSubmitButton, SelectControl } from "../../../shared/keycloak-ui-shared";
+import {
+  FormSubmitButton,
+  SelectControl,
+  useAlerts,
+} from "../../../shared/keycloak-ui-shared";
 import { useAdminClient } from "../../admin-client";
-import { useAlerts } from "../../../shared/keycloak-ui-shared";
 import { FormAccess } from "../../components/form/FormAccess";
 import { ViewHeader } from "../../components/view-header/ViewHeader";
 import { useRealm } from "../../context/realm-context/RealmContext";
@@ -30,7 +33,7 @@ export default function CreateFlow() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { realm } = useRealm();
-  const { addAlert } = useAlerts();
+  const { addAlert, addError } = useAlerts();
   const form = useForm<AuthenticationFlowRepresentation>();
   const { handleSubmit, formState } = form;
 
@@ -48,13 +51,8 @@ export default function CreateFlow() {
           usedBy: "notInUse",
         }),
       );
-    } catch (error: any) {
-      addAlert(
-        t("flowCreateError", {
-          error: error.response?.data?.errorMessage || error,
-        }),
-        AlertVariant.danger,
-      );
+    } catch (error) {
+      addError("flowCreateError", error);
     }
   };
 

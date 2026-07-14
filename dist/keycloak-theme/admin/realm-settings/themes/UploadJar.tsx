@@ -17,9 +17,7 @@ export const UploadJar = ({ onUpload }: UploadJarProps) => {
 
   const triggerUpload = () => {
     const input = document.getElementById("jarUpload") as HTMLInputElement;
-    if (input) {
-      input.click();
-    }
+    input.click();
   };
 
   const handleAcceptedFiles = async (files: ChangeEvent<HTMLInputElement>) => {

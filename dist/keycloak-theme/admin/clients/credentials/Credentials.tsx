@@ -221,6 +221,7 @@ export const Credentials = ({ client, save, refresh }: CredentialsProps) => {
                 client={client}
                 secret={secret}
                 toggle={toggleClientSecretConfirm}
+                refresh={refresh}
               />
             )}
             <ActionGroup>

@@ -17,7 +17,7 @@ import { useTranslation } from "react-i18next";
 import { FormErrorText } from "../../../shared/keycloak-ui-shared";
 
 function stringToMultiline(value?: string): string[] {
-  return typeof value === "string" ? value.split("##") : [value || ""];
+  return typeof value === "string" ? value.split("##") : [""];
 }
 
 function toStringValue(formValue: string[]): string {

@@ -23,6 +23,7 @@ node -e "\
 "
 
 rm -rf node_modules/.cache/keycloakify/
+rm -rf src/admin
 
 yarn install
 

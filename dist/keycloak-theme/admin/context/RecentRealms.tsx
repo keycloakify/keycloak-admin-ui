@@ -5,12 +5,14 @@
 import type RealmRepresentation from "@keycloak/keycloak-admin-client/lib/defs/realmRepresentation";
 import {
   createNamedContext,
+  useEnvironment,
   useFetch,
   useRequiredContext,
   useStoredState,
 } from "../../shared/keycloak-ui-shared";
 import { PropsWithChildren, useEffect } from "react";
 import { useAdminClient } from "../admin-client";
+import type { Environment } from "../environment-types";
 import { useRealm } from "./realm-context/RealmContext";
 import { fetchAdminUI } from "./auth/admin-ui-endpoint";
 
@@ -33,6 +35,7 @@ function convertRealmToNameRepresentation(
 
 export const RecentRealmsProvider = ({ children }: PropsWithChildren) => {
   const { realmRepresentation: realm } = useRealm();
+  const { environment } = useEnvironment<Environment>();
   const { adminClient } = useAdminClient();
 
   const [storedRealms, setStoredRealms] = useStoredState(
@@ -63,14 +66,11 @@ export const RecentRealmsProvider = ({ children }: PropsWithChildren) => {
         }),
       ),
     (realms) => setStoredRealms(realms.filter((r) => !!r)),
-    [realm?.realm === "master"],
+    [realm.realm === environment.masterRealm],
   );
 
   useEffect(() => {
-    if (
-      storedRealms.map((r) => r.name).includes(realm?.realm || "") ||
-      !realm
-    ) {
+    if (storedRealms.map((r) => r.name).includes(realm.realm || "")) {
       return;
     }
     setStoredRealms(

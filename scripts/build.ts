@@ -273,7 +273,7 @@ import code from "message-bundle";`,
                 assert(modifiedSourceCode !== before);
             }
 
-            if (fileRelativePath === "admin-client.ts") {
+            if (fileRelativePath === "admin-client.tsx") {
                 let before = modifiedSourceCode;
                 modifiedSourceCode = modifiedSourceCode.replace(
                     `import type Keycloak from "keycloak-js";`,

@@ -5,10 +5,13 @@
 import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
 import {
   createNamedContext,
+  KeycloakSpinner,
+  useEnvironment,
   useRequiredContext,
 } from "../shared/keycloak-ui-shared";
 import type { Keycloak } from "oidc-spa/keycloak-js";
-import type { Environment } from "./environment";
+import { PropsWithChildren, useEffect, useState } from "react";
+import type { Environment } from "./environment-types";
 
 export type AdminClientProps = {
   keycloak: Keycloak;
@@ -43,3 +46,23 @@ export async function initAdminClient(
 
   return adminClient;
 }
+
+export const AdminClientProvider = ({ children }: PropsWithChildren) => {
+  const { keycloak, environment } = useEnvironment<Environment>();
+  const [adminClient, setAdminClient] = useState<KeycloakAdminClient>();
+
+  useEffect(() => {
+    const init = async () => {
+      const client = await initAdminClient(keycloak, environment);
+      setAdminClient(client);
+    };
+    init().catch(console.error);
+  }, [environment, keycloak]);
+
+  if (!adminClient) return <KeycloakSpinner />;
+  return (
+    <AdminClientContext.Provider value={{ keycloak, adminClient }}>
+      {children}
+    </AdminClientContext.Provider>
+  );
+};

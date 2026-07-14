@@ -18,7 +18,8 @@ export type UserTab =
   | "role-mapping"
   | "identity-provider-links"
   | "events"
-  | "workflows";
+  | "workflows"
+  | "verifiable-credentials";
 
 export type UserParams = {
   realm: string;
@@ -31,9 +32,9 @@ const EditUser = lazy(() => import("../EditUser"));
 export const UserRoute: AppRouteObject = {
   path: "/:realm/users/:id/:tab",
   element: <EditUser />,
-  breadcrumb: (t) => t("userDetails"),
   handle: {
     access: "query-users",
+    breadcrumb: (t) => t("userDetails"),
   },
 };
 

@@ -3,11 +3,7 @@
 // @ts-nocheck
 
 import type RoleRepresentation from "@keycloak/keycloak-admin-client/lib/defs/roleRepresentation";
-import {
-  KeycloakSpinner,
-  useAlerts,
-  useFetch,
-} from "../../shared/keycloak-ui-shared";
+import { useAlerts, useFetch } from "../../shared/keycloak-ui-shared";
 import {
   AlertVariant,
   ButtonVariant,
@@ -242,11 +238,7 @@ export default function RealmRoleTabs() {
   };
 
   const isDefaultRole = (name: string | undefined) =>
-    realm?.defaultRole && realm.defaultRole!.name === name;
-
-  if (!realm) {
-    return <KeycloakSpinner />;
-  }
+    realm.defaultRole && realm.defaultRole!.name === name;
 
   return (
     <>

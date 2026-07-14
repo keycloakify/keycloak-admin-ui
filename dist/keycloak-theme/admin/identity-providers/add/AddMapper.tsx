@@ -232,7 +232,7 @@ export default function AddMapper() {
               <GroupResourceContext
                 value={
                   idp?.organizationId
-                    ? adminClient.organizations.groups(idp?.organizationId)
+                    ? adminClient.organizations.groups(idp.organizationId)
                     : adminClient.groups
                 }
               >

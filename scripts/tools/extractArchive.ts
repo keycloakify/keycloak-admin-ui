@@ -1,7 +1,6 @@
 import fs from "fs/promises";
-import fsSync from "fs";
 import yauzl from "yauzl";
-import stream from "stream";
+import zlib from "zlib";
 import { Deferred } from "evt/tools/Deferred";
 import { dirname as pathDirname, sep as pathSep } from "path";
 import { existsAsync } from "./fs.existsAsync";
@@ -35,6 +34,72 @@ export async function extractArchive(params: {
         dDone.resolve();
     });
 
+    zipFile.once("error", error => {
+        dDone.reject(error);
+    });
+
+    // NOTE: yauzl's decompressed stream can stall on some Keycloak jar entries.
+    // Read compressed bytes and inflate explicitly instead.
+    const readFile = async (entry: yauzl.Entry): Promise<Buffer> => {
+        const compressedData = await new Promise<Buffer>((resolve, reject) => {
+            const chunks: Buffer[] = [];
+
+            const onReadStream = (error: Error | null, readStream?: NodeJS.ReadableStream) => {
+                if (error !== null) {
+                    reject(error);
+                    return;
+                }
+
+                if (readStream === undefined) {
+                    reject(new Error(`Failed to open zip entry stream for ${entry.fileName}`));
+                    return;
+                }
+
+                readStream.on("data", chunk => {
+                    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+                });
+
+                readStream.once("error", reject);
+
+                readStream.once("end", () => {
+                    resolve(Buffer.concat(chunks));
+                });
+            };
+
+            try {
+                if (entry.compressionMethod === 8) {
+                    zipFile.openReadStream(entry, { decompress: false }, onReadStream);
+                    return;
+                }
+
+                zipFile.openReadStream(entry, onReadStream);
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        const data = (() => {
+            switch (entry.compressionMethod) {
+                case 0:
+                    return compressedData;
+                case 8:
+                    return zlib.inflateRawSync(compressedData);
+                default:
+                    throw new Error(
+                        `Unsupported compression method ${entry.compressionMethod} for ${entry.fileName}`
+                    );
+            }
+        })();
+
+        if (data.length !== entry.uncompressedSize) {
+            throw new Error(
+                `Unexpected uncompressed size for ${entry.fileName}: ${data.length} !== ${entry.uncompressedSize}`
+            );
+        }
+
+        return data;
+    };
+
     const writeFile = async (
         entry: yauzl.Entry,
         params: {
@@ -57,81 +122,40 @@ export async function extractArchive(params: {
             return;
         }
 
-        const readStream = await new Promise<stream.Readable>(resolve =>
-            zipFile.openReadStream(entry, async (error, readStream) => {
-                if (error) {
-                    dDone.reject(error);
-                    return;
-                }
-
-                resolve(readStream);
-            })
-        );
-
-        const dDoneWithFile = new Deferred<void>();
-
-        stream.pipeline(readStream, fsSync.createWriteStream(filePath), error => {
-            if (error) {
-                dDone.reject(error);
-                return;
-            }
-
-            dDoneWithFile.resolve();
-        });
-
-        await dDoneWithFile.pr;
+        await fs.writeFile(filePath, await readFile(entry));
     };
 
-    const readFile = (entry: yauzl.Entry) =>
-        new Promise<Buffer>(resolve =>
-            zipFile.openReadStream(entry, async (error, readStream) => {
-                if (error) {
-                    dDone.reject(error);
+    zipFile.on("entry", async (entry: yauzl.Entry) => {
+        try {
+            handle_file: {
+                // NOTE: Skip directories
+                if (entry.fileName.endsWith("/")) {
+                    break handle_file;
+                }
+
+                let hasEarlyExitBeenCalled = false;
+
+                await onArchiveFile({
+                    relativeFilePathInArchive: entry.fileName.split("/").join(pathSep),
+                    readFile: () => readFile(entry),
+                    writeFile: params => writeFile(entry, params),
+                    earlyExit: () => {
+                        hasEarlyExitBeenCalled = true;
+                    }
+                });
+
+                if (hasEarlyExitBeenCalled) {
+                    zipFile.close();
+                    dDone.resolve();
                     return;
                 }
-
-                const chunks: Buffer[] = [];
-
-                readStream.on("data", chunk => {
-                    chunks.push(chunk);
-                });
-
-                readStream.on("end", () => {
-                    resolve(Buffer.concat(chunks));
-                });
-
-                readStream.on("error", error => {
-                    dDone.reject(error);
-                });
-            })
-        );
-
-    zipFile.on("entry", async (entry: yauzl.Entry) => {
-        handle_file: {
-            // NOTE: Skip directories
-            if (entry.fileName.endsWith("/")) {
-                break handle_file;
             }
 
-            let hasEarlyExitBeenCalled = false;
-
-            await onArchiveFile({
-                relativeFilePathInArchive: entry.fileName.split("/").join(pathSep),
-                readFile: () => readFile(entry),
-                writeFile: params => writeFile(entry, params),
-                earlyExit: () => {
-                    hasEarlyExitBeenCalled = true;
-                }
-            });
-
-            if (hasEarlyExitBeenCalled) {
-                zipFile.close();
-                dDone.resolve();
-                return;
-            }
+            zipFile.readEntry();
+        } catch (error) {
+            zipFile.close();
+            dDone.reject(error);
         }
-
-        zipFile.readEntry();
     });
 
     zipFile.readEntry();

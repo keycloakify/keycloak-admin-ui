@@ -3,23 +3,18 @@
 // @ts-nocheck
 
 import { SessionExpirationWarningOverlay } from "../shared/SessionExpirationWarningOverlay";
-import KeycloakAdminClient from "@keycloak/keycloak-admin-client";
-import {
-  mainPageContentId,
-  useEnvironment,
-} from "../shared/keycloak-ui-shared";
-import { Flex, FlexItem, Page } from "../shared/@patternfly/react-core";
-import { PropsWithChildren, Suspense, useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-
 import {
   ErrorBoundaryFallback,
   ErrorBoundaryProvider,
   KeycloakSpinner,
+  mainPageContentId,
 } from "../shared/keycloak-ui-shared";
+import { Flex, FlexItem, Page } from "../shared/@patternfly/react-core";
+import { PropsWithChildren, Suspense, useEffect } from "react";
+import { Outlet } from "react-router-dom";
+import { AdminClientProvider } from "./admin-client";
 import { Header } from "./PageHeader";
 import { PageNav } from "./PageNav";
-import { AdminClientContext, initAdminClient } from "./admin-client";
 import { PageBreadCrumbs } from "./components/bread-crumb/PageBreadCrumbs";
 import { ErrorRenderer } from "./components/error/ErrorRenderer";
 import { RecentRealmsProvider } from "./context/RecentRealms";
@@ -27,7 +22,6 @@ import { AccessContextProvider } from "./context/access/Access";
 import { RealmContextProvider } from "./context/realm-context/RealmContext";
 import { ServerInfoProvider } from "./context/server-info/ServerInfoProvider";
 import { WhoAmIContextProvider } from "./context/whoami/WhoAmI";
-import type { Environment } from "./environment";
 import { SubGroups } from "./groups/SubGroupsContext";
 import { AuthWall } from "./root/AuthWall";
 import { Banners } from "./Banners";
@@ -51,25 +45,14 @@ export const AppContexts = ({ children }: PropsWithChildren) => (
 );
 
 export const App = () => {
-  const { keycloak, environment } = useEnvironment<Environment>();
-  const [adminClient, setAdminClient] = useState<KeycloakAdminClient>();
-
+  const hrefEndsWithHashSlash = location.href.endsWith("#/");
   useEffect(() => {
-    const fragment = "#/";
-    if (window.location.href.endsWith(fragment)) {
-      const newPath = window.location.pathname.replace(fragment, "");
-      window.history.replaceState(null, "", newPath);
-    }
-    const init = async () => {
-      const client = await initAdminClient(keycloak, environment);
-      setAdminClient(client);
-    };
-    init().catch(console.error);
-  }, [environment, keycloak]);
+    if (!hrefEndsWithHashSlash) return;
+    history.replaceState(null, "", location.pathname);
+  }, [hrefEndsWithHashSlash, location.pathname]);
 
-  if (!adminClient) return <KeycloakSpinner />;
   return (
-    <AdminClientContext.Provider value={{ keycloak, adminClient }}>
+    <AdminClientProvider>
       <AppContexts>
         <Flex
           direction={{ default: "column" }}
@@ -100,6 +83,6 @@ export const App = () => {
         </Flex>
         <SessionExpirationWarningOverlay warnUserSecondsBeforeAutoLogout={45} />
       </AppContexts>
-    </AdminClientContext.Provider>
+    </AdminClientProvider>
   );
 };

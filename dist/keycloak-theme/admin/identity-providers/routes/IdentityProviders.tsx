@@ -16,9 +16,9 @@ const IdentityProvidersSection = lazy(
 export const IdentityProvidersRoute: AppRouteObject = {
   path: "/:realm/identity-providers",
   element: <IdentityProvidersSection />,
-  breadcrumb: (t) => t("identityProviders"),
   handle: {
     access: "view-identity-providers",
+    breadcrumb: (t) => t("identityProviders"),
   },
 };
 

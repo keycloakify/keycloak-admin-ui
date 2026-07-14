@@ -4,9 +4,11 @@
 
 import type ClientRepresentation from "@keycloak/keycloak-admin-client/lib/defs/clientRepresentation";
 import type { ProviderRepresentation } from "@keycloak/keycloak-admin-client/lib/defs/serverInfoRepesentation";
+import { isBundleKey, label } from "../shared/keycloak-ui-shared";
 import type { IFormatter, IFormatterValueType } from "../shared/@patternfly/react-table";
 import { saveAs } from "file-saver";
 import { flatten } from "flat";
+import { TFunction } from "i18next";
 import { cloneDeep } from "lodash-es";
 import { FieldValues, Path, PathValue, UseFormSetValue } from "react-hook-form";
 import {
@@ -179,6 +181,17 @@ export const emailRegexPattern =
 export const KEY_PROVIDER_TYPE = "org.keycloak.keys.KeyProvider";
 
 export const prettyPrintJSON = (value: any) => JSON.stringify(value, null, 2);
+
+export const resolveDisplayName = (
+  t: TFunction,
+  displayName?: string,
+  fallback = "",
+) => {
+  if (displayName && isBundleKey(displayName)) {
+    return label(t, displayName);
+  }
+  return displayName || fallback;
+};
 
 export const addTrailingSlash = (url: string) =>
   url.endsWith("/") ? url : url + "/";

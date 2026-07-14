@@ -7,6 +7,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { FormAccess } from "../../../components/form/FormAccess";
 import { KeyValueInput } from "../../../components/key-value-form/KeyValueInput";
+import { SCIM_ANNOTATION_KEY } from "./AttributeScimSettings";
 import { KeySelect } from "./KeySelect";
 import { ValueSelect } from "./ValueSelect";
 
@@ -29,6 +30,7 @@ export const AttributeAnnotations = () => {
             <KeyValueInput
               name="annotations"
               label={t("annotations")}
+              filterKeys={[SCIM_ANNOTATION_KEY]}
               KeyComponent={(props) => (
                 <KeySelect
                   {...props}

@@ -14,9 +14,9 @@ const NewOrganization = lazy(() => import("../NewOrganization"));
 export const AddOrganizationRoute: AppRouteObject = {
   path: "/:realm/organizations/new",
   element: <NewOrganization />,
-  breadcrumb: (t) => t("createOrganization"),
   handle: {
-    access: "manage-users",
+    access: "manage-organizations",
+    breadcrumb: (t) => t("createOrganization"),
   },
 };
 
