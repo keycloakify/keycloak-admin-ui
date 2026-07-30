@@ -985,10 +985,10 @@ npm-run-path@^4.0.1:
   dependencies:
     path-key "^3.0.0"
 
-oidc-spa@10.3.0-rc.2:
-  version "10.3.0-rc.2"
-  resolved "https://registry.yarnpkg.com/oidc-spa/-/oidc-spa-10.3.0-rc.2.tgz#0190fae0d7f1728f01bb9959dfbb4d86ad8e8a59"
-  integrity sha512-Txmi05uVrLITzC8iuXd2hkvsKjMxAH9JRW6W8xzCZvRzVFeFUsAH8qOm2gVAmL7Ax9z4IfGWws68FQGoFqgIeA==
+oidc-spa@~10.2.10:
+  version "10.2.10"
+  resolved "https://registry.yarnpkg.com/oidc-spa/-/oidc-spa-10.2.10.tgz#5d82693b1e4fc3c80eb99c3290d6cb6e734536d5"
+  integrity sha512-FtJf2AY/F2w/vpIovVs9skU/IpvuTfeP+tl/ECLqBsoA8tq3/Wd/pR3Brp4Bq2IVoeEcvHdXizUaLzMmFEqNwA==
 
 onetime@^5.1.0, onetime@^5.1.2:
   version "5.1.2"
