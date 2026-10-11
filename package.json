@@ -45,7 +45,7 @@
         "evt": "^2.5.8",
         "react": "^18.3.1",
         "@types/react": "^18.3.12",
-        "oidc-spa": "~10.2.10"
+        "oidc-spa": "~10.2.17"
     },
     "dependencies": {
         "tsafe": "^1.8.5"
